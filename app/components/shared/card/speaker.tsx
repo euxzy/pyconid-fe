@@ -28,7 +28,7 @@ export const SpeakerCard = ({
 				<img
 					src={image}
 					alt={name}
-					className="absolute left-1/2 top-[72px] lg:top-[96px] -translate-x-1/2 w-46 lg:w-62 rounded-full object-cover z-0"
+					className="absolute left-1/2 top-[72px] lg:top-[96px] -translate-x-1/2 w-46 lg:w-62 rounded-full object-cover z-0 aspect-square"
 					loading="lazy"
 					onError={onAvatarError}
 				/>
