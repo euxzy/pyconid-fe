@@ -1,5 +1,4 @@
-import { TicketBgBlue } from "./ticket-bg-blue";
-import { TicketBgGray } from "./ticket-bg-gray";
+import { CheckCircle2 } from "lucide-react";
 
 const formatRupiah = (amount: number) => {
 	return new Intl.NumberFormat("id-ID", {
@@ -9,50 +8,62 @@ const formatRupiah = (amount: number) => {
 	}).format(amount);
 };
 
+const BENEFITS = [
+	"In Person and Online access for the conference",
+	"Full access to 2-day Conference",
+	"Community Swag Pack",
+];
+
 export const TicketCard = ({
-	id,
 	name,
 	price,
 	description,
-	isSelected = false,
-	onClick = () => {},
+	onSelect,
 }: {
-	id: string;
 	name: string;
 	price: number;
 	description: string;
-	isSelected?: boolean;
-	onClick?: (id: string) => void;
+	onSelect?: () => void;
 }) => {
 	return (
-		// biome-ignore lint/a11y/useKeyWithClickEvents: force to interactive
-		// biome-ignore lint/a11y/noStaticElementInteractions: force to interactive
-		<div
-			className="relative hover:cursor-pointer"
-			onClick={() => {
-				onClick(id);
-			}}
-		>
-			<div className="lg:w-[533px] lg:h-[388px] lg:px-6 md:w-full w-full px-4">
-				{isSelected ? <TicketBgBlue /> : <TicketBgGray />}
-			</div>
-			<div className="absolute inset-0 flex flex-col items-center p-4 md:p-8 lg:p-10">
-				<h2 className="text-center text-[#F27F20] text-xl md:text-2xl font-bold mb-2">
-					{name}
-				</h2>
-
-				<h3 className="text-center text-[#224083] text-2xl md:text-3xl font-bold mb-4">
-					{formatRupiah(price)}
-				</h3>
-
-				<div className="w-full text-left px-6 md:px-10">
-					<p
-						className="text-[11px] md:text-base text-gray-800 leading-relaxed"
-						style={{ whiteSpace: "pre-line" }}
-					>
-						{description}
-					</p>
+		<div className="w-full sm:w-[378px] bg-[#282828] rounded-lg border-b border-[rgba(198,198,198,0.3)] flex flex-col">
+			<div className="px-8 pt-12 pb-8 flex flex-col gap-6 flex-1">
+				{/* Price Row */}
+				<div className="flex items-center justify-between gap-4">
+					<span className="text-[#F1F2F3] text-2xl lg:text-[32px] font-extrabold font-sans tracking-tight">
+						{formatRupiah(price)}
+					</span>
+					<span className="px-3 py-1 border border-[#FAFAFA] text-[#FAFAFA] text-xs font-medium rounded">
+						{name}
+					</span>
 				</div>
+
+				{/* Description */}
+				<p className="text-[#909090] text-sm leading-relaxed">{description}</p>
+
+				{/* Benefits List */}
+				<div className="flex flex-col gap-4">
+					<p className="text-[#F1F2F3] text-sm font-bold">You will get:</p>
+					<div className="flex flex-col gap-3">
+						{BENEFITS.map((benefit) => (
+							<div key={benefit} className="flex items-start gap-3">
+								<CheckCircle2 className="w-4 h-4 text-[#F1F2F3] mt-0.5 shrink-0" />
+								<span className="text-[#F1F2F3] text-sm">{benefit}</span>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+
+			{/* CTA Button */}
+			<div className="px-8 pb-8">
+				<button
+					type="button"
+					onClick={onSelect}
+					className="w-full py-3 px-4 bg-[#FAFAFA] text-[#282828] font-bold text-lg rounded hover:bg-white transition-colors cursor-pointer"
+				>
+					Buy ticket
+				</button>
 			</div>
 		</div>
 	);
