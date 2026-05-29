@@ -41,6 +41,9 @@ const STATIC_TICKETS = [
 	},
 ];
 
+// Toggle this to simulate user already having a ticket
+const SIMULATE_HAS_TICKET = false;
+
 export const Ticket = () => {
 	const [selectedTicket, setSelectedTicket] = useState<
 		(typeof STATIC_TICKETS)[0] | null
@@ -50,7 +53,11 @@ export const Ticket = () => {
 
 	const handleSelectTicket = (ticket: (typeof STATIC_TICKETS)[0]) => {
 		setSelectedTicket(ticket);
-		setIsPurchaseModalOpen(true);
+		if (SIMULATE_HAS_TICKET) {
+			setIsErrorModalOpen(true);
+		} else {
+			setIsPurchaseModalOpen(true);
+		}
 	};
 
 	const handleClosePurchaseModal = () => {

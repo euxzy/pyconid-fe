@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { AccentDecoration } from "./accent-decoration";
 
 interface TicketErrorModalProps {
 	isOpen: boolean;
@@ -62,6 +63,7 @@ export const TicketErrorModal = ({
 
 			{/* Modal Content */}
 			<div className="relative z-10 w-full max-w-[640px] mx-4 bg-[#282828] rounded-lg border-b border-[rgba(198,198,198,0.3)]">
+				<AccentDecoration />
 				<div className="relative flex flex-col items-center gap-6 p-8 lg:p-12 text-center">
 					{/* Close button */}
 					<div className="absolute top-6 right-6 lg:top-12 lg:right-12">
@@ -69,8 +71,8 @@ export const TicketErrorModal = ({
 					</div>
 
 					{/* Sorry badge */}
-					<div className="bg-[#FAFAFA] rounded-[20px] px-4 py-2">
-						<span className="text-[#282828] text-sm font-medium">Sorry...</span>
+					<div className="rounded-[20px] px-4 py-2">
+						<img src="/svg/sorry.svg" alt="Sorry" />
 					</div>
 
 					{/* Title */}

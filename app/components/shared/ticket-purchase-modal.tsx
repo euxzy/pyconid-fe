@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { formatRupiah } from "~/lib/utils";
+import { AccentDecoration } from "./accent-decoration";
 
 interface Ticket {
 	id: string;
@@ -15,28 +16,6 @@ interface TicketPurchaseModalProps {
 }
 
 type VoucherState = "empty" | "filled" | "verified";
-
-const AccentDecoration = () => (
-	<div className="absolute -left-[27px] -top-[44px] opacity-50 pointer-events-none">
-		<svg
-			width="97"
-			height="100"
-			viewBox="0 0 97 100"
-			fill="none"
-			role="img"
-			aria-label="Decorative accent"
-		>
-			<path
-				d="M51.31 11.31L94.79 58.23L40.95 53.01L1.83 42.22L12.31 0L51.31 11.31Z"
-				fill="#F27F20"
-			/>
-			<path
-				d="M40.95 53.01L1.83 42.22L12.31 0L51.31 11.31L40.95 53.01Z"
-				fill="#224083"
-			/>
-		</svg>
-	</div>
-);
 
 const CloseIcon = ({ onClick }: { onClick: () => void }) => (
 	<button
