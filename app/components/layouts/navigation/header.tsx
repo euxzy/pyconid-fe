@@ -14,12 +14,11 @@ export const Header = () => {
 			<div className="flex items-center justify-between container mx-auto py-5 px-6 lg:px-12">
 				<div>
 					<img
-						src="/images/logo-light.webp" // Gunakan logo versi terang
+						src="/images/PyCon ID 26 Logo@2x.png" // Gunakan logo versi terang
 						alt="PyconID 2026"
 						className="h-8 lg:h-10"
 					/>
 				</div>
-
 				<div
 					className={cn(
 						"absolute top-[72px] p-6 bg-surface w-full transition-all duration-300 border-t border-white/10",
