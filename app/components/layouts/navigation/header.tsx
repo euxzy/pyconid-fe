@@ -7,68 +7,58 @@ import { useRootLoaderData } from "~/root";
 
 export const Header = () => {
 	const [expand, setExpand] = useState(false);
-
 	const { credentials } = useRootLoaderData();
 
 	return (
-		<header className="pt-8 fixed inset-x-0 top-0 z-50 mx-6 overflow-x-clip 2xl:mx-0">
-			<div className="flex items-center justify-between container mx-auto py-5 px-6 bg-white/60 rounded-2xl backdrop-blur-md lg:px-8">
+		<header className="bg-surface text-white fixed inset-x-0 top-0 z-50 w-full">
+			<div className="flex items-center justify-between container mx-auto py-5 px-6 lg:px-12">
 				<div>
 					<img
-						src="/images/logo-dark.webp"
-						alt="PyconID 2025"
-						className="h-6 lg:h-12"
+						src="/images/PyCon ID 26 Logo@2x.png" // Gunakan logo versi terang
+						alt="PyconID 2026"
+						className="h-8 lg:h-10"
 					/>
 				</div>
-
 				<div
 					className={cn(
-						"absolute top-20 rounded-2xl p-4 bg-white/75 backdrop-blur-md w-full transition-all duration-300",
-						"md:w-1/3 lg:static lg:w-auto lg:p-0 lg:bg-transparent lg:backdrop-blur-none",
-						expand ? "right-0" : "-right-[120%]",
+						"absolute top-[72px] p-6 bg-surface w-full transition-all duration-300 border-t border-white/10",
+						"lg:static lg:w-auto lg:p-0 lg:border-none lg:bg-transparent",
+						expand ? "left-0" : "-left-[120%]",
 					)}
 				>
-					<ul className="flex flex-col gap-2 text-gray-700 lg:flex-row lg:gap-4">
+					<ul className="flex flex-col gap-6 font-sans lg:flex-row lg:gap-8 lg:items-center">
 						{MENU.map((menu) => (
 							<li key={menu.name}>
 								<NavLink
 									to={menu.href}
 									className={({ isActive }) =>
-										isActive ? "text-gray-950 font-medium" : ""
+										isActive
+											? "text-white font-bold"
+											: "text-gray-300 hover:text-white"
 									}
 								>
 									{menu.name}
 								</NavLink>
 							</li>
 						))}
-						<li className="w-full lg:hidden">
-							{/* <button
-								type="button"
-								disabled
-								className="bg-secondary/75 text-background text-sm px-5 py-2.5 font-bold rounded-xl lg:text-base w-full"
-							>
-								Ticket Available Soon
-							</button> */}
-
+						<li className="w-full lg:hidden pt-4 border-t border-white/10">
 							{credentials ? (
-								<div className="flex flex-col gap-2">
-									<NavLink to="/auth/dashboard" className="mr-4">
-										My Profile
-									</NavLink>
+								<div className="flex flex-col gap-4">
+									<NavLink to="/auth/dashboard">My Profile</NavLink>
 									<Form action="/auth/logout" method="post">
 										<button
 											type="submit"
-											className="bg-secondary text-background text-sm px-5 py-2.5 font-bold rounded-xl cursor-pointer lg:text-base"
+											className="bg-white text-surface px-6 py-2 font-bold w-full"
 										>
 											Logout
 										</button>
 									</Form>
 								</div>
 							) : (
-								<Link to="/login">
+								<Link to="/login" className="block w-full">
 									<button
 										type="button"
-										className="bg-secondary text-background text-sm px-5 py-2.5 font-bold rounded-xl cursor-pointer lg:text-base"
+										className="bg-white text-surface px-6 py-2 font-bold w-full"
 									>
 										Login
 									</button>
@@ -79,26 +69,18 @@ export const Header = () => {
 				</div>
 
 				<div className="hidden lg:block">
-					{/* <button
-						type="button"
-						disabled
-						className="bg-secondary/75 text-background text-sm px-5 py-2.5 font-bold rounded-xl lg:text-base"
-					>
-						Ticket Available Soon
-					</button> */}
-
 					{credentials ? (
-						<div className="flex gap-4">
+						<div className="flex gap-4 items-center">
 							<NavLink
 								to="/auth/dashboard"
-								className="bg-secondary text-background text-sm px-5 py-2.5 font-bold rounded-xl cursor-pointer lg:text-base"
+								className="text-white hover:text-gray-200"
 							>
 								My Profile
 							</NavLink>
 							<Form action="/auth/logout" method="post">
 								<button
 									type="submit"
-									className="bg-secondary text-background text-sm px-5 py-2.5 font-bold rounded-xl cursor-pointer lg:text-base"
+									className="bg-white text-surface text-sm px-6 py-2.5 font-bold cursor-pointer"
 								>
 									Logout
 								</button>
@@ -108,7 +90,7 @@ export const Header = () => {
 						<Link to="/login">
 							<button
 								type="button"
-								className="bg-secondary text-background text-sm px-5 py-2.5 font-bold rounded-xl cursor-pointer lg:text-base"
+								className="bg-white text-surface text-sm px-8 py-2 font-bold cursor-pointer"
 							>
 								Login
 							</button>
@@ -118,7 +100,7 @@ export const Header = () => {
 
 				<button
 					type="button"
-					className="lg:hidden"
+					className="lg:hidden text-white"
 					onClick={() => setExpand((prev) => !prev)}
 				>
 					{expand ? <XIcon /> : <MenuIcon />}

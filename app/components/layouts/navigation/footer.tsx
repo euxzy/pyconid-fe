@@ -2,127 +2,152 @@ import { Mail } from "lucide-react";
 
 export const Footer = () => {
 	return (
-		<section className="pt-10 bg-[#F1F1F1] relative">
-			<div className="container mx-auto">
-				<div className="flex flex-col md:flex-row md:justify-between border rounded-xl bg-[#224083] min-h md:h-70 px-10 pt-10 pb-7 gap-7 md:items-start m-2">
-					<div className="flex flex-col gap-y-5 items-start">
+		<footer className="bg-surface text-white pt-20 pb-10">
+			<div className="container mx-auto px-6 lg:px-12">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+					{/* Column 1: Logo & Organizer */}
+					<div className="flex flex-col gap-6 items-start">
 						<img
-							src="/images/logo-light.webp"
-							alt="PyCon ID 2025 Logo"
-							className="w-50"
+							src="/images/logo-pycon-2026-light.png"
+							alt="PyCon ID 2026 Logo"
+							className="h-12 lg:h-16 object-contain"
 						/>
-						<div className="flex flex-col gap-y-1">
-							<div className="font-sans text-white font-light text-center">
-								Organized by:
+						<div className="flex flex-col gap-2">
+							<div className="font-sans font-medium text-lg">
+								Organized by :
 							</div>
-							<div className="flex flex-col lg:flex-row lg:items-center lg:justify-center lg:gap-x-5 gap-y-2">
+							<div className="flex items-center gap-4">
 								<img
 									src="/images/logo-python-id-no-text.png"
 									alt="Python ID"
-									className="h-15 object-contain"
-								/>
-								<img
-									src="/images/logo-himasi-putih.png"
-									alt="HIMASI Trilogi"
-									className="h-15"
+									className="h-10 object-contain"
 								/>
 							</div>
 						</div>
 					</div>
 
-					<div className="w-70 flex flex-col gap-y-2">
-						<p className="font-display font-bold text-white text-2xl">
+					{/* Column 2: Contact Us */}
+					<div className="flex flex-col gap-4">
+						<h3 className="font-sans font-bold text-xl lg:text-2xl">
 							Contact Us
-						</p>
-						<div className="flex flex-col gap-y-4">
-							<div className="flex gap-x-2">
-								<Mail className="text-white" />
-								<p className="text-white">
-									<a
-										href="mailto:pycon@python.or.id"
-										className="hover:underline"
-									>
-										pycon@python.or.id
-									</a>
-								</p>
-							</div>
-							<p className="text-white mr-5 text-sm sm:text-base">
-								PyCon ID 2025 is organized by volunteers, so it may take more
-								time for us to reply to inquiries. Thank you for your patience.
-							</p>
+						</h3>
+						<div className="flex items-center gap-3">
+							<Mail className="h-5 w-5" />
+							<a
+								href="mailto:pycon@python.or.id"
+								className="hover:underline font-sans text-sm md:text-base"
+							>
+								pycon@python.or.id
+							</a>
 						</div>
+						<p className="text-gray-400 font-sans text-sm leading-relaxed max-w-xs">
+							PyCon ID 2026 is organized by volunteers, so it may take more time
+							for us to reply to inquiries. Thank you for your patience.
+						</p>
 					</div>
 
-					<div className="w-70 flex flex-col gap-y-2">
-						<p className="font-display font-bold text-white text-2xl">Other</p>
-						<ul className="flex flex-col gap-y-2 text-white font-sans">
-							<li className="hover:underline">
-								<a href="/everybody-pays">Everyone who can, pays</a>
+					{/* Column 3: Other */}
+					<div className="flex flex-col gap-4">
+						<h3 className="font-sans font-bold text-xl lg:text-2xl">Other</h3>
+						<ul className="flex flex-col gap-3 font-sans text-gray-300 text-sm md:text-base">
+							<li>
+								<a
+									href="/everybody-pays"
+									className="hover:text-white transition-colors"
+								>
+									Everyone who can, pay
+								</a>
 							</li>
-							<li className="hover:underline">
-								<a href="/about-us">About Us</a>
+							<li>
+								<a
+									href="/call-for-sponsor"
+									className="hover:text-white transition-colors"
+								>
+									Be a Sponsor
+								</a>
 							</li>
-							<li className="hover:underline">
-								<a href="/call-for-sponsor">Sponsorship Application</a>
+							<li>
+								<a
+									href="/schedule"
+									className="hover:text-white transition-colors"
+								>
+									Check Schedule
+								</a>
 							</li>
 						</ul>
 					</div>
 
-					<div className="w-70 flex flex-col gap-y-2">
-						<p className="font-display font-bold text-white text-2xl">About</p>
-						<ul className="flex flex-col gap-y-2 font-sans text-white">
-							<li className="hover:underline">
-								<a href="/terms-of-service">Terms of Service</a>
+					{/* Column 4: About */}
+					<div className="flex flex-col gap-4">
+						<h3 className="font-sans font-bold text-xl lg:text-2xl">About</h3>
+						<ul className="flex flex-col gap-3 font-sans text-gray-300 text-sm md:text-base">
+							<li>
+								<a
+									href="/terms-of-service"
+									className="hover:text-white transition-colors"
+								>
+									Terms of Service
+								</a>
 							</li>
-							<li className="hover:underline">
-								<a href="/privacy-policy">Privacy Policy</a>
+							<li>
+								<a
+									href="/privacy-policy"
+									className="hover:text-white transition-colors"
+								>
+									Privacy Policy
+								</a>
 							</li>
-							<li className="hover:underline">
-								<a href="/code-of-conduct">Code of Conduct</a>
+							<li>
+								<a
+									href="/code-of-conduct"
+									className="hover:text-white transition-colors"
+								>
+									Code of Conduct
+								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 
-				<div className="flex flex-col md:flex-row items-center gap-y-2 md:gap-y-0 justify-between mt-5 border rounded-xl bg-[#162D61] min-h md:h-15 p-5 m-2">
-					<div className="flex items-center justify-center">
+				{/* Bottom Bar: Social & Copyright */}
+				<div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 gap-6">
+					<div className="flex items-center gap-6">
 						<a
 							href="https://instagram.com/pythonid"
 							target="_blank"
 							rel="noreferrer noopener"
+							className="opacity-80 hover:opacity-100"
 						>
-							<img src="/svg/ig.svg" alt="IG" />
+							<img src="/svg/ig.svg" alt="IG" className="size-10" />
 						</a>
-
 						<a
 							href="https://github.com/pyconid"
 							target="_blank"
 							rel="noreferrer noopener"
+							className="opacity-80 hover:opacity-100"
 						>
-							<img src="/svg/github.svg" alt="Github" />
+							<img src="/svg/github.svg" alt="Github" className="size-10" />
 						</a>
-
 						<a
 							href="https://x.com/id_python"
 							target="_blank"
 							rel="noreferrer noopener"
+							className="opacity-80 hover:opacity-100"
 						>
-							<img src="/svg/x.svg" alt="X formerly known as Twitter" />
+							<img src="/svg/x.svg" alt="X" className="size-10" />
 						</a>
-
 						<a
 							href="mailto:pycon@python.or.id"
-							target="_blank"
-							rel="noreferrer noopener"
+							className="opacity-80 hover:opacity-100"
 						>
-							<img src="/svg/mail.svg" alt="Email" />
+							<img src="/svg/mail.svg" alt="Email" className="size-10" />
 						</a>
 					</div>
-					<div className="font-sans text-sm md:text-xl text-white mr-4">
-						© PyCon ID 2025. All rights reserved.
+					<div className="font-sans text-sm text-gray-400">
+						© PyCon ID 2026. All rights reserved.
 					</div>
 				</div>
 			</div>
-		</section>
+		</footer>
 	);
 };
