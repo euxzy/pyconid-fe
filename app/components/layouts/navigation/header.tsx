@@ -19,7 +19,6 @@ export const Header = () => {
 						className="h-8 lg:h-10"
 					/>
 				</div>
-
 				<div
 					className={cn(
 						"absolute top-[72px] p-6 bg-surface w-full transition-all duration-300 border-t border-white/10",
