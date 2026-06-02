@@ -1,63 +1,17 @@
 import { useState } from "react";
+import type { TicketType } from "~/api/schema/ticket";
+import { EarlyBirdTicketCard } from "~/components/shared/ticket-card/early-bird-ticket-card";
 import { TicketCard } from "~/components/shared/ticket-card/ticket-card";
 import { TicketErrorModal } from "~/components/shared/ticket-error-modal";
 import { TicketPurchaseModal } from "~/components/shared/ticket-purchase-modal";
 
-const STATIC_TICKETS = [
-	{
-		id: "student",
-		name: "STUDENT",
-		price: 25000,
-		description:
-			"This ticket is for students (school or university) only. The price of this ticket is heavily subsidized to give chance for students to join the conference.",
-	},
-	{
-		id: "general",
-		name: "GENERAL",
-		price: 300000,
-		description:
-			"This ticket is for individual who pays for the ticket themselves. The price of this ticket is not the true cost, it is subsidized thanks for our sponsor.",
-	},
-	{
-		id: "corporate",
-		name: "CORPORATE",
-		price: 500000,
-		description:
-			"This ticket is for individual who pays for the ticket themselves. The price of this ticket is the true cost of the conference.",
-	},
-	{
-		id: "patron",
-		name: "PATRON",
-		price: 1500000,
-		description:
-			"This ticket is for individual who wants to support our conference. We recommend those who can, to buy this ticket.",
-	},
-	{
-		id: "online",
-		name: "ONLINE",
-		price: 100000,
-		description:
-			"This ticket is for individual who wants to join our conference online.",
-	},
-];
-
-// Toggle this to simulate user already having a ticket
-const SIMULATE_HAS_TICKET = false;
-
-export const Ticket = () => {
-	const [selectedTicket, setSelectedTicket] = useState<
-		(typeof STATIC_TICKETS)[0] | null
-	>(null);
+export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
+	const [selectedTicket, setSelectedTicket] = useState<TicketType | null>(null);
 	const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
-	const handleSelectTicket = (ticket: (typeof STATIC_TICKETS)[0]) => {
+	const handleSelectTicket = (ticket: TicketType) => {
 		setSelectedTicket(ticket);
-		if (SIMULATE_HAS_TICKET) {
-			setIsErrorModalOpen(true);
-		} else {
-			setIsPurchaseModalOpen(true);
-		}
 	};
 
 	const handleClosePurchaseModal = () => {
@@ -68,6 +22,9 @@ export const Ticket = () => {
 	const handleCloseErrorModal = () => {
 		setIsErrorModalOpen(false);
 	};
+
+	const isEarlyBird = (name: string) =>
+		name.toLowerCase().includes("early bird");
 
 	return (
 		<>
@@ -144,7 +101,7 @@ export const Ticket = () => {
 						{/* Logo */}
 						<div className="hidden lg:flex items-center gap-4">
 							<img
-								src="/images/logo-light.webp"
+								src="/images/logo-pycon-2026-light.png"
 								alt="PyCon ID 2026"
 								className="h-12"
 							/>
@@ -162,15 +119,27 @@ export const Ticket = () => {
 			<section className="bg-[#FAF9F7] py-20 lg:py-24">
 				<div className="container mx-auto px-6 lg:px-12">
 					<div className="flex flex-wrap justify-center gap-6">
-						{STATIC_TICKETS.map((ticket) => (
-							<TicketCard
-								key={ticket.id}
-								name={ticket.name}
-								price={ticket.price}
-								description={ticket.description}
-								onSelect={() => handleSelectTicket(ticket)}
-							/>
-						))}
+						{tickets.map((ticket) =>
+							isEarlyBird(ticket.name) ? (
+								<EarlyBirdTicketCard
+									key={ticket.id}
+									name={ticket.name}
+									price={ticket.price}
+									description={ticket.description ?? ""}
+									isSoldOut={ticket.is_sold_out}
+									onSelect={() => handleSelectTicket(ticket)}
+								/>
+							) : (
+								<TicketCard
+									key={ticket.id}
+									name={ticket.name}
+									price={ticket.price}
+									description={ticket.description ?? ""}
+									isSoldOut={ticket.is_sold_out}
+									onSelect={() => handleSelectTicket(ticket)}
+								/>
+							),
+						)}
 					</div>
 				</div>
 			</section>

@@ -1,21 +1,16 @@
 import { useState } from "react";
+import { useFetcher } from "react-router";
+import type { TicketType } from "~/api/schema/ticket";
 import { formatRupiah } from "~/lib/utils";
 import { AccentDecoration } from "./accent-decoration";
-
-interface Ticket {
-	id: string;
-	name: string;
-	price: number;
-	description: string;
-}
 
 interface TicketPurchaseModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	ticket: Ticket | null;
+	ticket: TicketType | null;
 }
 
-type VoucherState = "empty" | "filled" | "verified";
+type VoucherState = "empty" | "filled" | "verifying" | "verified" | "error";
 
 const CloseIcon = ({ onClick }: { onClick: () => void }) => (
 	<button
@@ -84,9 +79,14 @@ export const TicketPurchaseModal = ({
 	onClose,
 	ticket,
 }: TicketPurchaseModalProps) => {
+	const fetcher = useFetcher();
 	const [voucherCode, setVoucherCode] = useState("");
 	const [voucherState, setVoucherState] = useState<VoucherState>("empty");
 	const [discount, setDiscount] = useState(0);
+
+	// Read voucher validation result from fetcher data
+	const voucherResult = fetcher.data?.apply_voucher;
+	const buyTicketResult = fetcher.data?.buy_ticket;
 
 	if (!isOpen || !ticket) return null;
 
@@ -104,17 +104,36 @@ export const TicketPurchaseModal = ({
 	};
 
 	const handleApplyVoucher = () => {
-		if (voucherCode.trim()) {
-			setVoucherState("verified");
-			setDiscount(100000);
-		}
+		if (!voucherCode.trim()) return;
+		setVoucherState("verifying");
+		fetcher.submit(
+			{ intent: "apply-voucher", voucher_code: voucherCode.trim() },
+			{ method: "post" },
+		);
 	};
+
+	// When fetcher returns voucher data, update state
+	if (
+		voucherState === "verifying" &&
+		fetcher.state === "idle" &&
+		voucherResult
+	) {
+		if (voucherResult.success) {
+			setVoucherState("verified");
+			setDiscount(voucherResult.success.value);
+		} else {
+			setVoucherState("error");
+			setDiscount(0);
+		}
+	}
 
 	const handleClearVoucher = () => {
 		setVoucherCode("");
 		setVoucherState("empty");
 		setDiscount(0);
 	};
+
+	const isSubmitting = fetcher.state !== "idle";
 
 	return (
 		<div className="fixed inset-0 z-50 flex justify-center items-start pt-20 bg-black/30 backdrop-blur-[16px]">
@@ -143,9 +162,7 @@ export const TicketPurchaseModal = ({
 					<div className="flex flex-col gap-4">
 						<p className="text-[#909090] text-base font-bold">Ticket</p>
 						<div className="flex justify-between items-center">
-							<span className="text-[#F1F2F3] text-base">
-								1x {ticket.name.charAt(0) + ticket.name.slice(1).toLowerCase()}
-							</span>
+							<span className="text-[#F1F2F3] text-base">1x {ticket.name}</span>
 							<span className="text-[#F1F2F3] text-base font-bold">
 								{formatRupiah(ticket.price)}
 							</span>
@@ -196,22 +213,39 @@ export const TicketPurchaseModal = ({
 								</button>
 							</div>
 						) : (
-							<div className="flex gap-2">
-								<input
-									type="text"
-									value={voucherCode}
-									onChange={handleVoucherChange}
-									placeholder="Enter voucher code"
-									className="flex-1 px-4 py-3 rounded-lg bg-[#282828] border border-[#909090] text-[#F1F2F3] text-base placeholder:text-[#909090] focus:border-[#224083] focus:outline-none focus:ring-1 focus:ring-[#224083]"
-								/>
-								<button
-									type="button"
-									onClick={handleApplyVoucher}
-									disabled={voucherState === "empty"}
-									className="px-4 py-3 rounded-2xl text-[#282828] bg-[#FAFAFA] font-bold text-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white transition-colors"
-								>
-									Apply Voucher
-								</button>
+							<div className="flex flex-col gap-2">
+								<div className="flex gap-2">
+									<input
+										type="text"
+										value={voucherCode}
+										onChange={handleVoucherChange}
+										placeholder="Enter voucher code"
+										disabled={voucherState === "verifying"}
+										className="flex-1 px-4 py-3 rounded-lg bg-[#282828] border border-[#909090] text-[#F1F2F3] text-base placeholder:text-[#909090] focus:border-[#224083] focus:outline-none focus:ring-1 focus:ring-[#224083] disabled:opacity-50"
+									/>
+									<button
+										type="button"
+										onClick={handleApplyVoucher}
+										disabled={
+											voucherState === "empty" || voucherState === "verifying"
+										}
+										className="px-4 py-3 rounded-2xl text-[#282828] bg-[#FAFAFA] font-bold text-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white transition-colors"
+									>
+										{voucherState === "verifying"
+											? "Verifying..."
+											: "Apply Voucher"}
+									</button>
+								</div>
+								{voucherState === "error" && voucherResult?.clientError && (
+									<p className="text-red-400 text-sm">
+										{voucherResult.clientError}
+									</p>
+								)}
+								{voucherState === "error" && voucherResult?.serverError && (
+									<p className="text-red-400 text-sm">
+										{voucherResult.serverError}
+									</p>
+								)}
 							</div>
 						)}
 					</div>
@@ -221,7 +255,7 @@ export const TicketPurchaseModal = ({
 						<div className="flex justify-between items-center">
 							<span className="text-[#F1F2F3] text-base">Discount Voucher</span>
 							<span className="text-[#F1F2F3] text-base font-bold">
-								{formatRupiah(discount)}
+								-{formatRupiah(discount)}
 							</span>
 						</div>
 					)}
@@ -236,13 +270,35 @@ export const TicketPurchaseModal = ({
 						</span>
 					</div>
 
-					{/* CTA Button */}
-					<button
-						type="button"
-						className="w-full py-3 px-4 bg-[#FAFAFA] text-[#282828] font-bold text-lg rounded hover:bg-white transition-colors cursor-pointer"
-					>
-						Buy ticket
-					</button>
+					{/* Error from buy ticket */}
+					{buyTicketResult?.clientError && (
+						<p className="text-red-400 text-sm text-center">
+							{buyTicketResult.clientError}
+						</p>
+					)}
+					{buyTicketResult?.serverError && (
+						<p className="text-red-400 text-sm text-center">
+							{buyTicketResult.serverError}
+						</p>
+					)}
+
+					{/* Purchase Form */}
+					<fetcher.Form method="post">
+						<input type="hidden" name="intent" value="buy-ticket" />
+						<input type="hidden" name="ticket_id" value={ticket.id} />
+						<input
+							type="hidden"
+							name="voucher_code"
+							value={voucherState === "verified" ? voucherCode : ""}
+						/>
+						<button
+							type="submit"
+							disabled={isSubmitting}
+							className="w-full py-3 px-4 bg-[#FAFAFA] text-[#282828] font-bold text-lg rounded hover:bg-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+						>
+							{isSubmitting ? "Processing..." : "Buy ticket"}
+						</button>
+					</fetcher.Form>
 				</div>
 			</div>
 		</div>

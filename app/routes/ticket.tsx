@@ -1,6 +1,18 @@
+import { redirect } from "react-router";
+import {
+	createPayment,
+	getPaymentVoucherValidate,
+} from "~/api/endpoint/.server/payment";
+import { ticket as ticketApi } from "~/api/endpoint/.server/ticket";
+import {
+	createPaymentSuccessSchema,
+	getPaymentVoucherValidateSchema,
+} from "~/api/schema/payment";
+import { TicketsResponseSchema } from "~/api/schema/ticket";
 import { Footer } from "~/components/layouts/navigation/footer";
 import { Header } from "~/components/layouts/navigation/header";
 import { Ticket } from "~/components/sections/ticket/ticket";
+import type { Route } from "./+types/ticket";
 
 export function meta() {
 	return [
@@ -9,11 +21,126 @@ export function meta() {
 	];
 }
 
-export default function TicketPage() {
+export const loader = async () => {
+	const ticketData = await ticketApi();
+	if (!ticketData.ok) {
+		throw new Response("Failed to fetch tickets", { status: 500 });
+	}
+	const ticketJson = await ticketData.json();
+	const tickets = TicketsResponseSchema.parse(ticketJson);
+	return { tickets: tickets.results };
+};
+
+export const action = async ({ request }: Route.ActionArgs) => {
+	const formData = await request.formData();
+	const intent = formData.get("intent");
+
+	if (intent === "buy-ticket") {
+		const ticket_id = formData.get("ticket_id") as string;
+		const voucher_code = formData.get("voucher_code") as string;
+
+		if (typeof ticket_id !== "string" || ticket_id.trim() === "") {
+			return {
+				buy_ticket: {
+					success: false,
+					clientError: "Invalid ticket ID",
+					serverError: null,
+				},
+				apply_voucher: null,
+			};
+		}
+
+		const res = await createPayment({
+			body: {
+				ticket_id,
+				voucher_code: voucher_code.trim() === "" ? null : voucher_code.trim(),
+			},
+			request,
+		});
+
+		if (res.status >= 400 && res.status < 500) {
+			const errorData = await res.json();
+			console.log("Client error:", errorData);
+			return {
+				buy_ticket: {
+					success: false,
+					clientError: errorData.message || "Client error occurred",
+					serverError: null,
+				},
+				apply_voucher: null,
+			};
+		}
+
+		if (res.status >= 500) {
+			console.error("Server error:", await res.text());
+			return {
+				buy_ticket: {
+					success: false,
+					clientError: null,
+					serverError: "Server error occurred. Please try again later.",
+				},
+				apply_voucher: null,
+			};
+		}
+
+		const data = createPaymentSuccessSchema.parse(await res.json());
+		if (!data.payment_link) {
+			return redirect("/auth/payment");
+		}
+		return redirect(data.payment_link);
+	}
+
+	if (intent === "apply-voucher") {
+		const voucher_code = formData.get("voucher_code") as string;
+		const res = await getPaymentVoucherValidate({
+			code: voucher_code,
+			request,
+		});
+
+		if (res.status >= 400 && res.status < 500) {
+			const errorData = await res.json();
+			console.log("Client error:", errorData);
+			return {
+				buy_ticket: null,
+				apply_voucher: {
+					success: null,
+					clientError: errorData.message || "Client error occurred",
+					serverError: null,
+				},
+			};
+		}
+
+		if (!res.ok) {
+			const errorData = await res.text();
+			console.error("error when validate voucher:", errorData);
+			return {
+				buy_ticket: null,
+				apply_voucher: {
+					success: null,
+					clientError: null,
+					serverError: "something wrong with server",
+				},
+			};
+		}
+
+		return {
+			buy_ticket: null,
+			apply_voucher: {
+				success: getPaymentVoucherValidateSchema.parse(await res.json()),
+				clientError: null,
+				serverError: null,
+			},
+		};
+	}
+
+	return null;
+};
+
+export default function TicketPage({ loaderData }: Route.ComponentProps) {
 	return (
 		<main>
 			<Header />
-			<Ticket />
+			<Ticket tickets={loaderData.tickets} />
 			<Footer />
 		</main>
 	);
