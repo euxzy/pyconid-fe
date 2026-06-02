@@ -1,6 +1,6 @@
-// import type { FC } from "react";
+import type { FC } from "react";
 import {
-	// Form,
+	Form,
 	Link,
 	type LoaderFunctionArgs,
 	Outlet,
@@ -15,29 +15,29 @@ import {
 	getMessageSession,
 } from "~/services/sessions/message.server";
 
-export interface AuthLayoutHanleProps {
+export interface AuthLayoutHandleProps {
 	title: string;
 }
 
-// type LoginOAuthProps = {
-// 	title: string;
-// 	provider: string;
-// 	image: string;
-// };
+type LoginOAuthProps = {
+	title: string;
+	provider: string;
+	icon: string;
+};
 
-// const LoginOAuth: FC<LoginOAuthProps> = ({ title, provider, image }) => {
-// 	return (
-// 		<Form action={`/auth/${provider}`} method="post" className="w-full">
-// 			<button
-// 				type="submit"
-// 				className="flex items-center w-full justify-center gap-x-2 bg-gray-200 rounded-sm p-2.5 cursor-pointer transition-all duration-150 hover:bg-gray-300"
-// 			>
-// 				<img alt={title} src={image} className="size-4 sm:size-8" />
-// 				<div>{title}</div>
-// 			</button>
-// 		</Form>
-// 	);
-// };
+const LoginOAuth: FC<LoginOAuthProps> = ({ title, provider, icon }) => {
+	return (
+		<Form action={`/auth/${provider}`} method="post" className="w-full">
+			<button
+				type="submit"
+				className="flex items-center w-full justify-center gap-x-3 bg-surface text-white rounded-md h-12 cursor-pointer transition-all duration-150 hover:bg-surface/90"
+			>
+				<img alt={title} src={icon} className="h-5 w-5" />
+				<span className="text-sm font-semibold">{title}</span>
+			</button>
+		</Form>
+	);
+};
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
@@ -62,100 +62,106 @@ const pathnames = ["/login", "/register"];
 
 export default function AuthLayout() {
 	const matches = useMatches();
-	const handle: AuthLayoutHanleProps = useMergeHanlde({
+	const handle: AuthLayoutHandleProps = useMergeHanlde({
 		matches,
-		options: { title: "Pycon 2025" },
+		options: { title: "PyCon 2026" },
 	});
 
 	const { pathname } = useLocation();
 
 	return (
-		<section className="h-screen bg-slate-100">
-			<div className="grid gap-x-8 w-full max-w-[88rem] mx-auto h-full content-center px-5 md:px-8 lg:px-0 lg:grid-cols-2">
-				<div className="hidden lg:block rounded-3xl overflow-hidden">
+		<section className="min-h-screen flex items-center justify-center p-4 md:p-8 font-sans">
+			{/* Main Split Container dengan Max-Width dan Border */}
+			<div className="w-full max-w-[88rem] flex flex-col lg:flex-row bg-background overflow-hidden min-h-[80vh] lg:h-[85vh]">
+				{/* Left Side - Dark Graphic Banner */}
+				<div className="hidden lg:block w-[45%] bg-surface relative overflow-hidden">
 					<img
-						alt="login and registration left card"
-						src="/svg/login-reg-card.svg"
-						className="w-full object-cover rounded-3xl shadow-2xl"
+						alt="PyCon 2026 abstract graphic"
+						src="/images/bg-auth-2026.png"
+						className="w-full h-full object-cover"
 					/>
 				</div>
-				<div className="bg-background rounded-3xl py-5 px-10 relative overflow-hidden">
-					<div className="size-full flex flex-col items-center justify-center">
-						<div className="mb-6">
-							<img
-								alt="pycon id dark logo"
-								src="/svg/logo-dark.svg"
-								className="h-16 w-auto"
-							/>
-						</div>
 
-						<Outlet />
+				{/* Right Side - Form Container */}
+				<div className="flex-1 flex flex-col relative bg-background">
+					{/* Top Right Page Label */}
+					<div className="absolute top-0 right-0 bg-surface text-white px-10 py-4 text-xl font-bold md:px-14">
+						{handle.title}
+					</div>
 
-						{pathnames.includes(pathname) && (
-							<>
-								<div className="flex items-center w-full h-7 my-8">
-									<div className="flex-grow border-t border-neutral-300"></div>
-									<span className="px-4 text-neutral-300">or</span>
-									<div className="flex-grow border-t border-neutral-300"></div>
-								</div>
+					{/* Form Content Wrapper */}
+					<div className="flex-1 flex flex-col justify-center items-center px-6 py-16 md:px-12">
+						<div className="w-full max-w-md">
+							<div className="mb-10 flex justify-center">
+								<img
+									alt="PyCon ID dark logo"
+									src="/images/PyCon ID 26 Logo@2x.png"
+									className="h-14 w-auto lg:h-16"
+								/>
+							</div>
 
-								<div className="w-full grid grid-cols-2 gap-4">
-									{/* <LoginOAuth
+							<Outlet />
+
+							{pathnames.includes(pathname) && (
+								<>
+									<div className="flex items-center w-full h-7 my-6">
+										<div className="flex-grow border-t border-neutral-200"></div>
+										<span className="px-4 text-neutral-400 text-sm">or</span>
+										<div className="flex-grow border-t border-neutral-200"></div>
+									</div>
+
+									<div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+										<LoginOAuth
 											title="Continue with Google"
-											image="/svg/google-logo.svg"
+											icon="/svg/google-logo.svg"
 											provider="google"
 										/>
 										<LoginOAuth
 											title="Continue with Github"
-											image="/svg/github-logo.svg"
+											icon="/svg/github.svg"
 											provider="github"
-										/> */}
+										/>
 
-									<p className="col-span-full w-max mx-auto">
-										{pathname === "/login" ? (
-											<>
-												Belum memiliki akun?{" "}
-												<Link
-													to="/register"
-													className="underline text-secondary"
-												>
-													Register
-												</Link>
-											</>
-										) : (
-											<>
-												Sudah memiliki akun?{" "}
-												<Link to="/login" className="underline text-secondary">
-													Login
-												</Link>
-											</>
-										)}
-									</p>
-								</div>
+										<p className="col-span-full w-max mx-auto">
+											{pathname === "/login" ? (
+												<>
+													Belum memiliki akun?{" "}
+													<Link
+														to="/register"
+														className="underline text-secondary"
+													>
+														Register
+													</Link>
+												</>
+											) : (
+												<>
+													Sudah memiliki akun?{" "}
+													<Link
+														to="/login"
+														className="underline text-secondary"
+													>
+														Login
+													</Link>
+												</>
+											)}
+										</p>
+									</div>
 
-								<div className="text-sm mt-12 text-center font-medium">
-									<p className="text-center">
-										By creating this account you agree to our
-									</p>
-									<a
-										href="https://pycon.id/code-of-conduct"
-										target="_blank"
-										rel="noreferrer noopener"
-										className="underline text-secondary"
-									>
-										Code of Conduct
-									</a>
-								</div>
-							</>
-						)}
-					</div>
-
-					<div className="absolute right-0 top-0 bg-primary text-background px-12 py-2 rounded-bl-3xl font-display text-2xl font-bold rounded-tl-md">
-						{handle.title}
-					</div>
-
-					<div className="absolute bottom-3 right-3">
-						<img alt="" src="/svg/trigger-dark-mode.svg" />
+									<div className="text-xs mt-10 text-center font-medium text-gray-600 leading-relaxed">
+										<p>By creating this account, you agree to our</p>
+										<a
+											href="/code-of-conduct"
+											target="_blank"
+											rel="noreferrer noopener"
+											className="font-bold text-surface hover:underline"
+										>
+											Code of Conduct
+										</a>
+										.
+									</div>
+								</>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
