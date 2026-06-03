@@ -16,27 +16,38 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		);
 	}
 	console.log("Protected layout loader - credentials");
-	const res = await getMe({ request });
-	if (res.status === 401) {
-		await signOut(request);
-		const sessionMessage = await getMessageSession(
-			request.headers.get("Cookie"),
+	try {
+		const res = await getMe({ request });
+		if (res.status === 401) {
+			await signOut(request);
+			const sessionMessage = await getMessageSession(
+				request.headers.get("Cookie"),
+			);
+			sessionMessage.flash("toast", {
+				message: "Token expired, please login again.",
+				variant: "default",
+				title: "Logout success!",
+			});
+			return await authenticator.logout(request, {
+				redirectTo: "/",
+				headers: {
+					"Set-Cookie": await commitMessageSession(sessionMessage),
+				},
+			});
+		}
+		if (res.status !== 200) {
+			console.error("Failed to fetch user data", res.status, await res.text());
+			throw new Response("Failed to fetch user data", { status: res.status });
+		}
+	} catch (err) {
+		if (err instanceof Response) {
+			throw err;
+		}
+		console.error(
+			"Network error calling getMe, allowing route to render with mock data",
+			err,
 		);
-		sessionMessage.flash("toast", {
-			message: "Token expired, please login again.",
-			variant: "default",
-			title: "Logout success!",
-		});
-		return await authenticator.logout(request, {
-			redirectTo: "/",
-			headers: {
-				"Set-Cookie": await commitMessageSession(sessionMessage),
-			},
-		});
-	}
-	if (res.status !== 200) {
-		console.error("Failed to fetch user data", res.status, await res.text());
-		throw new Response("Failed to fetch user data", { status: res.status });
+		return null;
 	}
 	return null;
 };
