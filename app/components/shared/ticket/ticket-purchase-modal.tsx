@@ -18,59 +18,26 @@ const CloseIcon = ({ onClick }: { onClick: () => void }) => (
 		className="cursor-pointer p-0 bg-transparent border-none"
 		aria-label="Close modal"
 	>
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" role="img">
-			<title>Close</title>
-			<path
-				d="M19 5L5 19"
-				stroke="#F1F2F3"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-			<path
-				d="M5 5L19 19"
-				stroke="#F1F2F3"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
+		<img src="/svg/close-icon.svg" alt="Close" width={24} height={24} />
 	</button>
 );
 
 const CheckCircleIcon = () => (
-	<svg
-		width="24"
-		height="24"
-		viewBox="0 0 24 24"
-		fill="none"
-		role="img"
-		aria-label="Voucher verified"
-	>
-		<title>Verified</title>
-		<circle cx="12" cy="12" r="10" fill="#F1F2F3" />
-		<path
-			d="M8 12L11 15L16 9"
-			stroke="#22835F"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		/>
-	</svg>
+	<img
+		src="/svg/check-circle.svg"
+		alt="Voucher verified"
+		width={24}
+		height={24}
+	/>
 );
 
 const DashedSeparator = () => (
-	<svg width="100%" height="1" role="img" aria-label="Separator">
-		<line
-			x1="0"
-			y1="0.5"
-			x2="100%"
-			y2="0.5"
-			stroke="#909090"
-			strokeWidth="1"
-			strokeDasharray="6 6"
-		/>
-	</svg>
+	<img
+		src="/svg/dashed-separator.svg"
+		alt=""
+		className="w-full h-[1px]"
+		aria-hidden="true"
+	/>
 );
 
 export const TicketPurchaseModal = ({
@@ -186,27 +153,12 @@ export const TicketPurchaseModal = ({
 									className="cursor-pointer p-1 bg-transparent border-none"
 									aria-label="Remove voucher"
 								>
-									<svg
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										role="img"
-									>
-										<title>Remove voucher</title>
-										<path
-											d="M18 6L6 18"
-											stroke="#F1F2F3"
-											strokeWidth="2"
-											strokeLinecap="round"
-										/>
-										<path
-											d="M6 6L18 18"
-											stroke="#F1F2F3"
-											strokeWidth="2"
-											strokeLinecap="round"
-										/>
-									</svg>
+									<img
+										src="/svg/close-icon.svg"
+										alt="Remove voucher"
+										width={24}
+										height={24}
+									/>
 								</button>
 							</div>
 						) : (

@@ -12,23 +12,7 @@ const CloseIcon = ({ onClick }: { onClick: () => void }) => (
 		className="cursor-pointer p-0 bg-transparent border-none"
 		aria-label="Close modal"
 	>
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" role="img">
-			<title>Close</title>
-			<path
-				d="M19 5L5 19"
-				stroke="#F1F2F3"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-			<path
-				d="M5 5L19 19"
-				stroke="#F1F2F3"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
+		<img src="/svg/close-icon.svg" alt="Close" width={24} height={24} />
 	</button>
 );
 
