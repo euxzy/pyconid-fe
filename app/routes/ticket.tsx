@@ -9,16 +9,16 @@ import {
 	getPaymentVoucherValidateSchema,
 } from "~/api/schema/payment";
 import { TicketsResponseSchema } from "~/api/schema/ticket";
-import { Main as MainLayout } from "~/components/layouts/app/main";
 import { Footer } from "~/components/layouts/navigation/footer";
+import { Header } from "~/components/layouts/navigation/header";
 import { Ticket } from "~/components/sections/ticket/ticket";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/ticket";
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Ticket" },
-		{ name: "PyCon ID 2025 Ticket Page", content: "Ticket page" },
+		{ title: "PyCon ID 2026 Ticket" },
+		{ name: "PyCon ID 2026 Ticket Page", content: "Ticket page" },
 	];
 }
 
@@ -27,22 +27,32 @@ export const loader = async () => {
 	if (!ticketData.ok) {
 		throw new Response("Failed to fetch tickets", { status: 500 });
 	}
-	const ticketJson = TicketsResponseSchema.parse(await ticketData.json());
-	return {
-		ticket: ticketJson,
-	};
+	const ticketJson = await ticketData.json();
+	const tickets = TicketsResponseSchema.parse(ticketJson);
+	return { tickets: tickets.results };
 };
 
 export const action = async ({ request }: Route.ActionArgs) => {
-	const credentials = await authenticator.isAuthenticated(request);
-	if (!credentials) {
-		return redirect("/login");
-	}
-
 	const formData = await request.formData();
 	const intent = formData.get("intent");
+
+	// Check authentication for protected actions
+	if (intent === "buy-ticket" || intent === "apply-voucher") {
+		const credentials = await authenticator.isAuthenticated(request);
+		if (!credentials) {
+			return {
+				buy_ticket: {
+					success: false,
+					clientError: "Please login to continue",
+					serverError: null,
+				},
+				apply_voucher: null,
+			};
+		}
+	}
+
 	if (intent === "buy-ticket") {
-		const ticket_id = formData.get("ticket_id");
+		const ticket_id = formData.get("ticket_id") as string;
 		const voucher_code = formData.get("voucher_code") as string;
 
 		if (typeof ticket_id !== "string" || ticket_id.trim() === "") {
@@ -63,6 +73,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 			},
 			request,
 		});
+
 		if (res.status >= 400 && res.status < 500) {
 			const errorData = await res.json();
 			console.log("Client error:", errorData);
@@ -93,12 +104,15 @@ export const action = async ({ request }: Route.ActionArgs) => {
 			return redirect("/auth/payment");
 		}
 		return redirect(data.payment_link);
-	} else if (intent === "apply-voucher") {
-		const voucher_code = formData.get("voucher_code");
+	}
+
+	if (intent === "apply-voucher") {
+		const voucher_code = formData.get("voucher_code") as string;
 		const res = await getPaymentVoucherValidate({
-			code: voucher_code as string,
+			code: voucher_code,
 			request,
 		});
+
 		if (res.status >= 400 && res.status < 500) {
 			const errorData = await res.json();
 			console.log("Client error:", errorData);
@@ -111,6 +125,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 				},
 			};
 		}
+
 		if (!res.ok) {
 			const errorData = await res.text();
 			console.error("error when validate voucher:", errorData);
@@ -133,13 +148,16 @@ export const action = async ({ request }: Route.ActionArgs) => {
 			},
 		};
 	}
+
+	return null;
 };
 
-export default function TicketPage(componentProps: Route.ComponentProps) {
+export default function TicketPage({ loaderData }: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#F1F1F1]">
-			<Ticket componentProps={componentProps} />
+		<main>
+			<Header />
+			<Ticket tickets={loaderData.tickets} />
 			<Footer />
-		</MainLayout>
+		</main>
 	);
 }

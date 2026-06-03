@@ -6,7 +6,7 @@ export const TicketSchema = z.object({
 	price: z.number(),
 	user_participant_type: z.string(),
 	is_sold_out: z.boolean(),
-	description: z.string(),
+	description: z.string().nullable(),
 });
 
 export const TicketsResponseSchema = z.object({

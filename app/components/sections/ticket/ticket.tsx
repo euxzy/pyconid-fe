@@ -1,75 +1,78 @@
-import type { Route } from ".react-router/types/app/routes/+types/ticket";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 import type { TicketType } from "~/api/schema/ticket";
-import { TicketBuyForm } from "~/components/shared/ticket-card/ticket-buy-form";
-import { TicketCard } from "~/components/shared/ticket-card/ticket-card";
+import { Hero } from "~/components/shared/hero/hero";
+import { EarlyBirdTicketCard } from "~/components/shared/ticket/early-bird-ticket-card";
+import { TicketCard } from "~/components/shared/ticket/ticket-card";
+import { TicketErrorModal } from "~/components/shared/ticket/ticket-error-modal";
+import { TicketPurchaseModal } from "~/components/shared/ticket/ticket-purchase-modal";
 
-const nestArray = <T,>(arr: T[], size: number): T[][] => {
-	const result: T[][] = [];
-	for (let i = 0; i < arr.length; i += size) {
-		result.push(arr.slice(i, i + size));
-	}
-	return result;
-};
-
-export const Ticket = ({
-	componentProps,
-}: {
-	componentProps: Route.ComponentProps;
-}) => {
-	const { ticket } = componentProps.loaderData;
-	const actionData = componentProps.actionData;
-
-	useEffect(() => {
-		const buy_ticket = actionData?.buy_ticket;
-		if (buy_ticket?.clientError) {
-			toast.error(buy_ticket.clientError);
-		}
-	}, [actionData]);
-	const [ticketState] = useState<TicketType[]>(ticket.results);
+export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
 	const [selectedTicket, setSelectedTicket] = useState<TicketType | null>(null);
-	const nestedTickets = useMemo(() => nestArray(ticketState, 2), [ticketState]);
+	const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
+	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
-	const onSelectTicket = (id: string) => {
-		setSelectedTicket(ticketState.find((ticket) => ticket.id === id) || null);
-		// Scroll to checkout form
-		const formElement = document.getElementById("ticket-buy-form");
-		if (formElement) {
-			formElement.scrollIntoView({ behavior: "smooth" });
-		}
+	const handleSelectTicket = (ticket: TicketType) => {
+		setSelectedTicket(ticket);
+		setIsPurchaseModalOpen(true);
 	};
 
+	const handleClosePurchaseModal = () => {
+		setIsPurchaseModalOpen(false);
+		setSelectedTicket(null);
+	};
+
+	const handleCloseErrorModal = () => {
+		setIsErrorModalOpen(false);
+	};
+
+	const isEarlyBird = (name: string) =>
+		name.toLowerCase().includes("early bird");
+
 	return (
-		<main className="w-full mx-auto text-center">
-			<h1 className="text-[#224083] text-3xl font-bold pb-10">
-				Buy PyCon ID 2025 Ticket
-			</h1>
-			<div className="flex flex-wrap justify-center content-start gap-4">
-				{nestedTickets.map((ticketRow) => (
-					<div
-						key={ticketRow[0].id}
-						className="w-full flex flex-col lg:flex-row gap-4 justify-center"
-					>
-						{ticketRow.map((ticket) => (
-							<TicketCard
-								key={ticket.id}
-								id={ticket.id}
-								name={ticket.name}
-								price={ticket.price}
-								description={ticket.description}
-								isSelected={ticket.id === selectedTicket?.id}
-								onClick={onSelectTicket}
-							/>
-						))}
+		<>
+			{/* Hero Section */}
+			<Hero text="Buy PyCon ID 2026 Ticket" />
+			{/* Ticket Grid Section */}
+			<section className="bg-[#FAF9F7] py-20 lg:py-24">
+				<div className="container mx-auto px-6 lg:px-12">
+					<div className="flex flex-wrap justify-center gap-6">
+						{tickets.map((ticket) =>
+							isEarlyBird(ticket.name) ? (
+								<EarlyBirdTicketCard
+									key={ticket.id}
+									name={ticket.name}
+									price={ticket.price}
+									description={ticket.description ?? ""}
+									isSoldOut={ticket.is_sold_out}
+									onSelect={() => handleSelectTicket(ticket)}
+								/>
+							) : (
+								<TicketCard
+									key={ticket.id}
+									name={ticket.name}
+									price={ticket.price}
+									description={ticket.description ?? ""}
+									isSoldOut={ticket.is_sold_out}
+									onSelect={() => handleSelectTicket(ticket)}
+								/>
+							),
+						)}
 					</div>
-				))}
-			</div>
-			<TicketBuyForm
-				selectedTicket={selectedTicket}
-				reducePrice={actionData?.apply_voucher?.success?.value}
-				isValidVoucher={!!actionData?.apply_voucher?.success}
+				</div>
+			</section>
+
+			{/* Purchase Modal */}
+			<TicketPurchaseModal
+				isOpen={isPurchaseModalOpen}
+				onClose={handleClosePurchaseModal}
+				ticket={selectedTicket}
 			/>
-		</main>
+
+			{/* Error Modal */}
+			<TicketErrorModal
+				isOpen={isErrorModalOpen}
+				onClose={handleCloseErrorModal}
+			/>
+		</>
 	);
 };
