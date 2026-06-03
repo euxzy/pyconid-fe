@@ -110,6 +110,12 @@ export const ProfileDashboardSection = ({
 	const [shareSocial, setShareSocial] = useState(
 		userProfile.share_my_public_social_media ?? false,
 	);
+	const [shareDataToSponsor, setShareDataToSponsor] = useState(
+		userProfile.share_my_data_to_sponsor ?? false,
+	);
+	const [retainData, setRetainData] = useState(
+		userProfile.retain_my_data_for_next_pycon ?? false,
+	);
 	const [cocAcknowledged, setCocAcknowledged] = useState(
 		userProfile.coc_acknowledged ?? false,
 	);
@@ -236,6 +242,12 @@ export const ProfileDashboardSection = ({
 		if (!formData.has("share_my_public_social_media")) {
 			formData.append("share_my_public_social_media", "false");
 		}
+		if (!formData.has("share_my_data_to_sponsor")) {
+			formData.append("share_my_data_to_sponsor", "false");
+		}
+		if (!formData.has("retain_my_data_for_next_pycon")) {
+			formData.append("retain_my_data_for_next_pycon", "false");
+		}
 		if (!formData.has("coc_acknowledged")) {
 			formData.append("coc_acknowledged", "false");
 		}
@@ -283,7 +295,12 @@ export const ProfileDashboardSection = ({
 							)}
 						</div>
 						<div className="absolute bottom-0 right-0 w-10 h-10 bg-[#282828] rounded-full grid place-items-center border-2 border-white">
-							<img src="/svg/dashboard/upload-profile-picture.svg" alt="" width="20" height="20" />
+							<img
+								src="/svg/dashboard/upload-profile-picture.svg"
+								alt=""
+								width="20"
+								height="20"
+							/>
 						</div>
 					</label>
 				</div>
@@ -698,6 +715,22 @@ export const ProfileDashboardSection = ({
 							onChange={setPrivacyAgreed}
 							labelClassName="text-sm text-[#282828]"
 						/>
+						<Checkbox
+							id="share_my_data_to_sponsor"
+							name="share_my_data_to_sponsor"
+							label="Share my data to sponsor"
+							value={shareDataToSponsor}
+							onChange={setShareDataToSponsor}
+							labelClassName="text-sm text-[#282828]"
+						/>
+						<Checkbox
+							id="retain_my_data_for_next_pycon"
+							name="retain_my_data_for_next_pycon"
+							label="Retain my data for next PyCon"
+							value={retainData}
+							onChange={setRetainData}
+							labelClassName="text-sm text-[#282828]"
+						/>
 					</div>
 				</AccordionSection>
 
@@ -707,7 +740,12 @@ export const ProfileDashboardSection = ({
 						type="submit"
 						className="flex items-center gap-2 bg-[#282828] text-[#F1F2F3] px-6 py-3 rounded-lg font-medium hover:bg-[#3a3a3a] transition-colors"
 					>
-						<img src="/svg/dashboard/save-changes.svg" alt="" width="20" height="20" />
+						<img
+							src="/svg/dashboard/save-changes.svg"
+							alt=""
+							width="20"
+							height="20"
+						/>
 						Save Changes
 					</button>
 				</div>
@@ -741,7 +779,13 @@ function AccordionSection({
 					<span className="text-[#282828]">{icon}</span>
 					<span className="text-sm font-bold text-[#282828]">{title}</span>
 				</div>
-				<img src="/svg/dashboard/toggle-section.svg" alt="" width="24" height="24" className={`text-[#282828] transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`} />
+				<img
+					src="/svg/dashboard/toggle-section.svg"
+					alt=""
+					width="24"
+					height="24"
+					className={`text-[#282828] transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
+				/>
 			</button>
 			{isOpen && (
 				<div className="px-5 pb-5 border-t border-[#282828]">{children}</div>
@@ -751,21 +795,36 @@ function AccordionSection({
 }
 
 function UserIcon() {
-	return <img src="/svg/dashboard/user-icon.svg" alt="" width="20" height="20" />;
+	return (
+		<img src="/svg/dashboard/user-icon.svg" alt="" width="20" height="20" />
+	);
 }
 
 function BriefcaseIcon() {
-	return <img src="/svg/dashboard/briefcase-icon.svg" alt="" width="20" height="20" />;
+	return (
+		<img
+			src="/svg/dashboard/briefcase-icon.svg"
+			alt=""
+			width="20"
+			height="20"
+		/>
+	);
 }
 
 function MapPinIcon() {
-	return <img src="/svg/dashboard/map-pin-icon.svg" alt="" width="20" height="20" />;
+	return (
+		<img src="/svg/dashboard/map-pin-icon.svg" alt="" width="20" height="20" />
+	);
 }
 
 function GlobeIcon() {
-	return <img src="/svg/dashboard/globe-icon.svg" alt="" width="20" height="20" />;
+	return (
+		<img src="/svg/dashboard/globe-icon.svg" alt="" width="20" height="20" />
+	);
 }
 
 function UsersIcon() {
-	return <img src="/svg/dashboard/users-icon.svg" alt="" width="20" height="20" />;
+	return (
+		<img src="/svg/dashboard/users-icon.svg" alt="" width="20" height="20" />
+	);
 }

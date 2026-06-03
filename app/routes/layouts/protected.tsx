@@ -43,10 +43,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		if (err instanceof Response) {
 			throw err;
 		}
-		console.error(
-			"Network error calling getMe, allowing route to render with mock data",
-			err,
-		);
+		console.error("Network error calling getMe", err);
 		return null;
 	}
 	return null;

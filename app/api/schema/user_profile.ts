@@ -86,8 +86,12 @@ export const getUserProfileSchema = z.object({
 	share_my_location: z.boolean().nullable(),
 	share_my_interest: z.boolean().nullable(),
 	share_my_public_social_media: z.boolean().nullable(),
+	share_my_data_to_sponsor: z.boolean().nullable(),
+	retain_my_data_for_next_pycon: z.boolean().nullable(),
 	attendance_day_1: z.boolean().nullable(),
 	attendance_day_2: z.boolean().nullable(),
+	attendance_day_1_at: z.string().nullable(),
+	attendance_day_2_at: z.string().nullable(),
 });
 
 export type GetUserProfileSchema = z.infer<typeof getUserProfileSchema>;
@@ -130,6 +134,8 @@ export const updateUserProfileSchema = z.object({
 	share_my_location: z.string().nullable().optional(), // boolean as string "true" / "false",
 	share_my_interest: z.string().nullable().optional(), // boolean as string "true" / "false",
 	share_my_public_social_media: z.string().nullable().optional(), // boolean as string "true" / "false",
+	share_my_data_to_sponsor: z.string().nullable().optional(), // boolean as string "true" / "false",
+	retain_my_data_for_next_pycon: z.string().nullable().optional(), // boolean as string "true" / "false",
 });
 
 export const getUserProfileSearchSchema = z.object({
