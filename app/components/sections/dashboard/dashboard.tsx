@@ -49,10 +49,32 @@ export const ProfileDashboardSection = ({
 		if (actionData?.success === true) {
 			toast.success("Profile updated successfully!");
 		} else if (actionData?.success === false && actionData?.clientError) {
-			toast.error(
-				actionData.clientError.message ||
-					"Invalid data, please check the form fields.",
-			);
+			const errorList = actionData.clientError.errors as Array<{
+				field: string;
+				message: string;
+			}>;
+			if (errorList && errorList.length > 0) {
+				toast.error(
+					<div className="flex flex-col gap-1">
+						<p className="font-semibold">
+							{actionData.clientError.message ||
+								"Invalid data, please check the form fields."}
+						</p>
+						<ul className="list-disc pl-4 text-sm">
+							{errorList.map((e) => (
+								<li key={e.field}>
+									<strong>{e.field}:</strong> {e.message}
+								</li>
+							))}
+						</ul>
+					</div>,
+				);
+			} else {
+				toast.error(
+					actionData.clientError.message ||
+						"Invalid data, please check the form fields.",
+				);
+			}
 		} else if (actionData?.success === false && actionData?.errors) {
 			toast.error("There are problem on the server, please try again later.");
 		}

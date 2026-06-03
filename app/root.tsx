@@ -74,7 +74,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Toaster
 					position="top-right"
 					toastOptions={{
-						className: cn("!bg-white !border-2"),
+						className: cn("!bg-white !border-2 !items-start"),
 						classNames: {
 							error: cn("border-red-500"),
 							success: cn("!border-green-500"),
