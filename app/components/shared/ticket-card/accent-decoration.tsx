@@ -1,5 +1,10 @@
 export const AccentDecoration = () => (
-	<div className="absolute -left-[0px] -top-[0px] opacity-50 pointer-events-none">
-		<img src="/svg/accent.svg" alt="" />
-	</div>
+  <div className="absolute -right-10 -bottom-10 w-[280px] h-[300px] pointer-events-none">
+    <img
+      src="/svg/accent.svg"
+      alt=""
+      className="w-full h-full object-contain"
+      aria-hidden="true"
+    />
+  </div>
 );
