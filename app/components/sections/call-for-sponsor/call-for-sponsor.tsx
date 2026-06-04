@@ -38,7 +38,7 @@ export const CallForSponsorSection: FC = () => (
 							rel="noreferrer"
 						>
 							<button
-								className="cursor-pointer bg-black hover:bg-black/50 backdrop-blur-lg text-white px-8 py-4 rounded-xl font-display text-lg lg:text-2xl pt-2 pr-4 pb-2 pl-4 mt-[3vh] font-bold outline-white/50 outline-offset-1 shadow-white/20"
+								className="cursor-pointer bg-black hover:bg-black/50 backdrop-blur-lg text-white px-8 py-4 font-display text-lg lg:text-2xl pt-2 pr-4 pb-2 pl-4 mt-[3vh] font-bold outline-white/50 outline-offset-1 shadow-white/20"
 								type="button"
 							>
 								See Our Sponsorship Prospectus

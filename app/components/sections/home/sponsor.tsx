@@ -17,7 +17,7 @@ export const SponsorSection = () => {
 						>
 							<button
 								type="button"
-								className="cursor-pointer text-2xl px-8 py-4 rounded-3xl font-bold bg-black hover:bg-black/50 transition-all duration-300"
+								className="cursor-pointer text-2xl px-8 py-4 font-bold bg-black hover:bg-black/50 transition-all duration-300"
 							>
 								Be Our Sponsor
 							</button>
