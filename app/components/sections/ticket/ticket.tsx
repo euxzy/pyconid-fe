@@ -25,6 +25,12 @@ export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
 		setIsErrorModalOpen(false);
 	};
 
+	const handleShowError = () => {
+		setIsPurchaseModalOpen(false);
+		setSelectedTicket(null);
+		setIsErrorModalOpen(true);
+	};
+
 	const isEarlyBird = (name: string) =>
 		name.toLowerCase().includes("early bird");
 
@@ -65,6 +71,7 @@ export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
 			<TicketPurchaseModal
 				isOpen={isPurchaseModalOpen}
 				onClose={handleClosePurchaseModal}
+				onShowError={handleShowError}
 				ticket={selectedTicket}
 			/>
 
