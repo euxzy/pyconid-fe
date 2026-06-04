@@ -15,9 +15,7 @@ export const CallForSponsorSection: FC = () => (
 								<span className="text-black">Let's Support PyCon ID 2026</span>
 							</p>
 							<div className="flex gap-x-1">
-								<p className="text-black">
-									We are open for Sponsorship
-								</p>
+								<p className="text-black">We are open for Sponsorship</p>
 							</div>
 						</div>
 						<div className="mt-[2vh]">
