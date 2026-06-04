@@ -5,14 +5,14 @@ export const CodeOfConductSection: FC = () => (
 		<div className="z-10 relative container m-auto">
 			<div className="pt-[12vh] sm:pt-[23vh]">
 				<div className="px-4 sm:px-50 flex flex-col">
-					<h1 className="text-blue-900 px-8 py-4 font-display text-4xl font-extrabold text-center">
+					<h1 className="px-8 py-4 font-display text-4xl font-extrabold text-center">
 						Code of Conduct
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
 						<p>
 							A code of conduct is a set of rules outlining the norms, rules,
 							and responsibilities of, and or proper practices for an
-							individual. By attending PyCon ID 2025, you agree with the Code of
+							individual. By attending PyCon ID 2026, you agree with the Code of
 							Conduct.
 						</p>
 					</div>
