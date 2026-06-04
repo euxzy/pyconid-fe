@@ -67,12 +67,12 @@ export const Footer = () => {
 								</a>
 							</li>
 							<li>
-								<a
+								{/* <a
 									href="/schedule"
 									className="hover:text-white transition-colors"
 								>
 									Check Schedule
-								</a>
+								</a> */}
 							</li>
 						</ul>
 					</div>
