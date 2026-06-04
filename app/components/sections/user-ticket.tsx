@@ -9,11 +9,11 @@ export function UserTicketSection({
 	const { userTicket, origin } = componentProps.loaderData;
 
 	return (
-		<section className="bg-[#F1F1F1]">
+		<section className="bg-[#F1F2F3]">
 			<div className="flex container justify-center m-auto pt-[12vh] sm:pt-[23vh]">
 				<div className="flex flex-col items-center justify-center gap-y-4">
-					<div className="font-display text-4xl text-[#224083] font-bold text-center">
-						PyCon ID 2025 E-Ticket
+					<div className="font-display text-4xl font-bold text-center">
+						PyCon ID 2026 E-Ticket
 					</div>
 					<ETicketCard
 						user={userTicket.data.user}

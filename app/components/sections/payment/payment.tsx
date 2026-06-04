@@ -12,19 +12,12 @@ export const PaymentSection = ({
 	};
 	return (
 		<main className="p-3 container m-auto">
-			<Link
-				to="/auth/dashboard"
-				className="text-blue-600 underline mb-4 inline-block"
-			>
+			<Link to="/auth/dashboard" className="underline mb-4 inline-block">
 				&larr; Back to Dashboard
 			</Link>
-			<h1 className="text-3xl font-bold text-[#224083]">
-				My Ticket Transaction
-			</h1>
+			<h1 className="text-3xl font-bold">My Ticket Transaction</h1>
 			<div className="bg-white rounded-lg p-4 mt-4">
-				<h2 className="text-2xl text-[#224083] font-bold">
-					Ticket Transaction List
-				</h2>
+				<h2 className="text-2xl font-bold">Ticket Transaction List</h2>
 				<div className="overflow-x-auto mt-4">
 					<table className="w-full">
 						<thead className="border-y border-gray-200">
