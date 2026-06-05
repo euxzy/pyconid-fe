@@ -371,7 +371,6 @@ export const ProfileDashboardSection = ({
 				<div>
 					<a
 						href="/auth/dashboard"
-						rel="noopener noreferrer"
 						className="underline text-blue-500"
 					>
 						Dashboard
