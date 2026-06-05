@@ -86,20 +86,29 @@ export const getUserProfileSchema = z.object({
 	share_my_location: z.boolean().nullable(),
 	share_my_interest: z.boolean().nullable(),
 	share_my_public_social_media: z.boolean().nullable(),
+	share_my_data_to_sponsor: z.boolean().nullable(),
+	retain_my_data_for_next_pycon: z.boolean().nullable(),
 	attendance_day_1: z.boolean().nullable(),
 	attendance_day_2: z.boolean().nullable(),
+	attendance_day_1_at: z.string().nullable(),
+	attendance_day_2_at: z.string().nullable(),
 });
 
 export type GetUserProfileSchema = z.infer<typeof getUserProfileSchema>;
 
+const requiredString = (label: string) =>
+	z.string({
+		message: `${label} cannot be empty`,
+	});
+
 export const updateUserProfileSchema = z.object({
 	profile_picture: z.instanceof(File).optional(),
-	first_name: z.string(),
-	last_name: z.string(),
-	job_category: z.string(),
-	job_title: z.string(),
-	country_id: z.string(),
-	bio: z.string(),
+	first_name: requiredString("First Name"),
+	last_name: requiredString("Last Name"),
+	job_category: requiredString("Job Category"),
+	job_title: requiredString("Job Title"),
+	country_id: requiredString("Country"),
+	bio: requiredString("Bio"),
 	participant_type: z.string().nullable().optional(),
 	coc_acknowledged: z.string().nullable().optional(), // boolean as string "true" / "false"
 	terms_agreed: z.string().nullable().optional(), // boolean as string "true" / "false"
@@ -112,8 +121,8 @@ export const updateUserProfileSchema = z.object({
 	gender: z.string().nullable().optional(),
 	date_of_birth: z.string().nullable().optional(),
 	phone: z.string().nullable().optional(),
-	state_id: z.string(),
-	city_id: z.string(),
+	state_id: requiredString("State"),
+	city_id: requiredString("City"),
 	zip_code: z.string().nullable().optional(),
 	address: z.string().nullable().optional(),
 	interest: z.string().nullable().optional(),
@@ -130,6 +139,8 @@ export const updateUserProfileSchema = z.object({
 	share_my_location: z.string().nullable().optional(), // boolean as string "true" / "false",
 	share_my_interest: z.string().nullable().optional(), // boolean as string "true" / "false",
 	share_my_public_social_media: z.string().nullable().optional(), // boolean as string "true" / "false",
+	share_my_data_to_sponsor: z.string().nullable().optional(), // boolean as string "true" / "false",
+	retain_my_data_for_next_pycon: z.string().nullable().optional(), // boolean as string "true" / "false",
 });
 
 export const getUserProfileSearchSchema = z.object({

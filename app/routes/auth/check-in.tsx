@@ -102,7 +102,7 @@ export default function CheckInPage(componentProps: Route.ComponentProps) {
 	};
 
 	return (
-		<main className="bg-[#F1F1F1] min-h-screen flex flex-col justify-between">
+		<main className="bg-[#F1F2F3] min-h-screen flex flex-col justify-between">
 			<Header />
 			<section className="bg-white rounded-2xl mt-[16vh]  md:min-w-[750px] p-4 md:mx-auto mx-4 flex flex-col gap-4">
 				<h3 className="text-2xl font-bold text-center">Check In</h3>

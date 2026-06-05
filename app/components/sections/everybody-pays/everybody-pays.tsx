@@ -1,11 +1,11 @@
 import type { FC } from "react";
 
 export const EverybodyPaysSection: FC = () => (
-	<section className="bg-[#F1F1F1] ">
+	<section className="bg-[#F1F2F3] ">
 		<div className="z-10 relative container m-auto">
 			<div className="pt-[12vh] sm:pt-[23vh]">
 				<div className="px-4 sm:px-50 flex flex-col">
-					<h1 className="text-blue-900 px-8 py-4 font-display text-4xl font-extrabold text-center">
+					<h1 className="px-8 py-4 font-display text-4xl font-extrabold text-center">
 						"Everyone who can, pays"
 					</h1>
 					<h1 className="font-display text-3xl font-extrabold text-justify">

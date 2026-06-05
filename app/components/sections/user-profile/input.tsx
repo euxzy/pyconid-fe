@@ -10,36 +10,44 @@ export const Input = ({
 	disabled = false,
 	readonly = false,
 	onChange,
+	defaultValue,
 	errorMessage,
+	className,
+	inputClassName,
 }: {
 	label: string;
 	id: string;
 	name: string;
 	placeholder: string;
 	type?: string;
-	value: string;
+	value?: string;
 	disabled?: boolean;
 	readonly?: boolean;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	defaultValue?: string;
 	errorMessage?: string;
+	className?: string;
+	inputClassName?: string;
 }) => {
 	return (
-		<div className="w-full">
-			<label htmlFor={id} className="block mb-2 text-sm font-medium text-black">
+		<div className={twMerge("w-full", className)}>
+			<label htmlFor={id} className="block mb-2 text-xs text-[#282828]">
 				{label}
 			</label>
 			<input
 				id={id}
 				name={name}
 				type={type}
-				value={value}
 				placeholder={placeholder}
 				className={twMerge(
-					"w-full p-2 border rounded-lg",
+					"w-full px-4 py-3 border bg-white text-sm text-[#282828] placeholder:text-gray-400",
 					disabled || readonly ? "bg-gray-100 cursor-not-allowed" : "bg-white",
-					errorMessage ? "border-red-500" : "border-gray-300",
+					errorMessage ? "border-red-500" : "border-[#282828]",
+					inputClassName,
 				)}
-				onChange={onChange}
+				{...(value !== undefined
+					? { value, onChange }
+					: { defaultValue, onChange })}
 				disabled={disabled}
 				readOnly={readonly}
 			/>

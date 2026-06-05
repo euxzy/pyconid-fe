@@ -14,7 +14,8 @@ export const Header = () => {
 			<div className="flex items-center justify-between container mx-auto py-5 px-6 lg:px-12">
 				<div>
 					<img
-						src="/images/PyCon ID 26 Logo@2x.png" // Gunakan logo versi terang
+						// src="/images/PyCon ID 26 Logo@2x.png" // Gunakan logo versi terang
+						src="/images/logo-pycon-2026-light.png"
 						alt="PyconID 2026"
 						className="h-8 lg:h-10"
 					/>
@@ -72,7 +73,7 @@ export const Header = () => {
 					{credentials ? (
 						<div className="flex gap-4 items-center">
 							<NavLink
-								to="/auth/dashboard"
+								to="/auth/user-profile"
 								className="text-white hover:text-gray-200"
 							>
 								My Profile

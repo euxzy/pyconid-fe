@@ -1,24 +1,14 @@
 // biome-ignore-all lint: Anoying
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 const DropdownChevron = () => (
-	<svg
-		aria-label="drodown chevron"
+	<img
+		src="/svg/user-profile/dropdown-chevron.svg"
+		alt=""
 		width="24"
 		height="24"
-		viewBox="0 0 24 24"
-		fill="none"
-		xmlns="http://www.w3.org/2000/svg"
-	>
-		<path
-			d="M6 9L12 15L18 9"
-			stroke="black"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-		/>
-	</svg>
+	/>
 );
 
 export const Dropdown = ({
@@ -30,6 +20,8 @@ export const Dropdown = ({
 	value = null,
 	onChange,
 	errorMessage = undefined,
+	className,
+	disabled = false,
 }: {
 	label: string;
 	id: string;
@@ -37,8 +29,10 @@ export const Dropdown = ({
 	placeholder: string;
 	dropdownItems: { label: string; value: string }[];
 	value?: string | null;
-	onChange: (value: string) => void;
+	onChange?: (value: string) => void;
 	errorMessage?: string;
+	className?: string;
+	disabled?: boolean;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState<{
@@ -48,15 +42,28 @@ export const Dropdown = ({
 		value ? dropdownItems.find((item) => item.value === value) || null : null,
 	);
 
+	const lastSyncedValueRef = useRef(value);
+
+	useEffect(() => {
+		if (lastSyncedValueRef.current !== value) {
+			lastSyncedValueRef.current = value;
+			setSelectedItem(
+				value
+					? dropdownItems.find((item) => item.value === value) || null
+					: null,
+			);
+		}
+	}, [value, dropdownItems]);
+
 	const handleSelectItem = (item: { label: string; value: string }) => {
 		setSelectedItem(item);
 		setIsOpen(false);
-		onChange(item.value);
+		onChange?.(item.value);
 	};
 
 	return (
-		<div className="w-full relative">
-			<label htmlFor={id} className="block mb-2 text-sm font-medium text-black">
+		<div className={twMerge("w-full relative", className)}>
+			<label htmlFor={id} className="block mb-2 text-xs text-[#282828]">
 				{label}
 			</label>
 			<input
@@ -68,11 +75,12 @@ export const Dropdown = ({
 			/>
 			<div
 				className={twMerge(
-					"w-full flex justify-between p-2 border rounded-lg bg-white hover:cursor-pointer",
-					errorMessage ? "border-red-500" : "border-gray-300",
+					"w-full flex justify-between px-4 py-3 border bg-white text-sm",
+					errorMessage ? "border-red-500" : "border-[#282828]",
+					disabled ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer",
 				)}
 				onClick={() => {
-					setIsOpen(!isOpen);
+					if (!disabled) setIsOpen(!isOpen);
 				}}
 			>
 				<span

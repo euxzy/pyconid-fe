@@ -3,7 +3,7 @@ import { redirect } from "react-router";
 
 export function loader() {
 	return redirect(
-		"https://drive.google.com/file/d/1eBvk9M9VfZZLGejicUXc6f3lBuO9snJV/view?usp=drivesdk",
+		"https://drive.google.com/file/d/1YVBx9KNewNCUyfgLhoNT9aM05sCaCvSG/view?usp=drivesdk",
 	);
 }
 

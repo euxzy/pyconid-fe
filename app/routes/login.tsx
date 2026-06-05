@@ -1,14 +1,14 @@
 import { Form, Link, useNavigation } from "react-router";
 import { StrategyOptions } from "~/services/auth/strategy";
 import type { Route } from "./+types/login";
-import type { AuthLayoutHanleProps } from "./layouts/auth";
+import type { AuthLayoutHandleProps } from "./layouts/auth";
 
-export const handle: AuthLayoutHanleProps = { title: "Login" };
+export const handle: AuthLayoutHandleProps = { title: "Login" };
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Login" },
-		{ name: "PyCon ID 2025 Login Page", content: "Login page" },
+		{ title: "PyCon ID 2026 Login" },
+		{ name: "PyCon ID 2026 Login Page", content: "Login page" },
 	];
 }
 
@@ -30,10 +30,13 @@ export default function Login(componentProps: Route.ComponentProps) {
 			<Form
 				action={`/auth/${StrategyOptions.SIGNIN_FORM}${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`}
 				method="post"
-				className="space-y-3 w-full"
+				className="space-y-4 w-full"
 			>
 				<div className="flex flex-col w-full">
-					<label htmlFor="email" className="text-sm font-bold mb-1">
+					<label
+						htmlFor="email"
+						className="text-xs font-bold mb-1.5 text-gray-800"
+					>
 						Email
 					</label>
 					<input
@@ -41,24 +44,29 @@ export default function Login(componentProps: Route.ComponentProps) {
 						name="email"
 						placeholder="yourmail@example.com"
 						type="email"
-						className="border border-black/15 rounded-sm bg-neutral-100 w-full  h-12 text-neutral-500 pl-4 lg:text-2xl"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<div className="flex flex-col">
-					<label htmlFor="password" className="text-sm font-bold mb-1">
-						Password
-					</label>
+					<div className="flex justify-between items-center mb-1.5">
+						<label
+							htmlFor="password"
+							className="text-xs font-bold text-gray-800"
+						>
+							Password
+						</label>
+					</div>
 					<input
 						id="password"
 						name="password"
-						placeholder="Enter your password"
+						placeholder="******************"
 						type="password"
-						className="border border-black/15 rounded-sm bg-neutral-100 w-full h-12 text-neutral-500 pl-4 lg:text-2xl"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<button
 					type="submit"
-					className="bg-secondary w-full h-12 font-sans rounded-sm text-white font-semibold lg:text-2xl mt-4 cursor-pointer transition-all duration-150 hover:bg-secondary/80 disabled:bg-secondary/50 disabled:cursor-not-allowed"
+					className="bg-surface w-full h-12 text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
 					disabled={isSubmitting}
 				>
 					{isSubmitting ? "Loading..." : "Login to Your Account"}
