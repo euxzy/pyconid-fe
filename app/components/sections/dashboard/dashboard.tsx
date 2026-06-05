@@ -369,10 +369,7 @@ export const ProfileDashboardSection = ({
 
 				{/* Account Section */}
 				<div>
-					<a
-						href="/auth/dashboard"
-						className="underline text-blue-500"
-					>
+					<a href="/auth/dashboard" className="underline text-blue-500">
 						Dashboard
 					</a>
 				</div>
