@@ -59,7 +59,7 @@ export default function EmailVerificationPage({
 			<section className="max-w-7xl h-svh flex flex-col justify-center items-center mx-auto gap-6 md:gap-8 lg:gap-10">
 				<img
 					alt="pycon id dark logo"
-					src="/svg/logo-dark.svg"
+					src="/images/PyCon%20ID%2026%20Logo@2x.png"
 					className="h-16 w-auto md:h-20 lg:h-24"
 				/>
 
