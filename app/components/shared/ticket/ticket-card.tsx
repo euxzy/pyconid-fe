@@ -21,10 +21,14 @@ export const TicketCard = ({
 	isSoldOut?: boolean;
 	onSelect?: () => void;
 }) => {
-	const descriptionFiltered = description.split(":")[1].split("-");
-	const benefits = descriptionFiltered.filter(
-		(predicate) => predicate !== "\n",
-	);
+	const descNonBenefitsArray = description.split(":")[0].split(".");
+	descNonBenefitsArray.pop();
+	const descNonBenefits = descNonBenefitsArray.join(". ").trim() + ".";
+
+	const benefits = description
+		.split(":")[1]
+		.split("-")
+		.filter((b) => b !== "\n");
 
 	return (
 		<div
@@ -58,6 +62,11 @@ export const TicketCard = ({
 						{name}
 					</span>
 				</div>
+
+				{/* Description */}
+				<p className="text-[#909090] text-sm leading-relaxed">
+					{descNonBenefits}
+				</p>
 
 				{/* Benefits List */}
 				<div className="flex flex-col gap-4">

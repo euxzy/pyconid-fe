@@ -21,10 +21,14 @@ export const EarlyBirdTicketCard = ({
 	isSoldOut?: boolean;
 	onSelect?: () => void;
 }) => {
-	const descriptionFiltered = description.split(":")[1].split("-");
-	const benefits = descriptionFiltered.filter(
-		(predicate) => predicate !== "\n",
-	);
+	const descNonBenefitsArray = description.split(":")[0].split(".");
+	descNonBenefitsArray.pop();
+	const descNonBenefits = descNonBenefitsArray.join(". ").trim() + ".";
+
+	const benefits = description
+		.split(":")[1]
+		.split("-")
+		.filter((b) => b !== "\n");
 	return (
 		<div
 			className={`w-full sm:w-[378px] rounded-lg border-b border-[rgba(198,198,198,0.3)] flex flex-col relative overflow-hidden ${isSoldOut ? "bg-[#e8e8e8] opacity-60" : "bg-[#FAFAFA]"}`}
@@ -57,6 +61,11 @@ export const EarlyBirdTicketCard = ({
 						{name}
 					</span>
 				</div>
+
+				{/* Description */}
+				<p className="text-[#909090] text-sm leading-relaxed">
+					{descNonBenefits}
+				</p>
 
 				{/* Benefits List */}
 				<div className="flex flex-col gap-4">
