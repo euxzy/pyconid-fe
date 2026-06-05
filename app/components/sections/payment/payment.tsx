@@ -1,5 +1,17 @@
 import type { Route } from ".react-router/types/app/routes/auth/+types/payment";
+import { Eye } from "lucide-react";
 import { Link } from "react-router";
+
+const statusColorMap: Record<string, string> = {
+	success: "#22835F",
+	paid: "#22835F",
+	processing: "#224083",
+	pending: "#224083",
+	canceled: "#E81919",
+	cancelled: "#E81919",
+	failed: "#E81919",
+	expired: "#E81919",
+};
 
 export const PaymentSection = ({
 	componentProps,
@@ -7,68 +19,113 @@ export const PaymentSection = ({
 	componentProps: Route.ComponentProps;
 }) => {
 	const { payment } = componentProps.loaderData;
-	const capitalize = (str: string) => {
-		return str.charAt(0).toUpperCase() + str.slice(1);
+
+	const getStatusColor = (status: string) => {
+		return statusColorMap[status.toLowerCase()] || "#282828";
 	};
+
+	const formatDate = (dateString: string) => {
+		const date = new Date(dateString);
+		return date.toLocaleDateString("en-GB", {
+			day: "2-digit",
+			month: "short",
+			year: "numeric",
+		});
+	};
+
 	return (
-		<main className="p-3 container m-auto">
-			<Link to="/auth/dashboard" className="underline mb-4 inline-block">
+		<section className="w-full mx-auto px-6 lg:px-12 py-10">
+			<Link
+				to="/auth/dashboard"
+				className="text-blue-600 underline mb-6 inline-block text-sm"
+			>
 				&larr; Back to Dashboard
 			</Link>
-			<h1 className="text-3xl font-bold">My Ticket Transaction</h1>
-			<div className="bg-white rounded-lg p-4 mt-4">
-				<h2 className="text-2xl font-bold">Ticket Transaction List</h2>
-				<div className="overflow-x-auto mt-4">
-					<table className="w-full">
-						<thead className="border-y border-gray-200">
-							<th className="text-left p-2">Payment ID</th>
-							<th className="text-left p-2">Date</th>
-							<th className="text-left p-2">Ticket Type</th>
-							<th className="text-left p-2">Status</th>
-							<th className="text-left p-2">Payment Link</th>
+
+			<h1
+				className="text-[32px] font-extrabold text-[#282828] mb-10"
+				style={{ letterSpacing: "-3.13%" }}
+			>
+				Ticket Transactions List
+			</h1>
+
+			<div className="bg-white rounded-lg overflow-hidden">
+				<div className="overflow-x-auto">
+					<table className="w-full min-w-[900px]">
+						<thead>
+							<tr className="border-y border-black/15">
+								<th className="text-left p-3 text-[#909090] text-sm font-bold min-w-[180px]">
+									Transaction ID
+								</th>
+								<th className="text-left p-3 text-[#909090] text-sm font-bold min-w-[120px]">
+									Date
+								</th>
+								<th className="text-left p-3 text-[#909090] text-sm font-bold min-w-[200px]">
+									Ticket Type
+								</th>
+								<th className="text-left p-3 text-[#909090] text-sm font-bold min-w-[140px]">
+									Status
+								</th>
+								<th className="text-left p-3 text-[#909090] text-sm font-bold min-w-[200px]">
+									Payment Link
+								</th>
+								<th className="text-left p-3 text-[#909090] text-sm font-bold min-w-[100px]">
+									View Ticket
+								</th>
+							</tr>
 						</thead>
 						<tbody>
 							{payment.results.map((txn) => (
-								<tr key={txn.id} className="border-b border-gray-200">
-									<td className="p-2">{txn.id}</td>
-									<td className="p-2">
-										{new Date(txn.created_at).toLocaleDateString()}
+								<tr key={txn.id} className="border-b border-black/15">
+									<td className="p-3 text-[#282828] text-sm">{txn.id}</td>
+									<td className="p-3 text-[#282828] text-sm">
+										{formatDate(txn.created_at)}
 									</td>
-									<td className="p-2">{txn.ticket ? txn.ticket.name : "-"}</td>
-									<td className="p-2">{capitalize(txn.status)}</td>
-									<td className="p-2">
-										{txn.status === "paid" ? (
-											<a
-												href={`/auth/user-ticket`}
-												className="text-blue-600 underline"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												See ticket
-											</a>
-										) : txn.payment_link !== null ? (
+									<td className="p-3 text-[#282828] text-sm">
+										{txn.ticket ? txn.ticket.name : "-"}
+									</td>
+									<td
+										className="p-3 text-sm font-bold"
+										style={{ color: getStatusColor(txn.status) }}
+									>
+										{txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}
+									</td>
+									<td className="p-3 text-[#282828] text-sm">
+										{txn.payment_link ? (
 											<a
 												href={txn.payment_link}
-												className="text-blue-600 underline"
+												className="text-blue-600 underline break-all"
 												target="_blank"
 												rel="noopener noreferrer"
 											>
 												{txn.payment_link}
 											</a>
 										) : (
-											"no payment link"
+											<span className="text-[#909090]">no payment link</span>
 										)}
+									</td>
+									<td className="p-3 text-center">
+										{txn.status.toLowerCase() === "paid" ||
+										txn.status.toLowerCase() === "success" ? (
+											<Link
+												to="/auth/user-ticket"
+												className="inline-flex items-center justify-center text-[#282828] hover:text-[#224083] transition-colors"
+												title="View Ticket"
+											>
+												<Eye size={20} />
+											</Link>
+										) : null}
 									</td>
 								</tr>
 							))}
 						</tbody>
 					</table>
 				</div>
-
-				<p className="text-gray-400 text-center mt-2">
-					NB: List of your recent transaction
-				</p>
 			</div>
-		</main>
+
+			<p className="text-[#909090] text-center mt-4 text-sm">
+				NB: List of your recent transactions
+			</p>
+		</section>
 	);
 };

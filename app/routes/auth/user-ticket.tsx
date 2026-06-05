@@ -1,8 +1,8 @@
 import { redirect } from "react-router";
 import { getUserTicket } from "~/api/endpoint/.server/user_ticket";
 import { userTicketResponseSchema } from "~/api/schema/user_ticket";
+import { Main as MainLayout } from "~/components/layouts/app/main";
 import { Footer } from "~/components/layouts/navigation/footer";
-import { Header } from "~/components/layouts/navigation/header";
 import { UserTicketSection } from "~/components/sections/user-ticket";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/user-ticket";
@@ -39,10 +39,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function TicketDetail(componentProps: Route.ComponentProps) {
 	return (
-		<main>
-			<Header />
+		<MainLayout className="bg-[#F1F1F1]">
 			<UserTicketSection componentProps={componentProps} />
 			<Footer />
-		</main>
+		</MainLayout>
 	);
 }
