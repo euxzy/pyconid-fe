@@ -34,7 +34,7 @@ export const ETicketCard = ({
 				<TicketBgGray />
 			</div>
 			<div className="absolute inset-0  gap-y-5 md:pt-5 md:gap-y-0 top-0 py-2 px-10 flex flex-col overflow-y-hidden">
-				<div className="flex items-center gap-x-1 justify-center md:justify-start font-sans font-bold text-[#224083]  text-lg">
+				<div className="flex items-center gap-x-1 justify-center md:justify-start font-sans font-bold text-lg">
 					<img src="/svg/ticket.svg" alt="ticket icon" className="w-5 h-5" />
 					<p>Ticket Details</p>
 				</div>
@@ -79,24 +79,26 @@ export const ETicketCard = ({
 				</div>
 				<div>
 					<div
-						className={`flex items-center justify-center md:justify-start font-sans font-bold text-[#224083] gap-x-1 text-lg ${user.t_shirt_size ? "mt-0 md:mt-0" : "mt-11 md:mt-0"}`}
+						className={`flex items-center justify-center md:justify-start font-sans font-bold gap-x-1 text-lg ${user.t_shirt_size ? "mt-0 md:mt-0" : "mt-11 md:mt-0"}`}
 					>
-						<img src="/svg/ticket.svg" alt="ticket icon" className="w-5 h-5" />
+						{/* <img src="/svg/ticket.svg" alt="ticket icon" className="w-5 h-5" /> */}
 						<p>Event Details</p>
 					</div>
 					<div className="flex flex-col gap-y-2 font-sans text-black">
 						<div>
 							<p className="text-base font-semibold">Date</p>
 							<p className="font-light text-sm">
-								Saturday - Sunday, December 13th - 14th, 2025
+								Saturday - Sunday, August 8th - 9th, 2026
 							</p>
 						</div>
 						<div>
 							<p className="text-base font-semibold">Location</p>
-							<p className="font-semibold text-sm">Universitas Trilogi</p>
+							<p className="font-semibold text-sm">
+								Binus University @Kemanggisan - Anggrek Campus
+							</p>
 							<p className="font-light text-sm">
-								Jl. TMP. Kalibata No.1, RT.4/RW.04, Duren Tiga, Kec. Pancoran,
-								Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12760
+								Jl. Raya Kb. Jeruk No.27, RT.1/RW.9, Kemanggisan, Kec. Palmerah,
+								Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530
 							</p>
 						</div>
 					</div>
