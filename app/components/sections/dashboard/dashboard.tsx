@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSubmit } from "react-router";
 import { toast } from "sonner";
 import {
@@ -92,6 +92,46 @@ export const ProfileDashboardSection = ({
 
 	const toggleSection = (key: SectionKey) => {
 		setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
+	};
+
+	// Static dropdown items — memoized to prevent unnecessary re-renders
+	const tShirtSizes = useMemo(
+		() => [
+			{ label: "S", value: "S" },
+			{ label: "M", value: "M" },
+			{ label: "L", value: "L" },
+			{ label: "XL", value: "XL" },
+			{ label: "XXL", value: "XXL" },
+			{ label: "XXXL", value: "XXXL" },
+			{ label: "4XL", value: "4XL" },
+		],
+		[],
+	);
+	const genderOptions = useMemo(
+		() => [
+			{ label: "Male", value: "Male" },
+			{ label: "Female", value: "Female" },
+			{ label: "Prefer Not To Say", value: "Prefer Not To Say" },
+		],
+		[],
+	);
+
+	// Date of birth format helper
+	const formatDateForInput = (dateStr: string | null): string => {
+		if (!dateStr) return "";
+		// Already YYYY-MM-DD
+		if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+		// ISO string: extract YYYY-MM-DD portion
+		if (dateStr.includes("T")) {
+			return dateStr.split("T")[0];
+		}
+		// DD/MM/YYYY or other formats — try Date.parse
+		const d = new Date(dateStr);
+		if (Number.isNaN(d.getTime())) return "";
+		const yyyy = d.getFullYear();
+		const mm = String(d.getMonth() + 1).padStart(2, "0");
+		const dd = String(d.getDate()).padStart(2, "0");
+		return `${yyyy}-${mm}-${dd}`;
 	};
 
 	// File upload
@@ -395,15 +435,7 @@ export const ProfileDashboardSection = ({
 								id="t_shirt_size"
 								name="t_shirt_size"
 								placeholder="Choose T-Shirt Size"
-								dropdownItems={[
-									{ label: "S", value: "S" },
-									{ label: "M", value: "M" },
-									{ label: "L", value: "L" },
-									{ label: "XL", value: "XL" },
-									{ label: "XXL", value: "XXL" },
-									{ label: "XXXL", value: "XXXL" },
-									{ label: "4XL", value: "4XL" },
-								]}
+								dropdownItems={tShirtSizes}
 								value={userProfile.t_shirt_size || ""}
 								onChange={() => {}}
 								className="[&>div]:border-[#282828]"
@@ -415,14 +447,7 @@ export const ProfileDashboardSection = ({
 								id="gender"
 								name="gender"
 								placeholder="Choose Gender"
-								dropdownItems={[
-									{ label: "Male", value: "Male" },
-									{ label: "Female", value: "Female" },
-									{
-										label: "Prefer Not To Say",
-										value: "Prefer Not To Say",
-									},
-								]}
+								dropdownItems={genderOptions}
 								value={userProfile.gender || ""}
 								onChange={() => {}}
 								className="[&>div]:border-[#282828]"
@@ -433,7 +458,7 @@ export const ProfileDashboardSection = ({
 								name="date_of_birth"
 								placeholder="24/12/2003"
 								type="date"
-								defaultValue={userProfile.date_of_birth || ""}
+								defaultValue={formatDateForInput(userProfile.date_of_birth)}
 								inputClassName="border-[#282828]"
 							/>
 						</div>

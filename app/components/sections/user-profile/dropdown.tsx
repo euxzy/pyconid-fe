@@ -1,5 +1,5 @@
 // biome-ignore-all lint: Anoying
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 const DropdownChevron = () => (
@@ -40,10 +40,17 @@ export const Dropdown = ({
 		value ? dropdownItems.find((item) => item.value === value) || null : null,
 	);
 
+	const lastSyncedValueRef = useRef(value);
+
 	useEffect(() => {
-		setSelectedItem(
-			value ? dropdownItems.find((item) => item.value === value) || null : null,
-		);
+		if (lastSyncedValueRef.current !== value) {
+			lastSyncedValueRef.current = value;
+			setSelectedItem(
+				value
+					? dropdownItems.find((item) => item.value === value) || null
+					: null,
+			);
+		}
 	}, [value, dropdownItems]);
 
 	const handleSelectItem = (item: { label: string; value: string }) => {

@@ -40,10 +40,16 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 				dataParticipant.json(),
 				dataUserProfile.json(),
 			]);
+		console.log("[Loader] Raw user profile response:", jsonUserProfile);
 		const industries = industriesSchema.parse(jsonIndustries);
 		const jobs = jobsSchema.parse(jsonJobs);
 		const participantTypes = participantTypeSchema.parse(jsonParticipant);
 		const userProfile = getUserProfileSchema.parse(jsonUserProfile);
+		console.log("[Loader] Parsed user profile:", {
+			t_shirt_size: userProfile.t_shirt_size,
+			gender: userProfile.gender,
+			date_of_birth: userProfile.date_of_birth,
+		});
 		return { industries, jobs, participantTypes, userProfile };
 	} catch (err) {
 		console.error("Dashboard loader error", err);
