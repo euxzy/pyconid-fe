@@ -136,7 +136,7 @@ export const UserProfileSection = ({
 
 					{/* Change Button */}
 					<NavLink
-						to="/auth/dashboard"
+						to="/auth/user-profile"
 						className="absolute top-12 right-14 flex items-center gap-2 text-[#282828] hover:opacity-70 transition-opacity z-10"
 					>
 						<img
