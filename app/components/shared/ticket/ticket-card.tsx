@@ -59,9 +59,6 @@ export const TicketCard = ({
 					</span>
 				</div>
 
-				{/* Description */}
-				<p className="text-[#909090] text-sm leading-relaxed">{description}</p>
-
 				{/* Benefits List */}
 				<div className="flex flex-col gap-4">
 					<p className="text-[#F1F2F3] text-sm font-bold">You will get:</p>
