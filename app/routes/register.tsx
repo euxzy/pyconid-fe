@@ -34,7 +34,7 @@ export default function Register() {
 						name="email"
 						placeholder="yourmail@example.com"
 						type="email"
-						className="border border-neutral-200 rounded bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<div className="flex flex-col">
@@ -49,7 +49,7 @@ export default function Register() {
 						name="password"
 						placeholder="******************"
 						type="password"
-						className="border border-neutral-200 rounded bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<div className="flex flex-col">
@@ -64,12 +64,12 @@ export default function Register() {
 						name="confirm_password"
 						placeholder="******************"
 						type="password"
-						className="border border-neutral-200 rounded bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<button
 					type="submit"
-					className="bg-surface w-full h-12 rounded text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
+					className="bg-surface w-full h-12 text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
 					disabled={isSubmitting}
 				>
 					{isSubmitting ? "Loading..." : "Continue with Email"}

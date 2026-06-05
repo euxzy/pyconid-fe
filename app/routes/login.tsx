@@ -1,4 +1,4 @@
-import { Form, useNavigation } from "react-router";
+import { Form, Link, useNavigation } from "react-router";
 import { StrategyOptions } from "~/services/auth/strategy";
 import type { Route } from "./+types/login";
 import type { AuthLayoutHandleProps } from "./layouts/auth";
@@ -44,7 +44,7 @@ export default function Login(componentProps: Route.ComponentProps) {
 						name="email"
 						placeholder="yourmail@example.com"
 						type="email"
-						className="border border-neutral-200 rounded bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<div className="flex flex-col">
@@ -61,16 +61,23 @@ export default function Login(componentProps: Route.ComponentProps) {
 						name="password"
 						placeholder="******************"
 						type="password"
-						className="border border-neutral-200 rounded bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<button
 					type="submit"
-					className="bg-surface w-full h-12 rounded text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
+					className="bg-surface w-full h-12 text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
 					disabled={isSubmitting}
 				>
 					{isSubmitting ? "Loading..." : "Login to Your Account"}
 				</button>
+
+				<p className="text-end">
+					Lupa password?{" "}
+					<Link to="/forgot-password" className="underline text-secondary">
+						Reset Password
+					</Link>
+				</p>
 			</Form>
 		</main>
 	);

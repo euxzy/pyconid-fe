@@ -14,9 +14,9 @@ import {
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Reset Password" },
+		{ title: "PyCon ID 2026 Reset Password" },
 		{
-			name: "PyCon ID 2025 Reset Password Page",
+			name: "PyCon ID 2026 Reset Password Page",
 			content: "Reset Password page",
 		},
 	];
@@ -94,34 +94,40 @@ export default function ResetPasswordPage() {
 
 	return (
 		<main className="w-full">
-			<Form method="POST" className="space-y-3 w-full">
+			<Form method="POST" className="space-y-4 w-full">
 				<div className="flex flex-col">
-					<label htmlFor="new_password" className="text-sm font-bold mb-1">
-						Password
+					<label
+						htmlFor="new_password"
+						className="text-xs font-bold mb-1.5 text-gray-800"
+					>
+						New Password
 					</label>
 					<input
 						id="new_password"
 						name="new_password"
-						placeholder="Enter password"
+						placeholder="******************"
 						type="password"
-						className="border border-black/15 rounded-sm bg-neutral-100 w-full h-12 text-neutral-500 pl-4 lg:text-2xl"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<div className="flex flex-col">
-					<label htmlFor="confirm_password" className="text-sm font-bold mb-1">
+					<label
+						htmlFor="confirm_password"
+						className="text-xs font-bold mb-1.5 text-gray-800"
+					>
 						Confirm Password
 					</label>
 					<input
 						id="confirm_password"
 						name="confirm_password"
-						placeholder="Enter confirm password"
+						placeholder="******************"
 						type="password"
-						className="border border-black/15 rounded-sm bg-neutral-100 w-full h-12 text-neutral-500 pl-4 lg:text-2xl"
+						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 				<button
 					type="submit"
-					className="bg-secondary w-full h-12 font-sans rounded-sm text-white font-semibold lg:text-2xl mt-4 cursor-pointer transition-all duration-150 hover:bg-secondary/80 disabled:bg-secondary/50 disabled:cursor-not-allowed"
+					className="bg-surface w-full h-12 text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
 					disabled={isSubmitting}
 				>
 					{isSubmitting ? "Loading..." : "Reset Password"}
