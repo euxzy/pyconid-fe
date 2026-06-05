@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFetcher } from "react-router";
 import type { TicketType } from "~/api/schema/ticket";
 import { formatRupiah } from "~/lib/utils";
@@ -6,7 +6,6 @@ import { formatRupiah } from "~/lib/utils";
 interface TicketPurchaseModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	onShowError?: () => void;
 	ticket: TicketType | null;
 }
 
@@ -44,7 +43,6 @@ const DashedSeparator = () => (
 export const TicketPurchaseModal = ({
 	isOpen,
 	onClose,
-	onShowError,
 	ticket,
 }: TicketPurchaseModalProps) => {
 	const fetcher = useFetcher();
@@ -55,14 +53,6 @@ export const TicketPurchaseModal = ({
 	// Read voucher validation result from fetcher data
 	const voucherResult = fetcher.data?.apply_voucher;
 	const buyTicketResult = fetcher.data?.buy_ticket;
-
-	// When buy-ticket returns a client error, show the error modal
-	useEffect(() => {
-		if (buyTicketResult?.clientError && isOpen) {
-			onClose();
-			onShowError?.();
-		}
-	}, [buyTicketResult, isOpen, onClose, onShowError]);
 
 	if (!isOpen || !ticket) return null;
 
@@ -252,7 +242,7 @@ export const TicketPurchaseModal = ({
 						/>
 						<button
 							type="submit"
-							disabled={isSubmitting}
+							disabled={isSubmitting || buyTicketResult?.clientError}
 							className="w-full py-3 px-4 bg-[#FAFAFA] text-[#282828] font-bold text-lg rounded hover:bg-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{isSubmitting ? "Processing..." : "Buy ticket"}

@@ -3,6 +3,8 @@ import { useEffect } from "react";
 interface TicketErrorModalProps {
 	isOpen: boolean;
 	onClose: () => void;
+	title?: string;
+	message?: string;
 }
 
 const CloseIcon = ({ onClick }: { onClick: () => void }) => (
@@ -19,6 +21,8 @@ const CloseIcon = ({ onClick }: { onClick: () => void }) => (
 export const TicketErrorModal = ({
 	isOpen,
 	onClose,
+	title = "Sorry, something went wrong",
+	message = "Please try again later.",
 }: TicketErrorModalProps) => {
 	useEffect(() => {
 		if (isOpen) {
@@ -59,13 +63,12 @@ export const TicketErrorModal = ({
 
 					{/* Title */}
 					<h2 className="text-[#F1F2F3] text-2xl font-bold font-sans">
-						Sorry, you can only purchase 1 ticket
+						{title}
 					</h2>
 
 					{/* Description */}
 					<p className="text-[#F1F2F3] text-base leading-relaxed max-w-[480px]">
-						Each account is eligible to purchase only one ticket. For multiple
-						ticket purchase, please ask your friends to register individually.
+						{message}
 					</p>
 				</div>
 			</div>

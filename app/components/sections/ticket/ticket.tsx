@@ -5,13 +5,35 @@ import { EarlyBirdTicketCard } from "~/components/shared/ticket/early-bird-ticke
 import { TicketCard } from "~/components/shared/ticket/ticket-card";
 import { TicketErrorModal } from "~/components/shared/ticket/ticket-error-modal";
 import { TicketPurchaseModal } from "~/components/shared/ticket/ticket-purchase-modal";
+import type { CredentialsData } from "~/types/auth";
 
-export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
+export const Ticket = ({
+	tickets,
+	user,
+	hasTicket,
+}: {
+	tickets: TicketType[];
+	user: CredentialsData | null;
+	hasTicket: boolean;
+}) => {
 	const [selectedTicket, setSelectedTicket] = useState<TicketType | null>(null);
 	const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const handleSelectTicket = (ticket: TicketType) => {
+		if (!user) {
+			setErrorMessage("Please login to continue");
+			setIsErrorModalOpen(true);
+			return;
+		}
+		if (hasTicket) {
+			setErrorMessage(
+				"Each account is eligible to purchase only one ticket. For multiple ticket purchase, please ask your friends to register individually.",
+			);
+			setIsErrorModalOpen(true);
+			return;
+		}
 		setSelectedTicket(ticket);
 		setIsPurchaseModalOpen(true);
 	};
@@ -23,12 +45,6 @@ export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
 
 	const handleCloseErrorModal = () => {
 		setIsErrorModalOpen(false);
-	};
-
-	const handleShowError = () => {
-		setIsPurchaseModalOpen(false);
-		setSelectedTicket(null);
-		setIsErrorModalOpen(true);
 	};
 
 	const isEarlyBird = (name: string) =>
@@ -71,7 +87,6 @@ export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
 			<TicketPurchaseModal
 				isOpen={isPurchaseModalOpen}
 				onClose={handleClosePurchaseModal}
-				onShowError={handleShowError}
 				ticket={selectedTicket}
 			/>
 
@@ -79,6 +94,8 @@ export const Ticket = ({ tickets }: { tickets: TicketType[] }) => {
 			<TicketErrorModal
 				isOpen={isErrorModalOpen}
 				onClose={handleCloseErrorModal}
+				title="Unable to purchase ticket"
+				message={errorMessage}
 			/>
 		</>
 	);

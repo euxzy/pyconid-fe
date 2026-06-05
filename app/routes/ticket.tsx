@@ -1,12 +1,14 @@
 import { redirect } from "react-router";
 import {
 	createPayment,
+	getPayment,
 	getPaymentVoucherValidate,
 } from "~/api/endpoint/.server/payment";
 import { ticket as ticketApi } from "~/api/endpoint/.server/ticket";
 import {
 	createPaymentSuccessSchema,
 	getPaymentVoucherValidateSchema,
+	paymentResponseSchema,
 } from "~/api/schema/payment";
 import { TicketsResponseSchema } from "~/api/schema/ticket";
 import { Footer } from "~/components/layouts/navigation/footer";
@@ -22,14 +24,27 @@ export function meta() {
 	];
 }
 
-export const loader = async () => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
 	const ticketData = await ticketApi();
 	if (!ticketData.ok) {
 		throw new Response("Failed to fetch tickets", { status: 500 });
 	}
 	const ticketJson = await ticketData.json();
 	const tickets = TicketsResponseSchema.parse(ticketJson);
-	return { tickets: tickets.results };
+
+	// Check auth + existing payments
+	const user = await authenticator.isAuthenticated(request);
+	let hasTicket = false;
+	if (user) {
+		const paymentData = await getPayment({ request });
+		if (paymentData.ok) {
+			const paymentJson = await paymentData.json();
+			const payments = paymentResponseSchema.parse(paymentJson);
+			hasTicket = payments.results.length > 0;
+		}
+	}
+
+	return { tickets: tickets.results, user, hasTicket };
 };
 
 export const action = async ({ request }: Route.ActionArgs) => {
@@ -156,7 +171,11 @@ export default function TicketPage({ loaderData }: Route.ComponentProps) {
 	return (
 		<main>
 			<Header />
-			<Ticket tickets={loaderData.tickets} />
+			<Ticket
+				tickets={loaderData.tickets}
+				user={loaderData.user}
+				hasTicket={loaderData.hasTicket}
+			/>
 			<Footer />
 		</main>
 	);
