@@ -45,7 +45,7 @@ export const Header = () => {
 						<li className="w-full lg:hidden pt-4 border-t border-white/10">
 							{credentials ? (
 								<div className="flex flex-col gap-4">
-									<NavLink to="/auth/user-profile">My Profile</NavLink>
+									<NavLink to="/auth/dashboard">My Profile</NavLink>
 									<Form action="/auth/logout" method="post">
 										<button
 											type="submit"

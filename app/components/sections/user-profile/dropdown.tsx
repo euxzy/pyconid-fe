@@ -21,6 +21,7 @@ export const Dropdown = ({
 	onChange,
 	errorMessage = undefined,
 	className,
+	disabled = false,
 }: {
 	label: string;
 	id: string;
@@ -31,6 +32,7 @@ export const Dropdown = ({
 	onChange?: (value: string) => void;
 	errorMessage?: string;
 	className?: string;
+	disabled?: boolean;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedItem, setSelectedItem] = useState<{
@@ -73,11 +75,12 @@ export const Dropdown = ({
 			/>
 			<div
 				className={twMerge(
-					"w-full flex justify-between px-4 py-3 border bg-white hover:cursor-pointer text-sm",
+					"w-full flex justify-between px-4 py-3 border bg-white text-sm",
 					errorMessage ? "border-red-500" : "border-[#282828]",
+					disabled ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer",
 				)}
 				onClick={() => {
-					setIsOpen(!isOpen);
+					if (!disabled) setIsOpen(!isOpen);
 				}}
 			>
 				<span

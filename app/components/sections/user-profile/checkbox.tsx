@@ -9,7 +9,8 @@ export const Checkbox = ({
 	errorMessage,
 	labelClassName,
 }: {
-	label: string;
+	label: string | React.ReactNode;
+
 	id: string;
 	name: string;
 	value?: boolean | null;
