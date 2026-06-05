@@ -368,6 +368,16 @@ export const ProfileDashboardSection = ({
 				</div>
 
 				{/* Account Section */}
+				<div>
+					<a
+						href="/auth/dashboard"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="underline text-blue-500"
+					>
+						Dashboard
+					</a>
+				</div>
 				<AccordionSection
 					title="Account"
 					icon={<UserIcon />}
@@ -737,11 +747,24 @@ export const ProfileDashboardSection = ({
 							value={userProfile.participant_type || ""}
 							onChange={() => {}}
 							className="[&>div]:border-[#282828]"
+							disabled
 						/>
 						<Checkbox
 							id="coc_acknowledged"
 							name="coc_acknowledged"
-							label="I acknowledge the Code of Conduct"
+							label={
+								<div>
+									I acknowledge the{" "}
+									<a
+										href="/code-of-conduct"
+										target="_blank"
+										rel="noopener noreferrer"
+										className="underline text-blue-500"
+									>
+										Code of Conduct
+									</a>
+								</div>
+							}
 							value={cocAcknowledged}
 							onChange={setCocAcknowledged}
 							labelClassName="text-sm text-[#282828]"
@@ -749,7 +772,19 @@ export const ProfileDashboardSection = ({
 						<Checkbox
 							id="terms_agreed"
 							name="terms_agreed"
-							label="I agree to the Terms and Conditions"
+							label={
+								<div>
+									I agree to the{" "}
+									<a
+										href="/terms-of-service"
+										target="_blank"
+										rel="noopener noreferrer"
+										className="underline text-blue-500"
+									>
+										Terms of Service
+									</a>
+								</div>
+							}
 							value={termsAgreed}
 							onChange={setTermsAgreed}
 							labelClassName="text-sm text-[#282828]"
@@ -757,7 +792,19 @@ export const ProfileDashboardSection = ({
 						<Checkbox
 							id="privacy_agreed"
 							name="privacy_agreed"
-							label="I agree to the Privacy Policy"
+							label={
+								<div>
+									I agree to the{" "}
+									<a
+										href="/privacy-policy"
+										target="_blank"
+										rel="noopener noreferrer"
+										className="underline text-blue-500"
+									>
+										Privacy Policy
+									</a>
+								</div>
+							}
 							value={privacyAgreed}
 							onChange={setPrivacyAgreed}
 							labelClassName="text-sm text-[#282828]"
@@ -765,7 +812,7 @@ export const ProfileDashboardSection = ({
 						<Checkbox
 							id="share_my_data_to_sponsor"
 							name="share_my_data_to_sponsor"
-							label="Share my data to sponsor"
+							label="OPT-IN Share my data to sponsor (optional)"
 							value={shareDataToSponsor}
 							onChange={setShareDataToSponsor}
 							labelClassName="text-sm text-[#282828]"
@@ -773,7 +820,7 @@ export const ProfileDashboardSection = ({
 						<Checkbox
 							id="retain_my_data_for_next_pycon"
 							name="retain_my_data_for_next_pycon"
-							label="Retain my data for next PyCon"
+							label="OPT-IN Retain my data for next PyCon ID (optional)"
 							value={retainData}
 							onChange={setRetainData}
 							labelClassName="text-sm text-[#282828]"

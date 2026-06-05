@@ -38,8 +38,8 @@ export default [
 	...prefix("auth", [
 		layout("routes/layouts/protected.tsx", [
 			route("/logout", "routes/auth/logout.tsx"),
-			route("/dashboard", "routes/auth/dashboard.tsx"),
-			route("/user-profile", "routes/auth/user-profile.tsx"),
+			route("/user-profile", "routes/auth/dashboard.tsx"),
+			route("/dashboard", "routes/auth/user-profile.tsx"),
 			route("/payment", "routes/auth/payment.tsx"),
 			route("/user-ticket", "routes/auth/user-ticket.tsx"),
 			route("/check-in", "routes/auth/check-in.tsx"),

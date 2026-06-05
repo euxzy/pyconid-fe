@@ -132,16 +132,6 @@ export const UserProfileSection = ({
 								)}
 							</div>
 						</div>
-
-						{/* Decorative snake */}
-						<div className="absolute right-8 top-8 opacity-10 hidden lg:block">
-							<img
-								src="/svg/user-profile/decorative-snake.svg"
-								alt=""
-								width="155"
-								height="185"
-							/>
-						</div>
 					</div>
 
 					{/* Change Button */}
@@ -335,26 +325,6 @@ export const UserProfileSection = ({
 								/>
 							</div>
 						</div>
-					</div>
-
-					{/* Decorative Accents */}
-					<div className="absolute -left-36 bottom-0 opacity-20 pointer-events-none hidden lg:block">
-						<img
-							src="/svg/logo-bg.svg"
-							alt=""
-							width="386"
-							height="412"
-							className="opacity-20"
-						/>
-					</div>
-					<div className="absolute -right-36 bottom-0 opacity-20 pointer-events-none hidden lg:block">
-						<img
-							src="/svg/logo-bg.svg"
-							alt=""
-							width="386"
-							height="412"
-							className="opacity-20"
-						/>
 					</div>
 				</div>
 			</div>
