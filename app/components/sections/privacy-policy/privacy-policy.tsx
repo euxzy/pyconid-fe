@@ -9,7 +9,7 @@ export const PrivacyPolicySection: FC = () => (
 						Data Privacy Policy
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
-						<p>Effective Date: November 1st, 2026</p>
+						<p>Effective Date: June 1st, 2026</p>
 						<p>
 							Welcome to <b>PyCon ID 2026</b>, the annual Python community
 							conference in Indonesia organized by the{" "}
