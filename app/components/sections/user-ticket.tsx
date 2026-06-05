@@ -96,7 +96,7 @@ export function UserTicketSection({
 									Date
 								</span>
 								<span className="text-base text-[#282828]">
-									Saturday - Sunday, December 13th - 14th, 2025
+									Saturday - Sunday, August 8th-9th, 2026
 								</span>
 							</div>
 							<div className="flex items-start gap-2">
@@ -104,9 +104,9 @@ export function UserTicketSection({
 									Location
 								</span>
 								<span className="text-base text-[#282828]">
-									BINUS KEMANGGISAN Jl. Kemanggisan Ilir III No.45, RT.12/RW.6,
-									Kemanggisan, Kec. Palmerah, Kota Jakarta Barat, Daerah Khusus
-									Ibukota Jakarta 11480
+									Binus University @Kemanggisan - Anggrek Campus <br /> Jl. Raya Kb.
+									Jeruk No.27, RT.1/RW.9, Kemanggisan, Kec. Palmerah, Kota
+									Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530
 								</span>
 							</div>
 						</div>
