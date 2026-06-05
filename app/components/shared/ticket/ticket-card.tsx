@@ -23,7 +23,7 @@ export const TicketCard = ({
 }) => {
 	const descNonBenefitsArray = description.split(":")[0].split(".");
 	descNonBenefitsArray.pop();
-	const descNonBenefits = descNonBenefitsArray.join(". ").trim() + ".";
+	const descNonBenefits = `${descNonBenefitsArray.join(". ").trim()}.`;
 
 	const benefits = description
 		.split(":")[1]
