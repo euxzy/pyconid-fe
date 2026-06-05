@@ -104,8 +104,8 @@ export function UserTicketSection({
 									Location
 								</span>
 								<span className="text-base text-[#282828]">
-									Binus University @Kemanggisan - Anggrek Campus <br /> Jl. Raya Kb.
-									Jeruk No.27, RT.1/RW.9, Kemanggisan, Kec. Palmerah, Kota
+									Binus University @Kemanggisan - Anggrek Campus <br /> Jl. Raya
+									Kb. Jeruk No.27, RT.1/RW.9, Kemanggisan, Kec. Palmerah, Kota
 									Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530
 								</span>
 							</div>
