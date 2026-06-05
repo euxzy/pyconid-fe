@@ -45,7 +45,7 @@ export const Header = () => {
 						<li className="w-full lg:hidden pt-4 border-t border-white/10">
 							{credentials ? (
 								<div className="flex flex-col gap-4">
-									<NavLink to="/auth/dashboard">My Profile</NavLink>
+									<NavLink to="/auth/user-profile">My Profile</NavLink>
 									<Form action="/auth/logout" method="post">
 										<button
 											type="submit"
@@ -73,7 +73,7 @@ export const Header = () => {
 					{credentials ? (
 						<div className="flex gap-4 items-center">
 							<NavLink
-								to="/auth/dashboard"
+								to="/auth/user-profile"
 								className="text-white hover:text-gray-200"
 							>
 								My Profile

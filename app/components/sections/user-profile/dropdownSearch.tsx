@@ -3,22 +3,12 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 const DropdownChevron = () => (
-	<svg
-		aria-label="drodown chevron"
+	<img
+		src="/svg/user-profile/dropdown-chevron-search.svg"
+		alt=""
 		width="24"
 		height="24"
-		viewBox="0 0 24 24"
-		fill="none"
-		xmlns="http://www.w3.org/2000/svg"
-	>
-		<path
-			d="M6 9L12 15L18 9"
-			stroke="black"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-		/>
-	</svg>
+	/>
 );
 
 export const DropdownSearch = ({
@@ -33,6 +23,7 @@ export const DropdownSearch = ({
 	onChange,
 	disabled = false,
 	errorMessage,
+	className,
 }: {
 	label: string;
 	id: string;
@@ -48,6 +39,7 @@ export const DropdownSearch = ({
 	onChange: (value: { label: string; value: string }) => void;
 	disabled?: boolean;
 	errorMessage?: string;
+	className?: string;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	// const [selectedItem, setSelectedItem] = useState<{
@@ -63,7 +55,7 @@ export const DropdownSearch = ({
 	};
 
 	return (
-		<div className="w-full relative">
+		<div className={twMerge("w-full relative", className)}>
 			<label htmlFor={id} className="block mb-2 text-sm font-medium text-black">
 				{label}
 			</label>

@@ -9,7 +9,7 @@ export const Earth: FC<SVGProps<SVGSVGElement>> = ({ ...props }) => {
 			xmlns="http://www.w3.org/2000/svg"
 			{...props}
 		>
-			<title>Earth</title>
+			<title>Website</title>
 			<path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" stroke="currentColor" />
 			<path
 				d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"

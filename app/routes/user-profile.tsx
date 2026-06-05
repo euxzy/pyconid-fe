@@ -1,10 +1,9 @@
 import { redirect } from "react-router";
 import { getMe } from "~/api/endpoint/.server/auth";
 import { getUserProfile } from "~/api/endpoint/.server/user_profile";
-import { meSchema } from "~/api/schema/auth";
 import { getUserProfileSchema } from "~/api/schema/user_profile";
 import { Main as MainLayout } from "~/components/layouts/app/main";
-import { UserProfileSection } from "~/components/sections/user-profile/user-profile";
+import { ProfileViewSection } from "~/components/sections/user-profile/profile-view";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/user-profile";
 
@@ -37,27 +36,20 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		}
 		const jsonUserProfile = await dataUserProfile.json();
 		const userProfile = getUserProfileSchema.parse(jsonUserProfile);
-		const me = meSchema.parse(await dataMe.json());
-
-		return { userProfile, me };
+		return { userProfile };
 	} catch (err) {
 		if (err instanceof Response) {
 			throw err;
 		}
-		console.error("Account profile loader error", err);
+		console.error("Profile loader error", err);
 		throw new Response("Failed to load profile data", { status: 500 });
 	}
 };
 
-export default function AccountProfilePage(
-	componentProps: Route.ComponentProps,
-) {
+export default function UserProfilePage(componentProps: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
-			<UserProfileSection
-				userProfile={componentProps.loaderData.userProfile}
-				me={componentProps.loaderData.me}
-			/>
+		<MainLayout className="bg-[#282828]">
+			<ProfileViewSection userProfile={componentProps.loaderData.userProfile} />
 		</MainLayout>
 	);
 }
