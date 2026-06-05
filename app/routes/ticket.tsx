@@ -34,17 +34,32 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 	// Check auth + existing payments
 	const user = await authenticator.isAuthenticated(request);
-	let hasTicket = false;
+	let userTicketStatus: "none" | "paid" | "unpaid" = "none";
 	if (user) {
 		const paymentData = await getPayment({ request });
 		if (paymentData.ok) {
 			const paymentJson = await paymentData.json();
 			const payments = paymentResponseSchema.parse(paymentJson);
-			hasTicket = payments.results.length > 0;
+			const now = new Date();
+			const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+			const paidPayment = payments.results.find((p) => p.status === "paid");
+			const unpaidWithin24h = payments.results.find((p) => {
+				if (p.status !== "unpaid") return false;
+				const createdAt = new Date(p.created_at);
+				// Only block if the unpaid payment was created within the last 24 hours
+				return createdAt > twentyFourHoursAgo;
+			});
+
+			if (paidPayment) {
+				userTicketStatus = "paid";
+			} else if (unpaidWithin24h) {
+				userTicketStatus = "unpaid";
+			}
 		}
 	}
 
-	return { tickets: tickets.results, user, hasTicket };
+	return { tickets: tickets.results, user, userTicketStatus };
 };
 
 export const action = async ({ request }: Route.ActionArgs) => {
@@ -174,7 +189,7 @@ export default function TicketPage({ loaderData }: Route.ComponentProps) {
 			<Ticket
 				tickets={loaderData.tickets}
 				user={loaderData.user}
-				hasTicket={loaderData.hasTicket}
+				userTicketStatus={loaderData.userTicketStatus}
 			/>
 			<Footer />
 		</main>

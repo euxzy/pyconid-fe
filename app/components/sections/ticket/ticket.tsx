@@ -10,26 +10,37 @@ import type { CredentialsData } from "~/types/auth";
 export const Ticket = ({
 	tickets,
 	user,
-	hasTicket,
+	userTicketStatus,
 }: {
 	tickets: TicketType[];
 	user: CredentialsData | null;
-	hasTicket: boolean;
+	userTicketStatus: "none" | "paid" | "unpaid";
 }) => {
 	const [selectedTicket, setSelectedTicket] = useState<TicketType | null>(null);
 	const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
+	const [errorTitle, setErrorTitle] = useState("Unable to purchase ticket");
 
 	const handleSelectTicket = (ticket: TicketType) => {
 		if (!user) {
+			setErrorTitle("Unable to purchase ticket");
 			setErrorMessage("Please login to continue");
 			setIsErrorModalOpen(true);
 			return;
 		}
-		if (hasTicket) {
+		if (userTicketStatus === "paid") {
+			setErrorTitle("Unable to purchase ticket");
 			setErrorMessage(
 				"Each account is eligible to purchase only one ticket. For multiple ticket purchase, please ask your friends to register individually.",
+			);
+			setIsErrorModalOpen(true);
+			return;
+		}
+		if (userTicketStatus === "unpaid") {
+			setErrorTitle("Payment Pending");
+			setErrorMessage(
+				"You have an unpaid ticket. Please complete your payment.",
 			);
 			setIsErrorModalOpen(true);
 			return;
@@ -94,7 +105,7 @@ export const Ticket = ({
 			<TicketErrorModal
 				isOpen={isErrorModalOpen}
 				onClose={handleCloseErrorModal}
-				title="Unable to purchase ticket"
+				title={errorTitle}
 				message={errorMessage}
 			/>
 		</>
