@@ -15,7 +15,7 @@ import {
 	getMessageSession,
 } from "~/services/sessions/message.server";
 
-export interface AuthLayoutHanleProps {
+export interface AuthLayoutHandleProps {
 	title: string;
 }
 
@@ -30,7 +30,7 @@ export interface AuthLayoutHanleProps {
 // 		<Form action={`/auth/${provider}`} method="post" className="w-full">
 // 			<button
 // 				type="submit"
-// 				className="flex items-center w-full justify-center gap-x-2 bg-gray-200 rounded-sm p-2.5 cursor-pointer transition-all duration-150 hover:bg-gray-300"
+// 				className="flex items-center w-full justify-center gap-x-2 bg-gray-200 p-2.5 cursor-pointer transition-all duration-150 hover:bg-gray-300"
 // 			>
 // 				<img alt={title} src={image} className="size-4 sm:size-8" />
 // 				<div>{title}</div>
@@ -62,30 +62,30 @@ const pathnames = ["/login", "/register"];
 
 export default function AuthLayout() {
 	const matches = useMatches();
-	const handle: AuthLayoutHanleProps = useMergeHanlde({
+	const handle: AuthLayoutHandleProps = useMergeHanlde({
 		matches,
-		options: { title: "Pycon 2025" },
+		options: { title: "PyCon 2026" },
 	});
 
 	const { pathname } = useLocation();
 
 	return (
-		<section className="h-screen bg-slate-100">
-			<div className="grid gap-x-8 w-full max-w-[88rem] mx-auto h-full content-center px-5 md:px-8 lg:px-0 lg:grid-cols-2">
-				<div className="hidden lg:block rounded-3xl overflow-hidden">
+		<section className="h-screen font-sans">
+			<div className="grid w-full max-w-[88rem] mx-auto h-full content-center px-5 md:px-8 lg:px-0 lg:grid-cols-2">
+				<div className="hidden lg:block overflow-hidden">
 					<img
-						alt="login and registration left card"
-						src="/svg/login-reg-card.svg"
-						className="w-full object-cover rounded-3xl shadow-2xl"
+						alt="PyCon 2026 abstract graphic"
+						src="/images/bg-auth-2026.png"
+						className="w-full h-full object-cover"
 					/>
 				</div>
-				<div className="bg-background rounded-3xl py-5 px-10 relative overflow-hidden">
+				<div className="bg-background py-5 px-10 relative overflow-hidden">
 					<div className="size-full flex flex-col items-center justify-center">
 						<div className="mb-6">
 							<img
-								alt="pycon id dark logo"
-								src="/svg/logo-dark.svg"
-								className="h-16 w-auto"
+								alt="PyCon ID dark logo"
+								src="/images/PyCon ID 26 Logo@2x.png"
+								className="h-14 w-auto lg:h-16"
 							/>
 						</div>
 
@@ -94,9 +94,9 @@ export default function AuthLayout() {
 						{pathnames.includes(pathname) && (
 							<>
 								<div className="flex items-center w-full h-7 my-8">
-									<div className="flex-grow border-t border-neutral-300"></div>
-									<span className="px-4 text-neutral-300">or</span>
-									<div className="flex-grow border-t border-neutral-300"></div>
+									<div className="flex-grow border-t border-neutral-200"></div>
+									<span className="px-4 text-neutral-400">or</span>
+									<div className="flex-grow border-t border-neutral-200"></div>
 								</div>
 
 								<div className="w-full grid grid-cols-2 gap-4">
@@ -138,10 +138,10 @@ export default function AuthLayout() {
 										By creating this account you agree to our
 									</p>
 									<a
-										href="https://pycon.id/code-of-conduct"
+										href="/code-of-conduct"
 										target="_blank"
 										rel="noreferrer noopener"
-										className="underline text-secondary"
+										className="underline text-surface"
 									>
 										Code of Conduct
 									</a>
@@ -150,12 +150,8 @@ export default function AuthLayout() {
 						)}
 					</div>
 
-					<div className="absolute right-0 top-0 bg-primary text-background px-12 py-2 rounded-bl-3xl font-display text-2xl font-bold rounded-tl-md">
+					<div className="absolute top-0 right-0 bg-surface text-white px-10 py-4 text-xl font-bold md:px-14">
 						{handle.title}
-					</div>
-
-					<div className="absolute bottom-3 right-3">
-						<img alt="" src="/svg/trigger-dark-mode.svg" />
 					</div>
 				</div>
 			</div>

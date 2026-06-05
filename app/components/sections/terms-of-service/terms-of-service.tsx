@@ -5,17 +5,17 @@ export const TermsOfServiceSection: FC = () => (
 		<div className="z-10 relative container m-auto">
 			<div className="pt-[12vh] sm:pt-[23vh]">
 				<div className="px-4 sm:px-50 flex flex-col">
-					<h1 className="text-blue-900 px-8 py-4 font-display text-4xl font-extrabold text-center">
+					<h1 className="px-8 py-4 font-display text-4xl font-extrabold text-center">
 						Terms of Service
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
-						<p>Effective Date: November 1st, 2025</p>
+						<p>Effective Date: June 1st, 2026</p>
 						<p>
-							By registering for and attending <b>PyCon Indonesia 2025</b> (“the
+							By registering for and attending <b>PyCon Indonesia 2026</b> (“the
 							Event”), you agree to comply with and be bound by these Terms of
 							Service (“Terms”). These Terms constitute a binding agreement
 							between you (“Participant”, “Attendee”, or “You”) and the{" "}
-							<b>Python ID Community</b>, the organizer of PyCon Indonesia 2025
+							<b>Python ID Community</b>, the organizer of PyCon Indonesia 2026
 							(“We”, “Us”, “Our”).
 						</p>
 						<p>
@@ -89,7 +89,7 @@ export const TermsOfServiceSection: FC = () => (
 								documentation, educational, and promotional purposes.
 							</li>
 							<li>
-								By attending PyCon Indonesia 2025, you consent to the use of
+								By attending PyCon Indonesia 2026, you consent to the use of
 								your <b>image, likeness, and voice</b> in event documentation,
 								photography, or video recordings that may be published on
 								official Python ID or PyCon Indonesia channels (e.g., YouTube,
@@ -118,7 +118,7 @@ export const TermsOfServiceSection: FC = () => (
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
 						<ul className="list-disc list-inside">
 							<li>
-								Attendance and participation at PyCon Indonesia 2025 are{" "}
+								Attendance and participation at PyCon Indonesia 2026 are{" "}
 								<b>at your own risk</b>.
 							</li>
 							<li>
@@ -143,7 +143,7 @@ export const TermsOfServiceSection: FC = () => (
 						<ul className="list-disc list-inside">
 							<li>
 								The organizers reserve the right to{" "}
-								<b>modify, reschedule, or cancel</b> PyCon Indonesia 2025 in
+								<b>modify, reschedule, or cancel</b> PyCon Indonesia 2026 in
 								whole or in part due to unforeseen circumstances, including but
 								not limited to natural disasters, health emergencies, or venue
 								issues.

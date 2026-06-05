@@ -14,9 +14,9 @@ import {
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Forgot Password" },
+		{ title: "PyCon ID 2026 Forgot Password" },
 		{
-			name: "PyCon ID 2025 Forgot Password Page",
+			name: "PyCon ID 2026 Forgot Password Page",
 			content: "Forgot Password page",
 		},
 	];
@@ -74,9 +74,12 @@ export default function ForgotPasswordPage() {
 
 	return (
 		<main className="w-full">
-			<Form method="POST" className="space-y-3 w-full">
+			<Form method="POST" className="space-y-4 w-full">
 				<div className="flex flex-col w-full">
-					<label htmlFor="email" className="text-sm font-bold mb-1">
+					<label
+						htmlFor="email"
+						className="text-xs font-bold mb-1.5 text-gray-800"
+					>
 						Email
 					</label>
 					<input
@@ -84,16 +87,16 @@ export default function ForgotPasswordPage() {
 						name="email"
 						placeholder="yourmail@example.com"
 						type="email"
-						className="border border-black/15 rounded-sm bg-neutral-100 w-full  h-12 text-neutral-500 pl-4 lg:text-2xl"
+						className="border border-neutral-200 rounded bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
 					/>
 				</div>
 
 				<button
 					type="submit"
-					className="bg-secondary w-full h-12 font-sans rounded-sm text-white font-semibold lg:text-2xl mt-4 cursor-pointer transition-all duration-150 hover:bg-secondary/80 disabled:bg-secondary/50 disabled:cursor-not-allowed"
+					className="bg-surface w-full h-12 rounded text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"
 					disabled={isSubmitting}
 				>
-					{isSubmitting ? "Loading..." : "Forgot Password"}
+					{isSubmitting ? "Loading..." : "Send Reset Link"}
 				</button>
 			</Form>
 		</main>

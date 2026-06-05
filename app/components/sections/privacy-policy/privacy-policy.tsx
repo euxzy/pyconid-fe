@@ -5,13 +5,13 @@ export const PrivacyPolicySection: FC = () => (
 		<div className="z-10 relative container m-auto">
 			<div className="pt-[12vh] sm:pt-[23vh]">
 				<div className="px-4 sm:px-50 flex flex-col">
-					<h1 className="text-blue-900 px-8 py-4 font-display text-4xl font-extrabold text-center">
+					<h1 className="px-8 py-4 font-display text-4xl font-extrabold text-center">
 						Data Privacy Policy
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
-						<p>Effective Date: November 1st, 2025</p>
+						<p>Effective Date: June 1st, 2026</p>
 						<p>
-							Welcome to <b>PyCon ID 2025</b>, the annual Python community
+							Welcome to <b>PyCon ID 2026</b>, the annual Python community
 							conference in Indonesia organized by the{" "}
 							<b>Python ID Community</b>.
 						</p>
@@ -47,7 +47,7 @@ export const PrivacyPolicySection: FC = () => (
 						<p>
 							This may include (but is not limited to): your name, email
 							address, phone number, organization, job title, and other details
-							relevant to your participation in PyCon ID 2025.
+							relevant to your participation in PyCon ID 2026.
 						</p>
 					</div>
 					<h1 className="font-display text-3xl font-extrabold text-justify">
@@ -58,7 +58,7 @@ export const PrivacyPolicySection: FC = () => (
 						<ul className="list-disc list-inside">
 							<li>
 								Process your registration and manage your participation in PyCon
-								ID 2025
+								ID 2026
 							</li>
 							<li>
 								Communicate important event updates, schedules, and
@@ -101,7 +101,7 @@ export const PrivacyPolicySection: FC = () => (
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
 						<p>
-							PyCon ID 2025 sessions, including talks, workshops, and other
+							PyCon ID 2026 sessions, including talks, workshops, and other
 							conference activities, may be{" "}
 							<b>recorded, photographed, and live-streamed</b>.
 						</p>
