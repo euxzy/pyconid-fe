@@ -16,11 +16,11 @@ import type {
 	GetUserProfileSchema,
 	IndustriesSchema,
 	JobsSchema,
-	ParticipantTypeSchema,
 } from "~/api/schema/user_profile";
 import { Footer } from "~/components/layouts/navigation/footer";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
+import type { UserProfileActionData } from "~/routes/auth/user-profile";
 import { Checkbox } from "../dashboard/checkbox";
 import { Dropdown } from "../dashboard/dropdown";
 import { DropdownSearch } from "../dashboard/dropdownSearch";
@@ -38,7 +38,7 @@ export const UserProfileSection = ({
 	userProfile: GetUserProfileSchema;
 	industries: IndustriesSchema;
 	jobs: JobsSchema;
-	actionData: any;
+	actionData: UserProfileActionData;
 }) => {
 	const submit = useSubmit();
 	const rootData = useRootLoaderData();
@@ -330,510 +330,515 @@ export const UserProfileSection = ({
 		(userProfile.last_name?.charAt(0).toUpperCase() || "");
 
 	return (
-		<div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-9">
-			<form onSubmit={handleSubmit} className="flex flex-col gap-8">
-				{/* Avatar */}
-				<div className="flex justify-center">
-					<label htmlFor="profile_picture" className="cursor-pointer relative">
-						<input
-							type="file"
-							id="profile_picture"
-							hidden
-							onChange={onImageChange}
-							accept="image/*"
-						/>
-						<div className="w-32 h-32 rounded-full border-2 border-[#282828] grid place-items-center text-2xl bg-gray-400 text-white font-bold overflow-hidden">
-							{previewImg ? (
+		<div>
+			<div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-9">
+				<form onSubmit={handleSubmit} className="flex flex-col gap-8">
+					{/* Avatar */}
+					<div className="flex justify-center">
+						<label
+							htmlFor="profile_picture"
+							className="cursor-pointer relative"
+						>
+							<input
+								type="file"
+								id="profile_picture"
+								hidden
+								onChange={onImageChange}
+								accept="image/*"
+							/>
+							<div className="w-32 h-32 rounded-full border-2 border-[#282828] grid place-items-center text-2xl bg-gray-400 text-white font-bold overflow-hidden">
+								{previewImg ? (
+									<img
+										src={previewImg}
+										className="size-full object-cover"
+										alt=""
+									/>
+								) : (
+									initials
+								)}
+							</div>
+							<div className="absolute bottom-0 right-0 w-10 h-10 bg-[#282828] rounded-full grid place-items-center border-2 border-white">
 								<img
-									src={previewImg}
-									className="size-full object-cover"
+									src="/svg/dashboard/upload-profile-picture.svg"
 									alt=""
+									width="20"
+									height="20"
 								/>
-							) : (
-								initials
-							)}
+							</div>
+						</label>
+					</div>
+
+					{/* Account Section */}
+					<div>
+						<a href="/auth/dashboard" className="underline text-blue-500">
+							Dashboard
+						</a>
+					</div>
+					<AccordionSection
+						title="Account"
+						icon={<UserIcon />}
+						isOpen={openSections.account}
+						onToggle={() => toggleSection("account")}
+					>
+						<div className="flex flex-col gap-4 pt-2">
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="First Name *"
+									id="first_name"
+									name="first_name"
+									placeholder="Enter your first name"
+									defaultValue={userProfile.first_name || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Input
+									label="Last Name *"
+									id="last_name"
+									name="last_name"
+									placeholder="Enter your last name"
+									defaultValue={userProfile.last_name || ""}
+									inputClassName="border-[#282828]"
+								/>
+							</div>
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="Email Address"
+									id="email"
+									name="email"
+									placeholder="e.g: hello@example.com"
+									defaultValue={userProfile.email || ""}
+									readonly
+									inputClassName="border-[#282828]"
+								/>
+								<Input
+									label="Phone Number"
+									id="phone"
+									name="phone"
+									placeholder="+62"
+									defaultValue={userProfile.phone || ""}
+									inputClassName="border-[#282828]"
+								/>
+							</div>
+							<Checkbox
+								id="share_my_email_and_phone_number"
+								name="share_my_email_and_phone_number"
+								label="Share your email and phone number"
+								value={shareEmailPhone}
+								onChange={setShareEmailPhone}
+								labelClassName="text-sm text-[#282828]"
+							/>
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="Experience (Years)"
+									id="experience"
+									name="experience"
+									placeholder="Enter years of experience"
+									type="number"
+									defaultValue={userProfile.experience?.toString() || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Dropdown
+									label="T-Shirt Size"
+									id="t_shirt_size"
+									name="t_shirt_size"
+									placeholder="Choose T-Shirt Size"
+									dropdownItems={tShirtSizes}
+									value={userProfile.t_shirt_size || ""}
+									onChange={() => {}}
+									className="[&>div]:border-[#282828]"
+								/>
+							</div>
+							<div className="flex flex-col md:flex-row gap-4">
+								<Dropdown
+									label="Gender"
+									id="gender"
+									name="gender"
+									placeholder="Choose Gender"
+									dropdownItems={genderOptions}
+									value={userProfile.gender || ""}
+									onChange={() => {}}
+									className="[&>div]:border-[#282828]"
+								/>
+								<Input
+									label="Date of Birth"
+									id="date_of_birth"
+									name="date_of_birth"
+									placeholder="24/12/2003"
+									type="date"
+									defaultValue={formatDateForInput(userProfile.date_of_birth)}
+									inputClassName="border-[#282828]"
+								/>
+							</div>
+							<Textarea
+								label="Bio / About you *"
+								id="bio"
+								name="bio"
+								placeholder="Tell us about yourself"
+								defaultValue={userProfile.bio || ""}
+								className="[&>textarea]:border-[#282828]"
+							/>
 						</div>
-						<div className="absolute bottom-0 right-0 w-10 h-10 bg-[#282828] rounded-full grid place-items-center border-2 border-white">
+					</AccordionSection>
+
+					{/* Jobs Section */}
+					<AccordionSection
+						title="Jobs"
+						icon={<BriefcaseIcon />}
+						isOpen={openSections.jobs}
+						onToggle={() => toggleSection("jobs")}
+					>
+						<div className="flex flex-col gap-4 pt-2">
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="Job Title *"
+									id="job_title"
+									name="job_title"
+									placeholder="Enter your job title"
+									defaultValue={userProfile.job_title || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Dropdown
+									label="Job Categories *"
+									id="job_category"
+									name="job_category"
+									placeholder="Choose Job Categories"
+									dropdownItems={jobs.results}
+									value={userProfile.job_category || ""}
+									onChange={() => {}}
+									className="[&>div]:border-[#282828]"
+								/>
+							</div>
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="Company Organization"
+									id="company"
+									name="company"
+									placeholder="Enter your company"
+									defaultValue={userProfile.company || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Dropdown
+									label="Industry Categories"
+									id="industry_categories"
+									name="industry_categories"
+									placeholder="Choose Industry Categories"
+									dropdownItems={industries.results}
+									value={userProfile.industry_categories || ""}
+									onChange={() => {}}
+									className="[&>div]:border-[#282828]"
+								/>
+							</div>
+							<Checkbox
+								id="share_my_job_and_company"
+								name="share_my_job_and_company"
+								label="Share My Job and Company"
+								value={shareJobCompany}
+								onChange={setShareJobCompany}
+								labelClassName="text-sm text-[#282828]"
+							/>
+						</div>
+					</AccordionSection>
+
+					{/* Address Section */}
+					<AccordionSection
+						title="Address"
+						icon={<MapPinIcon />}
+						isOpen={openSections.address}
+						onToggle={() => toggleSection("address")}
+					>
+						<div className="flex flex-col gap-4 pt-2">
+							<DropdownSearch
+								label="Country *"
+								id="country_id"
+								name="country_id"
+								placeholder="Choose Country"
+								dropdownItems={
+									dataCountry
+										? dataCountry.results.map((item) => ({
+												label: item.name,
+												value: item.id.toString(),
+											}))
+										: []
+								}
+								value={selectedCountry}
+								onChange={(value) => {
+									setSelectedCountry(value);
+									setSelectedState(null);
+									setSelectedCity(null);
+									setSearchStates((prev) => ({
+										...prev,
+										country_id: parseInt(value.value) || 0,
+									}));
+								}}
+								searchInputValue={searchCountry.search ?? ""}
+								onSearchInputChange={(value) => {
+									setSearchCountry((prev) => ({ ...prev, search: value }));
+								}}
+								className="[&>input]:border-[#282828]"
+							/>
+							<div className="flex flex-col md:flex-row gap-4">
+								<DropdownSearch
+									label="State"
+									id="state_id"
+									name="state_id"
+									placeholder="Choose State"
+									dropdownItems={
+										dataStates
+											? dataStates.results.map((item) => ({
+													label: item.name,
+													value: item.id.toString(),
+												}))
+											: []
+									}
+									value={selectedState}
+									onChange={(value) => {
+										setSelectedState(value);
+										setSelectedCity(null);
+										setSearchCities((prev) => ({
+											...prev,
+											state_id: parseInt(value.value) || 0,
+										}));
+									}}
+									searchInputValue={searchStates.search ?? ""}
+									onSearchInputChange={(value) => {
+										setSearchStates((prev) => ({ ...prev, search: value }));
+									}}
+									disabled={!selectedCountry}
+									className="[&>input]:border-[#282828]"
+								/>
+								<DropdownSearch
+									label="City"
+									id="city_id"
+									name="city_id"
+									placeholder="Choose City"
+									dropdownItems={
+										dataCities
+											? dataCities.results.map((item) => ({
+													label: item.name,
+													value: item.id.toString(),
+												}))
+											: []
+									}
+									value={selectedCity}
+									onChange={(value) => {
+										setSelectedCity(value);
+										setSearchCities((prev) => ({
+											...prev,
+											search: null,
+										}));
+									}}
+									searchInputValue={searchCities.search ?? ""}
+									onSearchInputChange={(value) => {
+										setSearchCities((prev) => ({ ...prev, search: value }));
+									}}
+									disabled={!selectedState || !selectedCountry}
+									className="[&>input]:border-[#282828]"
+								/>
+							</div>
+							<Textarea
+								label="Address"
+								id="address"
+								name="address"
+								placeholder="Enter your address"
+								defaultValue={userProfile.address || ""}
+								className="[&>textarea]:border-[#282828]"
+							/>
+							<Checkbox
+								id="share_my_location"
+								name="share_my_location"
+								label="Share My Location"
+								value={shareLocation}
+								onChange={setShareLocation}
+								labelClassName="text-sm text-[#282828]"
+							/>
+						</div>
+					</AccordionSection>
+
+					{/* Social Media Section */}
+					<AccordionSection
+						title="Social Media"
+						icon={<GlobeIcon />}
+						isOpen={openSections.social}
+						onToggle={() => toggleSection("social")}
+					>
+						<div className="flex flex-col gap-4 pt-2">
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="Website / Portfolio"
+									id="website"
+									name="website"
+									placeholder="https://yourwebsite.id"
+									defaultValue={userProfile.website || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Input
+									label="Github Username"
+									id="github_username"
+									name="github_username"
+									placeholder="https://github.com/username"
+									defaultValue={userProfile.github_username || ""}
+									inputClassName="border-[#282828]"
+								/>
+							</div>
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="Facebook Username"
+									id="facebook_username"
+									name="facebook_username"
+									placeholder="https://facebook.com/username"
+									defaultValue={userProfile.facebook_username || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Input
+									label="LinkedIn Username"
+									id="linkedin_username"
+									name="linkedin_username"
+									placeholder="https://linkedin.com/in/username"
+									defaultValue={userProfile.linkedin_username || ""}
+									inputClassName="border-[#282828]"
+								/>
+							</div>
+							<div className="flex flex-col md:flex-row gap-4">
+								<Input
+									label="X/Twitter Username"
+									id="twitter_username"
+									name="twitter_username"
+									placeholder="https://x.com/username"
+									defaultValue={userProfile.twitter_username || ""}
+									inputClassName="border-[#282828]"
+								/>
+								<Input
+									label="Instagram Username"
+									id="instagram_username"
+									name="instagram_username"
+									placeholder="https://instagram.com/username"
+									defaultValue={userProfile.instagram_username || ""}
+									inputClassName="border-[#282828]"
+								/>
+							</div>
+							<Checkbox
+								id="share_my_public_social_media"
+								name="share_my_public_social_media"
+								label="Share to Public My Social Media"
+								value={shareSocial}
+								onChange={setShareSocial}
+								labelClassName="text-sm text-[#282828]"
+							/>
+						</div>
+					</AccordionSection>
+
+					{/* Participant Section */}
+					<AccordionSection
+						title="Participant"
+						icon={<UsersIcon />}
+						isOpen={openSections.participant}
+						onToggle={() => toggleSection("participant")}
+					>
+						<div className="flex flex-col gap-4 pt-2">
+							<Input
+								label="Participant Type"
+								id="participant_type"
+								name="participant_type"
+								placeholder="Participant Type"
+								defaultValue={userProfile.participant_type || ""}
+								readonly
+								inputClassName="border-[#282828]"
+							/>
+							<Checkbox
+								id="coc_acknowledged"
+								name="coc_acknowledged"
+								label={
+									<div>
+										I acknowledge the{" "}
+										<a
+											href="/code-of-conduct"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="underline text-blue-500"
+										>
+											Code of Conduct
+										</a>
+									</div>
+								}
+								value={cocAcknowledged}
+								onChange={setCocAcknowledged}
+								labelClassName="text-sm text-[#282828]"
+							/>
+							<Checkbox
+								id="terms_agreed"
+								name="terms_agreed"
+								label={
+									<div>
+										I agree to the{" "}
+										<a
+											href="/terms-of-service"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="underline text-blue-500"
+										>
+											Terms of Service
+										</a>
+									</div>
+								}
+								value={termsAgreed}
+								onChange={setTermsAgreed}
+								labelClassName="text-sm text-[#282828]"
+							/>
+							<Checkbox
+								id="privacy_agreed"
+								name="privacy_agreed"
+								label={
+									<div>
+										I agree to the{" "}
+										<a
+											href="/privacy-policy"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="underline text-blue-500"
+										>
+											Privacy Policy
+										</a>
+									</div>
+								}
+								value={privacyAgreed}
+								onChange={setPrivacyAgreed}
+								labelClassName="text-sm text-[#282828]"
+							/>
+							<Checkbox
+								id="share_my_data_to_sponsor"
+								name="share_my_data_to_sponsor"
+								label="OPT-IN Share my data to sponsor (optional)"
+								value={shareDataToSponsor}
+								onChange={setShareDataToSponsor}
+								labelClassName="text-sm text-[#282828]"
+							/>
+							<Checkbox
+								id="retain_my_data_for_next_pycon"
+								name="retain_my_data_for_next_pycon"
+								label="OPT-IN Retain my data for next PyCon ID (optional)"
+								value={retainData}
+								onChange={setRetainData}
+								labelClassName="text-sm text-[#282828]"
+							/>
+						</div>
+					</AccordionSection>
+
+					{/* Save Button */}
+					<div className="flex justify-center pt-8 pb-4">
+						<button
+							type="submit"
+							className="flex items-center gap-2 bg-[#282828] text-[#F1F2F3] px-6 py-3 rounded-lg font-medium hover:bg-[#3a3a3a] transition-colors"
+						>
 							<img
-								src="/svg/dashboard/upload-profile-picture.svg"
+								src="/svg/dashboard/save-changes.svg"
 								alt=""
 								width="20"
 								height="20"
 							/>
-						</div>
-					</label>
-				</div>
-
-				{/* Account Section */}
-				<div>
-					<a href="/auth/dashboard" className="underline text-blue-500">
-						Dashboard
-					</a>
-				</div>
-				<AccordionSection
-					title="Account"
-					icon={<UserIcon />}
-					isOpen={openSections.account}
-					onToggle={() => toggleSection("account")}
-				>
-					<div className="flex flex-col gap-4 pt-2">
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="First Name *"
-								id="first_name"
-								name="first_name"
-								placeholder="Enter your first name"
-								defaultValue={userProfile.first_name || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Input
-								label="Last Name *"
-								id="last_name"
-								name="last_name"
-								placeholder="Enter your last name"
-								defaultValue={userProfile.last_name || ""}
-								inputClassName="border-[#282828]"
-							/>
-						</div>
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="Email Address"
-								id="email"
-								name="email"
-								placeholder="e.g: hello@example.com"
-								defaultValue={userProfile.email || ""}
-								readonly
-								inputClassName="border-[#282828]"
-							/>
-							<Input
-								label="Phone Number"
-								id="phone"
-								name="phone"
-								placeholder="+62"
-								defaultValue={userProfile.phone || ""}
-								inputClassName="border-[#282828]"
-							/>
-						</div>
-						<Checkbox
-							id="share_my_email_and_phone_number"
-							name="share_my_email_and_phone_number"
-							label="Share your email and phone number"
-							value={shareEmailPhone}
-							onChange={setShareEmailPhone}
-							labelClassName="text-sm text-[#282828]"
-						/>
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="Experience (Years)"
-								id="experience"
-								name="experience"
-								placeholder="Enter years of experience"
-								type="number"
-								defaultValue={userProfile.experience?.toString() || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Dropdown
-								label="T-Shirt Size"
-								id="t_shirt_size"
-								name="t_shirt_size"
-								placeholder="Choose T-Shirt Size"
-								dropdownItems={tShirtSizes}
-								value={userProfile.t_shirt_size || ""}
-								onChange={() => {}}
-								className="[&>div]:border-[#282828]"
-							/>
-						</div>
-						<div className="flex flex-col md:flex-row gap-4">
-							<Dropdown
-								label="Gender"
-								id="gender"
-								name="gender"
-								placeholder="Choose Gender"
-								dropdownItems={genderOptions}
-								value={userProfile.gender || ""}
-								onChange={() => {}}
-								className="[&>div]:border-[#282828]"
-							/>
-							<Input
-								label="Date of Birth"
-								id="date_of_birth"
-								name="date_of_birth"
-								placeholder="24/12/2003"
-								type="date"
-								defaultValue={formatDateForInput(userProfile.date_of_birth)}
-								inputClassName="border-[#282828]"
-							/>
-						</div>
-						<Textarea
-							label="Bio / About you *"
-							id="bio"
-							name="bio"
-							placeholder="Tell us about yourself"
-							defaultValue={userProfile.bio || ""}
-							className="[&>textarea]:border-[#282828]"
-						/>
+							Save Changes
+						</button>
 					</div>
-				</AccordionSection>
-
-				{/* Jobs Section */}
-				<AccordionSection
-					title="Jobs"
-					icon={<BriefcaseIcon />}
-					isOpen={openSections.jobs}
-					onToggle={() => toggleSection("jobs")}
-				>
-					<div className="flex flex-col gap-4 pt-2">
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="Job Title *"
-								id="job_title"
-								name="job_title"
-								placeholder="Enter your job title"
-								defaultValue={userProfile.job_title || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Dropdown
-								label="Job Categories *"
-								id="job_category"
-								name="job_category"
-								placeholder="Choose Job Categories"
-								dropdownItems={jobs.results}
-								value={userProfile.job_category || ""}
-								onChange={() => {}}
-								className="[&>div]:border-[#282828]"
-							/>
-						</div>
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="Company Organization"
-								id="company"
-								name="company"
-								placeholder="Enter your company"
-								defaultValue={userProfile.company || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Dropdown
-								label="Industry Categories"
-								id="industry_categories"
-								name="industry_categories"
-								placeholder="Choose Industry Categories"
-								dropdownItems={industries.results}
-								value={userProfile.industry_categories || ""}
-								onChange={() => {}}
-								className="[&>div]:border-[#282828]"
-							/>
-						</div>
-						<Checkbox
-							id="share_my_job_and_company"
-							name="share_my_job_and_company"
-							label="Share My Job and Company"
-							value={shareJobCompany}
-							onChange={setShareJobCompany}
-							labelClassName="text-sm text-[#282828]"
-						/>
-					</div>
-				</AccordionSection>
-
-				{/* Address Section */}
-				<AccordionSection
-					title="Address"
-					icon={<MapPinIcon />}
-					isOpen={openSections.address}
-					onToggle={() => toggleSection("address")}
-				>
-					<div className="flex flex-col gap-4 pt-2">
-						<DropdownSearch
-							label="Country *"
-							id="country_id"
-							name="country_id"
-							placeholder="Choose Country"
-							dropdownItems={
-								dataCountry
-									? dataCountry.results.map((item) => ({
-											label: item.name,
-											value: item.id.toString(),
-										}))
-									: []
-							}
-							value={selectedCountry}
-							onChange={(value) => {
-								setSelectedCountry(value);
-								setSelectedState(null);
-								setSelectedCity(null);
-								setSearchStates((prev) => ({
-									...prev,
-									country_id: parseInt(value.value) || 0,
-								}));
-							}}
-							searchInputValue={searchCountry.search ?? ""}
-							onSearchInputChange={(value) => {
-								setSearchCountry((prev) => ({ ...prev, search: value }));
-							}}
-							className="[&>input]:border-[#282828]"
-						/>
-						<div className="flex flex-col md:flex-row gap-4">
-							<DropdownSearch
-								label="State"
-								id="state_id"
-								name="state_id"
-								placeholder="Choose State"
-								dropdownItems={
-									dataStates
-										? dataStates.results.map((item) => ({
-												label: item.name,
-												value: item.id.toString(),
-											}))
-										: []
-								}
-								value={selectedState}
-								onChange={(value) => {
-									setSelectedState(value);
-									setSelectedCity(null);
-									setSearchCities((prev) => ({
-										...prev,
-										state_id: parseInt(value.value) || 0,
-									}));
-								}}
-								searchInputValue={searchStates.search ?? ""}
-								onSearchInputChange={(value) => {
-									setSearchStates((prev) => ({ ...prev, search: value }));
-								}}
-								disabled={!selectedCountry}
-								className="[&>input]:border-[#282828]"
-							/>
-							<DropdownSearch
-								label="City"
-								id="city_id"
-								name="city_id"
-								placeholder="Choose City"
-								dropdownItems={
-									dataCities
-										? dataCities.results.map((item) => ({
-												label: item.name,
-												value: item.id.toString(),
-											}))
-										: []
-								}
-								value={selectedCity}
-								onChange={(value) => {
-									setSelectedCity(value);
-									setSearchCities((prev) => ({
-										...prev,
-										search: null,
-									}));
-								}}
-								searchInputValue={searchCities.search ?? ""}
-								onSearchInputChange={(value) => {
-									setSearchCities((prev) => ({ ...prev, search: value }));
-								}}
-								disabled={!selectedState || !selectedCountry}
-								className="[&>input]:border-[#282828]"
-							/>
-						</div>
-						<Textarea
-							label="Address"
-							id="address"
-							name="address"
-							placeholder="Enter your address"
-							defaultValue={userProfile.address || ""}
-							className="[&>textarea]:border-[#282828]"
-						/>
-						<Checkbox
-							id="share_my_location"
-							name="share_my_location"
-							label="Share My Location"
-							value={shareLocation}
-							onChange={setShareLocation}
-							labelClassName="text-sm text-[#282828]"
-						/>
-					</div>
-				</AccordionSection>
-
-				{/* Social Media Section */}
-				<AccordionSection
-					title="Social Media"
-					icon={<GlobeIcon />}
-					isOpen={openSections.social}
-					onToggle={() => toggleSection("social")}
-				>
-					<div className="flex flex-col gap-4 pt-2">
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="Website / Portfolio"
-								id="website"
-								name="website"
-								placeholder="https://yourwebsite.id"
-								defaultValue={userProfile.website || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Input
-								label="Github Username"
-								id="github_username"
-								name="github_username"
-								placeholder="https://github.com/username"
-								defaultValue={userProfile.github_username || ""}
-								inputClassName="border-[#282828]"
-							/>
-						</div>
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="Facebook Username"
-								id="facebook_username"
-								name="facebook_username"
-								placeholder="https://facebook.com/username"
-								defaultValue={userProfile.facebook_username || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Input
-								label="LinkedIn Username"
-								id="linkedin_username"
-								name="linkedin_username"
-								placeholder="https://linkedin.com/in/username"
-								defaultValue={userProfile.linkedin_username || ""}
-								inputClassName="border-[#282828]"
-							/>
-						</div>
-						<div className="flex flex-col md:flex-row gap-4">
-							<Input
-								label="X/Twitter Username"
-								id="twitter_username"
-								name="twitter_username"
-								placeholder="https://x.com/username"
-								defaultValue={userProfile.twitter_username || ""}
-								inputClassName="border-[#282828]"
-							/>
-							<Input
-								label="Instagram Username"
-								id="instagram_username"
-								name="instagram_username"
-								placeholder="https://instagram.com/username"
-								defaultValue={userProfile.instagram_username || ""}
-								inputClassName="border-[#282828]"
-							/>
-						</div>
-						<Checkbox
-							id="share_my_public_social_media"
-							name="share_my_public_social_media"
-							label="Share to Public My Social Media"
-							value={shareSocial}
-							onChange={setShareSocial}
-							labelClassName="text-sm text-[#282828]"
-						/>
-					</div>
-				</AccordionSection>
-
-				{/* Participant Section */}
-				<AccordionSection
-					title="Participant"
-					icon={<UsersIcon />}
-					isOpen={openSections.participant}
-					onToggle={() => toggleSection("participant")}
-				>
-					<div className="flex flex-col gap-4 pt-2">
-						<Input
-							label="Participant Type"
-							id="participant_type"
-							name="participant_type"
-							placeholder="Participant Type"
-							defaultValue={userProfile.participant_type || ""}
-							readonly
-							inputClassName="border-[#282828]"
-						/>
-						<Checkbox
-							id="coc_acknowledged"
-							name="coc_acknowledged"
-							label={
-								<div>
-									I acknowledge the{" "}
-									<a
-										href="/code-of-conduct"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="underline text-blue-500"
-									>
-										Code of Conduct
-									</a>
-								</div>
-							}
-							value={cocAcknowledged}
-							onChange={setCocAcknowledged}
-							labelClassName="text-sm text-[#282828]"
-						/>
-						<Checkbox
-							id="terms_agreed"
-							name="terms_agreed"
-							label={
-								<div>
-									I agree to the{" "}
-									<a
-										href="/terms-of-service"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="underline text-blue-500"
-									>
-										Terms of Service
-									</a>
-								</div>
-							}
-							value={termsAgreed}
-							onChange={setTermsAgreed}
-							labelClassName="text-sm text-[#282828]"
-						/>
-						<Checkbox
-							id="privacy_agreed"
-							name="privacy_agreed"
-							label={
-								<div>
-									I agree to the{" "}
-									<a
-										href="/privacy-policy"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="underline text-blue-500"
-									>
-										Privacy Policy
-									</a>
-								</div>
-							}
-							value={privacyAgreed}
-							onChange={setPrivacyAgreed}
-							labelClassName="text-sm text-[#282828]"
-						/>
-						<Checkbox
-							id="share_my_data_to_sponsor"
-							name="share_my_data_to_sponsor"
-							label="OPT-IN Share my data to sponsor (optional)"
-							value={shareDataToSponsor}
-							onChange={setShareDataToSponsor}
-							labelClassName="text-sm text-[#282828]"
-						/>
-						<Checkbox
-							id="retain_my_data_for_next_pycon"
-							name="retain_my_data_for_next_pycon"
-							label="OPT-IN Retain my data for next PyCon ID (optional)"
-							value={retainData}
-							onChange={setRetainData}
-							labelClassName="text-sm text-[#282828]"
-						/>
-					</div>
-				</AccordionSection>
-
-				{/* Save Button */}
-				<div className="flex justify-center pt-8 pb-4">
-					<button
-						type="submit"
-						className="flex items-center gap-2 bg-[#282828] text-[#F1F2F3] px-6 py-3 rounded-lg font-medium hover:bg-[#3a3a3a] transition-colors"
-					>
-						<img
-							src="/svg/dashboard/save-changes.svg"
-							alt=""
-							width="20"
-							height="20"
-						/>
-						Save Changes
-					</button>
-				</div>
-			</form>
+				</form>
+			</div>
 			<Footer />
 		</div>
 	);

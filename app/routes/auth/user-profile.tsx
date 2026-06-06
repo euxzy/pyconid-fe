@@ -67,6 +67,15 @@ const clientErrorSchema = z.object({
 	message: z.string(),
 });
 
+export type UserProfileActionData = {
+	success: boolean;
+	clientError: {
+		message: string;
+		errors: Array<{ field: string; message: string }>;
+	} | null;
+	errors: Record<string, unknown> | null;
+};
+
 export const action = async ({ request }: Route.ActionArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
 	if (!credentials) {
@@ -210,48 +219,6 @@ export default function UserProfilePage(componentProps: Route.ComponentProps) {
 				jobs={componentProps.loaderData.jobs}
 				actionData={componentProps.actionData}
 			/>
-		</MainLayout>
-	);
-}
-
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-	const revalidator = useRevalidator();
-
-	let title = "Something went wrong";
-	let message = "An unexpected error occurred. Please try again.";
-
-	if (isRouteErrorResponse(error)) {
-		title = `Error ${error.status}`;
-		message = error.statusText || message;
-	} else if (error instanceof Error) {
-		message = error.message;
-	}
-
-	const isNetworkError =
-		message.includes("fetch failed") ||
-		message.includes("Connect Timeout") ||
-		message.includes("UND_ERR_CONNECT_TIMEOUT");
-
-	if (isNetworkError) {
-		title = "Connection failed";
-		message =
-			"Unable to connect to the server. Please check your internet connection and try again.";
-	}
-
-	return (
-		<MainLayout className="bg-[#FAFAFA]">
-			<div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-24 text-center">
-				<h1 className="text-3xl font-bold text-[#282828] mb-4">{title}</h1>
-				<p className="text-lg text-gray-600 mb-8">{message}</p>
-				<button
-					type="button"
-					onClick={() => revalidator.revalidate()}
-					disabled={revalidator.state === "loading"}
-					className="inline-flex items-center gap-2 bg-[#282828] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#3a3a3a] transition-colors disabled:opacity-50"
-				>
-					{revalidator.state === "loading" ? "Retrying..." : "Try Again"}
-				</button>
-			</div>
 		</MainLayout>
 	);
 }
