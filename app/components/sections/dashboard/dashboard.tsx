@@ -1,6 +1,7 @@
 import { Briefcase, Building2, MapPin, Search, User } from "lucide-react";
 import type { ReactNode } from "react";
-import { NavLink } from "react-router";
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router";
 import type { GetUserProfileSchema } from "~/api/schema/user_profile";
 import { Footer } from "~/components/layouts/navigation/footer";
 import { parseProfileImage } from "~/lib/utils";
@@ -14,6 +15,16 @@ export const DashboardSection = ({
 	me: { id: string; username: string; participant_type?: string | null };
 }) => {
 	const rootData = useRootLoaderData();
+	const navigate = useNavigate();
+	const [isNavigating, setIsNavigating] = useState(false);
+
+	const handleNavigateToProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		e.preventDefault();
+		setIsNavigating(true);
+		setTimeout(() => {
+			navigate("/auth/user-profile");
+		}, 500);
+	};
 
 	const fullName = [userProfile.first_name, userProfile.last_name]
 		.filter(Boolean)
@@ -137,6 +148,7 @@ export const DashboardSection = ({
 					{/* Change Button */}
 					<NavLink
 						to="/auth/user-profile"
+						onClick={handleNavigateToProfile}
 						className="absolute top-12 right-14 flex items-center gap-2 text-[#282828] hover:opacity-70 transition-opacity z-10"
 					>
 						<img
@@ -328,6 +340,23 @@ export const DashboardSection = ({
 					</div>
 				</div>
 			</div>
+			{isNavigating && (
+				<div
+					className="fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-md"
+					style={{
+						background:
+							"radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%)",
+					}}
+				>
+					<div className="flex flex-col items-center gap-6">
+						<img
+							src="/images/logo-pycon-2026-light.png"
+							alt="PyCon ID 2026"
+							className="h-16 lg:h-20 animate-pulse"
+						/>
+					</div>
+				</div>
+			)}
 			<Footer />
 		</div>
 	);

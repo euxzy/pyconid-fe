@@ -33,13 +33,11 @@ export const UserProfileSection = ({
 	userProfile,
 	industries,
 	jobs,
-	participantTypes,
 	actionData,
 }: {
 	userProfile: GetUserProfileSchema;
 	industries: IndustriesSchema;
 	jobs: JobsSchema;
-	participantTypes: ParticipantTypeSchema;
 	actionData: any;
 }) => {
 	const submit = useSubmit();
@@ -340,7 +338,6 @@ export const UserProfileSection = ({
 						<input
 							type="file"
 							id="profile_picture"
-							name="profile_picture"
 							hidden
 							onChange={onImageChange}
 							accept="image/*"
@@ -390,7 +387,7 @@ export const UserProfileSection = ({
 								inputClassName="border-[#282828]"
 							/>
 							<Input
-								label="Last Name"
+								label="Last Name *"
 								id="last_name"
 								name="last_name"
 								placeholder="Enter your last name"
@@ -400,7 +397,7 @@ export const UserProfileSection = ({
 						</div>
 						<div className="flex flex-col md:flex-row gap-4">
 							<Input
-								label="Email Address *"
+								label="Email Address"
 								id="email"
 								name="email"
 								placeholder="e.g: hello@example.com"
@@ -409,7 +406,7 @@ export const UserProfileSection = ({
 								inputClassName="border-[#282828]"
 							/>
 							<Input
-								label="Phone Number *"
+								label="Phone Number"
 								id="phone"
 								name="phone"
 								placeholder="+62"
@@ -427,7 +424,7 @@ export const UserProfileSection = ({
 						/>
 						<div className="flex flex-col md:flex-row gap-4">
 							<Input
-								label="Experience (Years) *"
+								label="Experience (Years)"
 								id="experience"
 								name="experience"
 								placeholder="Enter years of experience"
@@ -436,7 +433,7 @@ export const UserProfileSection = ({
 								inputClassName="border-[#282828]"
 							/>
 							<Dropdown
-								label="T-Shirt Size *"
+								label="T-Shirt Size"
 								id="t_shirt_size"
 								name="t_shirt_size"
 								placeholder="Choose T-Shirt Size"
@@ -448,7 +445,7 @@ export const UserProfileSection = ({
 						</div>
 						<div className="flex flex-col md:flex-row gap-4">
 							<Dropdown
-								label="Gender *"
+								label="Gender"
 								id="gender"
 								name="gender"
 								placeholder="Choose Gender"
@@ -458,7 +455,7 @@ export const UserProfileSection = ({
 								className="[&>div]:border-[#282828]"
 							/>
 							<Input
-								label="Date of Birth *"
+								label="Date of Birth"
 								id="date_of_birth"
 								name="date_of_birth"
 								placeholder="24/12/2003"
@@ -508,7 +505,7 @@ export const UserProfileSection = ({
 						</div>
 						<div className="flex flex-col md:flex-row gap-4">
 							<Input
-								label="Company Organization *"
+								label="Company Organization"
 								id="company"
 								name="company"
 								placeholder="Enter your company"
@@ -516,7 +513,7 @@ export const UserProfileSection = ({
 								inputClassName="border-[#282828]"
 							/>
 							<Dropdown
-								label="Industry Categories *"
+								label="Industry Categories"
 								id="industry_categories"
 								name="industry_categories"
 								placeholder="Choose Industry Categories"
@@ -576,7 +573,7 @@ export const UserProfileSection = ({
 						/>
 						<div className="flex flex-col md:flex-row gap-4">
 							<DropdownSearch
-								label="State *"
+								label="State"
 								id="state_id"
 								name="state_id"
 								placeholder="Choose State"
@@ -605,7 +602,7 @@ export const UserProfileSection = ({
 								className="[&>input]:border-[#282828]"
 							/>
 							<DropdownSearch
-								label="City *"
+								label="City"
 								id="city_id"
 								name="city_id"
 								placeholder="Choose City"
@@ -634,7 +631,7 @@ export const UserProfileSection = ({
 							/>
 						</div>
 						<Textarea
-							label="Address *"
+							label="Address"
 							id="address"
 							name="address"
 							placeholder="Enter your address"

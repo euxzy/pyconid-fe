@@ -73,14 +73,19 @@ export const action = async ({ request }: Route.ActionArgs) => {
 		return redirect("/login");
 	}
 	const formData = new FormData();
+	let hasProfilePicture = false;
 	for (const [key, value] of (await request.formData()).entries()) {
-		if (
-			key === "profile_picture" &&
-			value &&
-			typeof value !== "string" &&
-			(value?.size || 0) > 0
-		) {
-			formData.append(key, value);
+		if (key === "profile_picture") {
+			if (
+				!hasProfilePicture &&
+				value &&
+				typeof value !== "string" &&
+				(value?.size || 0) > 0
+			) {
+				formData.append(key, value);
+				hasProfilePicture = true;
+			}
+			continue;
 		}
 		if (typeof value === "string" && value.trim() !== "") {
 			formData.append(key, value);
@@ -153,22 +158,27 @@ export const action = async ({ request }: Route.ActionArgs) => {
 	}
 	const res = await updateUserProfile({ request, formData });
 	if (!res.ok) {
-		if (res.status === 400) {
-			const text = await res.text();
-			console.log({ status: res.status, message: text });
-			const json = JSON.parse(text);
+		const text = await res.text();
+		console.log({ status: res.status, body: text });
+
+		let json: Record<string, unknown> | null = null;
+		try {
+			json = JSON.parse(text);
+		} catch {
+			json = null;
+		}
+
+		if (res.status === 400 && json) {
 			return {
 				success: false,
 				clientError: clientErrorSchema.parse({
 					errors: [],
-					message: json.message,
+					message: (json as { message?: string }).message || text,
 				}),
 				errors: null,
 			};
 		}
-		if (res.status === 422) {
-			const json = await res.json();
-			console.log({ status: res.status, message: JSON.stringify(json) });
+		if (res.status === 422 && json) {
 			const clientError = clientErrorSchema.parse(json);
 			clientError.message = "Invalid data, please check the form fields.";
 			return {
@@ -177,12 +187,10 @@ export const action = async ({ request }: Route.ActionArgs) => {
 				errors: null,
 			};
 		}
-		const json = await res.json();
-		console.log({ status: res.status, json: JSON.stringify(json, null, 2) });
 		return {
 			success: false,
 			clientError: null,
-			errors: json,
+			errors: json ?? { message: text || `Server error ${res.status}` },
 		};
 	}
 
@@ -200,7 +208,6 @@ export default function UserProfilePage(componentProps: Route.ComponentProps) {
 				userProfile={componentProps.loaderData.userProfile}
 				industries={componentProps.loaderData.industries}
 				jobs={componentProps.loaderData.jobs}
-				participantTypes={componentProps.loaderData.participantTypes}
 				actionData={componentProps.actionData}
 			/>
 		</MainLayout>
