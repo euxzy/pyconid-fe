@@ -38,7 +38,7 @@ export const UserProfileSection = ({
 	userProfile: GetUserProfileSchema;
 	industries: IndustriesSchema;
 	jobs: JobsSchema;
-	actionData: UserProfileActionData;
+	actionData: UserProfileActionData | undefined;
 }) => {
 	const submit = useSubmit();
 	const rootData = useRootLoaderData();

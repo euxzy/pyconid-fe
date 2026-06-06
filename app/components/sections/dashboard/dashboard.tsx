@@ -4,15 +4,18 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import type { GetUserProfileSchema } from "~/api/schema/user_profile";
 import { Footer } from "~/components/layouts/navigation/footer";
+import { Hero } from "~/components/shared/hero/hero";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
 
 export const DashboardSection = ({
 	userProfile,
 	me,
+	hasPaidTicket,
 }: {
 	userProfile: GetUserProfileSchema;
 	me: { id: string; username: string; participant_type?: string | null };
+	hasPaidTicket: boolean;
 }) => {
 	const rootData = useRootLoaderData();
 	const navigate = useNavigate();
@@ -48,21 +51,17 @@ export const DashboardSection = ({
 
 	return (
 		<div className="min-h-[calc(100dvh-120px)]">
-			{/* Jumbotron */}
-			<div className="bg-[#282828] relative overflow-hidden">
-				<div className="max-w-[1280px] mx-auto px-6 lg:px-12 pt-24 pb-16 lg:pt-32 lg:pb-24 relative">
-					{/* Navigation tabs */}
-					<div className="flex items-center gap-4 mb-8">
-						<NavLink
-							to="/auth/user-profile"
-							className="flex items-center gap-3 px-4 py-2 relative"
-						>
-							<User className="w-5 h-5 text-[#FAFAFA]" />
-							<span className="text-sm font-bold text-[#FAFAFA]">
-								My Profile
-							</span>
-							<div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#FAFAFA]" />
-						</NavLink>
+			<div className="relative">
+				<div className="flex items-center gap-4 px-6 lg:px-12 pt-6 absolute top-20 left-0 right-0 z-20">
+					<NavLink
+						to="/auth/user-profile"
+						className="flex items-center gap-3 px-4 py-2 relative"
+					>
+						<User className="w-5 h-5 text-[#FAFAFA]" />
+						<span className="text-sm font-bold text-[#FAFAFA]">My Profile</span>
+						<div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#FAFAFA]" />
+					</NavLink>
+					{hasPaidTicket && (
 						<NavLink
 							to="/auth/user-ticket"
 							className="flex items-center gap-3 px-4 py-2 text-[#F1F2F3]/70 hover:text-white transition-colors"
@@ -76,26 +75,9 @@ export const DashboardSection = ({
 							/>
 							<span className="text-sm font-bold">My Tickets</span>
 						</NavLink>
-					</div>
-
-					{/* Heading + Logo */}
-					<div className="flex items-end justify-between">
-						<h1 className="text-[60px] font-bold text-[#F1F2F3] leading-tight tracking-[-0.005em]">
-							My Profile
-						</h1>
-						<img
-							src="/images/logo-pycon-2026-light.png"
-							alt="PyCon ID 2026"
-							className="h-12 hidden lg:block"
-						/>
-					</div>
-
-					{/* Decorative circle */}
-					<div
-						className="absolute rounded-full border-[75px] border-[#909090] opacity-20 pointer-events-none hidden lg:block"
-						style={{ width: 522, height: 522, right: -80, top: 21 }}
-					/>
+					)}
 				</div>
+				<Hero text="My Profile" />
 			</div>
 
 			{/* Main Card */}
