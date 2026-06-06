@@ -29,7 +29,7 @@ import { Textarea } from "../dashboard/textarea";
 
 type SectionKey = "account" | "jobs" | "address" | "social" | "participant";
 
-export const ProfileDashboardSection = ({
+export const UserProfileSection = ({
 	userProfile,
 	industries,
 	jobs,
@@ -733,16 +733,14 @@ export const ProfileDashboardSection = ({
 					onToggle={() => toggleSection("participant")}
 				>
 					<div className="flex flex-col gap-4 pt-2">
-						<Dropdown
+						<Input
 							label="Participant Type"
 							id="participant_type"
 							name="participant_type"
-							placeholder="Non-Participant"
-							dropdownItems={participantTypes.results}
-							value={userProfile.participant_type || ""}
-							onChange={() => {}}
-							className="[&>div]:border-[#282828]"
-							disabled
+							placeholder="Participant Type"
+							defaultValue={userProfile.participant_type || ""}
+							readonly
+							inputClassName="border-[#282828]"
 						/>
 						<Checkbox
 							id="coc_acknowledged"

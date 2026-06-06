@@ -15,9 +15,9 @@ import {
 	updateUserProfileSchema,
 } from "~/api/schema/user_profile";
 import { Main as MainLayout } from "~/components/layouts/app/main";
-import { ProfileDashboardSection } from "~/components/sections/user-profile/user-profile";
+import { UserProfileSection } from "~/components/sections/user-profile/user-profile";
 import { authenticator } from "~/services/auth/$.server";
-import type { Route } from "./+types/dashboard";
+import type { Route } from "./+types/user-profile";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
@@ -193,10 +193,10 @@ export const action = async ({ request }: Route.ActionArgs) => {
 	};
 };
 
-export default function DashboardPage(componentProps: Route.ComponentProps) {
+export default function UserProfilePage(componentProps: Route.ComponentProps) {
 	return (
 		<MainLayout className="bg-[#FAFAFA]">
-			<ProfileDashboardSection
+			<UserProfileSection
 				userProfile={componentProps.loaderData.userProfile}
 				industries={componentProps.loaderData.industries}
 				jobs={componentProps.loaderData.jobs}

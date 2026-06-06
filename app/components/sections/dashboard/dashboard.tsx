@@ -6,7 +6,7 @@ import { Footer } from "~/components/layouts/navigation/footer";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
 
-export const Dashboard = ({
+export const DashboardSection = ({
 	userProfile,
 	me,
 }: {

@@ -4,9 +4,9 @@ import { getUserProfile } from "~/api/endpoint/.server/user_profile";
 import { meSchema } from "~/api/schema/auth";
 import { getUserProfileSchema } from "~/api/schema/user_profile";
 import { Main as MainLayout } from "~/components/layouts/app/main";
-import { Dashboard } from "~/components/sections/dashboard/dashboard";
+import { DashboardSection } from "~/components/sections/dashboard/dashboard";
 import { authenticator } from "~/services/auth/$.server";
-import type { Route } from "./+types/user-profile";
+import type { Route } from "./+types/dashboard";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
@@ -49,12 +49,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 	}
 };
 
-export default function AccountProfilePage(
-	componentProps: Route.ComponentProps,
-) {
+export default function DashboardPage(componentProps: Route.ComponentProps) {
 	return (
 		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
-			<Dashboard
+			<DashboardSection
 				userProfile={componentProps.loaderData.userProfile}
 				me={componentProps.loaderData.me}
 			/>
