@@ -1,10 +1,8 @@
 import { redirect } from "react-router";
 import { getMe } from "~/api/endpoint/.server/auth";
 import { getUserProfile } from "~/api/endpoint/.server/user_profile";
-import { getUserTicket } from "~/api/endpoint/.server/user_ticket";
 import { meSchema } from "~/api/schema/auth";
 import { getUserProfileSchema } from "~/api/schema/user_profile";
-import { userTicketResponseSchema } from "~/api/schema/user_ticket";
 import { Main as MainLayout } from "~/components/layouts/app/main";
 import { DashboardSection } from "~/components/sections/dashboard/dashboard";
 import { authenticator } from "~/services/auth/$.server";
@@ -41,19 +39,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		const userProfile = getUserProfileSchema.parse(jsonUserProfile);
 		const me = meSchema.parse(await dataMe.json());
 
-		let hasPaidTicket = false;
-		try {
-			const dataUserTicket = await getUserTicket({ request });
-			if (dataUserTicket.status === 200) {
-				const jsonUserTicket = await dataUserTicket.json();
-				const userTicket = userTicketResponseSchema.parse(jsonUserTicket);
-				hasPaidTicket = !!userTicket.data.payment?.paid_at;
-			}
-		} catch {
-			hasPaidTicket = false;
-		}
-
-		return { userProfile, me, hasPaidTicket };
+		return { userProfile, me };
 	} catch (err) {
 		if (err instanceof Response) {
 			throw err;
@@ -69,7 +55,6 @@ export default function DashboardPage(componentProps: Route.ComponentProps) {
 			<DashboardSection
 				userProfile={componentProps.loaderData.userProfile}
 				me={componentProps.loaderData.me}
-				hasPaidTicket={componentProps.loaderData.hasPaidTicket}
 			/>
 		</MainLayout>
 	);
