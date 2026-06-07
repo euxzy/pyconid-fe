@@ -18,6 +18,7 @@ import type {
 	JobsSchema,
 } from "~/api/schema/user_profile";
 import { Footer } from "~/components/layouts/navigation/footer";
+import { Hero } from "~/components/shared/hero/hero";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
 import type { UserProfileActionData } from "~/routes/auth/user-profile";
@@ -330,7 +331,10 @@ export const UserProfileSection = ({
 		(userProfile.last_name?.charAt(0).toUpperCase() || "");
 
 	return (
-		<div>
+		<div className="min-h-[calc(100dvh-120px)]">
+			<div className="relative">
+				<Hero text="Edit Profile" />
+			</div>
 			<div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-9">
 				<form onSubmit={handleSubmit} className="flex flex-col gap-8">
 					{/* Avatar */}

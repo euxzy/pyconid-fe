@@ -124,13 +124,13 @@ export const PaymentSection = ({
 										width="20"
 										height="20"
 									/>
-									<span>My Payment</span>
+									<span>My Ticket</span>
 								</span>
 							</>
 						)}
 					</NavLink>
 				</div>
-				<Hero text="My Payment" />
+				<Hero text="My Ticket" />
 			</div>
 
 			<section className="w-full mx-auto px-6 lg:px-12 py-10">

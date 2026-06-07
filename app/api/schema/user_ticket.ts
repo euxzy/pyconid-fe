@@ -9,7 +9,8 @@ export const paymentVoucherSchema = z.object({
 export const paymentDetailSchema = z.object({
 	id: z.string(),
 	amount: z.number(),
-	paid_at: z.string(), // ISO date string
+	paid_at: z.string().nullable(), // ISO date string, null if unpaid
+	created_at: z.string(), // ISO date string
 	voucher: paymentVoucherSchema.nullable().optional(),
 });
 
@@ -21,7 +22,7 @@ export const paymentDataSchema = z.object({
 });
 
 export const userTicketResponseSchema = z.object({
-	data: paymentDataSchema,
+	data: paymentDataSchema.nullable(),
 	message: z.string(),
 });
 

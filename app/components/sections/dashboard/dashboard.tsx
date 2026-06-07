@@ -1,4 +1,11 @@
-import { Briefcase, Building2, MapPin, Search, User } from "lucide-react";
+import {
+	Briefcase,
+	Building2,
+	MapPin,
+	Pencil,
+	Search,
+	User,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
@@ -169,7 +176,16 @@ export const DashboardSection = ({
 
 					<div className="relative z-10">
 						{/* Profile Header */}
-						<div className="min-h-[208px] border-b-2 border-[#282828] px-8 lg:px-12 py-8 lg:py-10 relative">
+						<div className="min-h-[140px] border-b-2 border-[#282828] px-2 lg:px-8 py-2 lg:py-4 relative">
+							{/* Snake mascot */}
+							<div className="absolute hidden lg:block top-18 right-0 w-[100px] pointer-events-none">
+								<img
+									src="/svg/dashboard-python.svg"
+									alt=""
+									className="w-full h-auto brightness-0"
+									aria-hidden="true"
+								/>
+							</div>
 							<div className="flex flex-col md:flex-row items-start gap-6">
 								{/* Avatar */}
 								<div className="w-[135px] h-[135px] rounded-full overflow-hidden bg-gray-400 flex-shrink-0">
@@ -185,20 +201,33 @@ export const DashboardSection = ({
 										</div>
 									)}
 								</div>
-
 								{/* Info */}
 								<div className="flex flex-col gap-1">
-									<h2 className="text-[34px] font-bold text-[#282828] leading-tight">
-										{fullName || me.username || "User"}
-									</h2>
-									{userProfile.email && (
-										<a
-											href={`mailto:${userProfile.email}`}
-											className="text-xl text-[#282828] underline hover:opacity-80"
+									<div className="flex flex-row items-center gap-x-4">
+										<h2 className="text-[34px] font-bold text-[#282828] leading-tight">
+											{fullName || me.username || "User"}
+										</h2>
+										{/* Change Button */}
+										<NavLink
+											to="/auth/user-profile"
+											onClick={handleNavigateToProfile}
+											className="flex items-center text-[#282828] hover:opacity-70 transition-opacity z-10"
 										>
-											{userProfile.email}
-										</a>
-									)}
+											<Pencil width="20" height="20" />
+											<span className="font-bold text-xl">Change</span>
+										</NavLink>
+									</div>
+									<div>
+										{userProfile.email && (
+											<a
+												href={`mailto:${userProfile.email}`}
+												className="text-xl text-[#282828] underline hover:opacity-80"
+											>
+												{userProfile.email}
+											</a>
+										)}
+									</div>
+
 									{userProfile.phone && (
 										<p className="text-xl text-[#282828]">
 											{userProfile.phone}
@@ -213,21 +242,6 @@ export const DashboardSection = ({
 								</div>
 							</div>
 						</div>
-
-						{/* Change Button */}
-						<NavLink
-							to="/auth/user-profile"
-							onClick={handleNavigateToProfile}
-							className="absolute top-12 right-14 flex items-center gap-2 text-[#282828] hover:opacity-70 transition-opacity z-10"
-						>
-							<img
-								src="/svg/user-profile/edit-profile.svg"
-								alt=""
-								width="20"
-								height="20"
-							/>
-							<span className="font-bold text-xl">Change</span>
-						</NavLink>
 
 						{/* Profile Info */}
 						<div className="px-8 lg:px-14 py-8 pb-10">

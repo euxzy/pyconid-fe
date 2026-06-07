@@ -202,7 +202,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 export default function UserProfilePage(componentProps: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#FAFAFA]">
+		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
 			<UserProfileSection
 				userProfile={componentProps.loaderData.userProfile}
 				industries={componentProps.loaderData.industries}

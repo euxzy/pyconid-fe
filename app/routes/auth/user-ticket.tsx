@@ -1,5 +1,7 @@
 import { redirect } from "react-router";
+import { getPayment } from "~/api/endpoint/.server/payment";
 import { getUserTicket } from "~/api/endpoint/.server/user_ticket";
+import { paymentResponseSchema } from "~/api/schema/payment";
 import { userTicketResponseSchema } from "~/api/schema/user_ticket";
 import { Main as MainLayout } from "~/components/layouts/app/main";
 import { Footer } from "~/components/layouts/navigation/footer";
@@ -23,23 +25,24 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		return redirect("/login");
 	}
 
-	const dataUserTicket = await getUserTicket({ request });
+	const [dataUserTicket, dataPayment] = await Promise.all([
+		getUserTicket({ request }),
+		getPayment({ request }),
+	]);
 	const jsonUserTicket = await dataUserTicket.json();
+	const jsonPayment = await dataPayment.json();
 	const userTicket = userTicketResponseSchema.parse(jsonUserTicket);
+	const payment = paymentResponseSchema.parse(jsonPayment);
 
 	const url = new URL(request.url);
 	const origin = url.origin;
 
-	if (!userTicket.data.payment?.paid_at) {
-		return redirect("/auth/payment");
-	}
-
-	return { userTicket, origin };
+	return { userTicket, payment, origin };
 };
 
 export default function TicketDetail(componentProps: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#F1F1F1]">
+		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
 			<UserTicketSection componentProps={componentProps} />
 			<Footer />
 		</MainLayout>
