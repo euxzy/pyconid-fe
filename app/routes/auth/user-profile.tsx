@@ -40,16 +40,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 				dataParticipant.json(),
 				dataUserProfile.json(),
 			]);
-		console.log("[Loader] Raw user profile response:", jsonUserProfile);
 		const industries = industriesSchema.parse(jsonIndustries);
 		const jobs = jobsSchema.parse(jsonJobs);
 		const participantTypes = participantTypeSchema.parse(jsonParticipant);
 		const userProfile = getUserProfileSchema.parse(jsonUserProfile);
-		console.log("[Loader] Parsed user profile:", {
-			t_shirt_size: userProfile.t_shirt_size,
-			gender: userProfile.gender,
-			date_of_birth: userProfile.date_of_birth,
-		});
 		return { industries, jobs, participantTypes, userProfile };
 	} catch (err) {
 		console.error("Dashboard loader error", err);
@@ -131,7 +125,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 		formData.append("privacy_agreed", "false");
 	}
 	const data = Object.fromEntries(formData.entries());
-	console.log({ data });
 	const fieldNameMap: Record<string, string> = {
 		state_id: "State",
 		city_id: "City",
@@ -152,7 +145,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 			formatFieldName(issue.path.join(".")),
 		);
 		const message = `Missing or invalid fields: ${missingFields.join(", ")}`;
-		console.log({ validationErrors: results.error });
 		return {
 			success: false,
 			clientError: {
@@ -168,8 +160,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 	const res = await updateUserProfile({ request, formData });
 	if (!res.ok) {
 		const text = await res.text();
-		console.log({ status: res.status, body: text });
-
 		let json: Record<string, unknown> | null = null;
 		try {
 			json = JSON.parse(text);
