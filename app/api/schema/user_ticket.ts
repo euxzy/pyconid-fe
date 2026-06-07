@@ -10,7 +10,6 @@ export const paymentDetailSchema = z.object({
 	id: z.string(),
 	amount: z.number(),
 	paid_at: z.string().nullable(), // ISO date string, null if unpaid
-	created_at: z.string(), // ISO date string
 	voucher: paymentVoucherSchema.nullable().optional(),
 });
 
