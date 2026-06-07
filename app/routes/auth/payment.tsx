@@ -23,7 +23,7 @@ export default function TicketPaymentPage(
 	componentProps: Route.ComponentProps,
 ) {
 	return (
-		<MainLayout className="bg-[#F1F1F1]">
+		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
 			<PaymentSection componentProps={componentProps} />
 			<Footer />
 		</MainLayout>
