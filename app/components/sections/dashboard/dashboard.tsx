@@ -178,7 +178,7 @@ export const DashboardSection = ({
 						{/* Profile Header */}
 						<div className="min-h-[140px] border-b-2 border-[#282828] px-2 lg:px-8 py-2 lg:py-4 relative">
 							{/* Snake mascot */}
-							<div className="absolute hidden lg:block top-18 right-0 w-[100px] pointer-events-none">
+							<div className="absolute hidden lg:block top-18 right-30 w-[100px] pointer-events-none">
 								<img
 									src="/svg/dashboard-python.svg"
 									alt=""
