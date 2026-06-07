@@ -73,7 +73,7 @@ export const Header = () => {
 					{credentials ? (
 						<div className="flex gap-4 items-center">
 							<NavLink
-								to="/auth/user-profile"
+								to="/auth/dashboard"
 								className="text-white hover:text-gray-200"
 							>
 								My Profile

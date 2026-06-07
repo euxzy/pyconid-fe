@@ -106,7 +106,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 		if (res.status >= 400 && res.status < 500) {
 			const errorData = await res.json();
-			console.log("Client error:", errorData);
 			return {
 				buy_ticket: {
 					success: false,
@@ -145,7 +144,6 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 		if (res.status >= 400 && res.status < 500) {
 			const errorData = await res.json();
-			console.log("Client error:", errorData);
 			return {
 				buy_ticket: null,
 				apply_voucher: {
