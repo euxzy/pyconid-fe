@@ -862,7 +862,7 @@ function AccordionSection({
 	onToggle: () => void;
 }) {
 	return (
-		<div className="border border-[#282828] rounded-lg overflow-hidden bg-white">
+		<div className="border border-[#282828] rounded-lg bg-white">
 			<button
 				type="button"
 				onClick={onToggle}
