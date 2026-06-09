@@ -13,9 +13,6 @@ export const CallForProposalSection: FC = () => (
 						<p>
 							<span className="text-black">Let's talk at PyCon ID 2026</span>
 						</p>
-						<div className="flex gap-x-1">
-							<p className="text-black">We are open for talks submission</p>
-						</div>
 					</div>
 					<div className="mt-[2vh]">
 						<div className="flex flex-row gap-x-10 font-sans p-2">
