@@ -65,7 +65,7 @@ export const CallForProposalSection: FC = () => (
 							<p className="font-sans font-normal text-black mt-2">
 								Please submit the proposal to our Sessionize page. Submission
 								are reviewed on a rolling basis so please check your submission
-								regularly. We Submission closed at June 6th, 2025.
+								regularly. We Submission closed at June 6th, 2026.
 							</p>
 						</div>
 					</div>
