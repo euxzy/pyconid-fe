@@ -27,6 +27,11 @@ export const CallForProposalSection: FC = () => (
 						</div>
 					</div>
 
+					<p className="mt-[1vh]">
+						<span className="text-black font-bold">Proposal Deadline:</span>{" "}
+						<span className="font-semibold text-black ">June 6th, 2026</span>
+					</p>
+
 					<button
 						className="cursor-pointer bg-black hover:bg-blue/50 text-white px-8 py-4 font-display text-lg lg:text-2xl pt-2 pr-4 pb-2 pl-4 mt-[3vh] font-bold"
 						type="button"
