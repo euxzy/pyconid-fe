@@ -1,6 +1,7 @@
 // biome-ignore-all lint: Anoying
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { useClickOutside } from "~/hooks/use-click-outside";
 
 const DropdownChevron = () => (
 	<img
@@ -41,12 +42,15 @@ export const DropdownSearch = ({
 	errorMessage?: string;
 	className?: string;
 }) => {
+	const containerRef = useRef<HTMLDivElement>(null);
 	const [isOpen, setIsOpen] = useState(false);
 	// const [selectedItem, setSelectedItem] = useState<{
 	// 	label: string;
 	// 	value: string;
 	// } | null>(value);
 	// console.log({ selectedItem });
+
+	useClickOutside(containerRef, () => setIsOpen(false));
 
 	const handleSelectItem = (item: { label: string; value: string }) => {
 		// setSelectedItem(item);
@@ -55,7 +59,7 @@ export const DropdownSearch = ({
 	};
 
 	return (
-		<div className={twMerge("w-full relative", className)}>
+		<div ref={containerRef} className={twMerge("w-full relative", className)}>
 			<label htmlFor={id} className="block mb-2 text-sm font-medium text-black">
 				{label}
 			</label>
