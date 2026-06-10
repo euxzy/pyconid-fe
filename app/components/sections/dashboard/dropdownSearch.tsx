@@ -1,7 +1,8 @@
 // biome-ignore-all lint: Anoying
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useClickOutside } from "~/hooks/use-click-outside";
+import { useDebouncedCallback } from "~/hooks/use-debounce";
 
 const DropdownChevron = () => (
 	<img
@@ -44,16 +45,13 @@ export const DropdownSearch = ({
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [isOpen, setIsOpen] = useState(false);
-	// const [selectedItem, setSelectedItem] = useState<{
-	// 	label: string;
-	// 	value: string;
-	// } | null>(value);
-	// console.log({ selectedItem });
+	const [localSearch, setLocalSearch] = useState(searchInputValue ?? "");
 
 	useClickOutside(containerRef, () => setIsOpen(false));
 
+	const debouncedNotifyParent = useDebouncedCallback(onSearchInputChange, 300);
+
 	const handleSelectItem = (item: { label: string; value: string }) => {
-		// setSelectedItem(item);
 		setIsOpen(false);
 		onChange(item);
 	};
@@ -80,11 +78,16 @@ export const DropdownSearch = ({
 					errorMessage ? "border-red-500" : "border-gray-300",
 				)}
 				onClick={() => {
+					if (!isOpen) {
+						setLocalSearch(searchInputValue ?? "");
+					}
 					setIsOpen(!isOpen);
 				}}
-				value={isOpen ? (searchInputValue ?? "") : (value?.label ?? "")}
+				value={isOpen ? localSearch : (value?.label ?? "")}
 				onChange={(e) => {
-					onSearchInputChange(e.target.value);
+					const val = e.target.value;
+					setLocalSearch(val);
+					debouncedNotifyParent(val);
 				}}
 				disabled={disabled}
 			/>
