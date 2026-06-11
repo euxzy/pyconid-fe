@@ -206,13 +206,18 @@ export const UserProfileSection = ({
 		search: null,
 		limit: 20,
 	});
-	const { data: dataCountry } = useQuery({
+	const {
+		data: dataCountry,
+		isLoading: isLoadingCountry,
+		isError: isErrorCountry,
+	} = useQuery({
 		queryKey: ["countries", searchCountry],
 		queryFn: async () => {
 			const res = await countriesApi(searchCountry);
 			const data = await res.json();
 			return countriesSchema.parseAsync(data);
 		},
+		retry: false,
 	});
 
 	const [selectedState, setSelectedState] = useState<{
@@ -235,7 +240,11 @@ export const UserProfileSection = ({
 		country_id: userProfile.country?.id ?? 0,
 		limit: 20,
 	});
-	const { data: dataStates } = useQuery({
+	const {
+		data: dataStates,
+		isLoading: isLoadingStates,
+		isError: isErrorStates,
+	} = useQuery({
 		queryKey: ["states", searchStates, selectedCountry?.value],
 		queryFn: async () => {
 			const country_id = parseInt(selectedCountry?.value || "0");
@@ -247,6 +256,7 @@ export const UserProfileSection = ({
 			return statesSchema.parseAsync(data);
 		},
 		enabled: !!selectedCountry?.value,
+		retry: false,
 	});
 
 	const [selectedCity, setSelectedCity] = useState<{
@@ -271,7 +281,11 @@ export const UserProfileSection = ({
 		state_id: userProfile.state?.id ?? 0,
 		limit: 20,
 	});
-	const { data: dataCities } = useQuery({
+	const {
+		data: dataCities,
+		isLoading: isLoadingCities,
+		isError: isErrorCities,
+	} = useQuery({
 		queryKey: ["cities", searchCities, selectedState?.value],
 		queryFn: async () => {
 			const state_id = parseInt(selectedState?.value || "0");
@@ -285,6 +299,7 @@ export const UserProfileSection = ({
 			return citiesSchema.parseAsync(data);
 		},
 		enabled: !!selectedState?.value && !!selectedCountry?.value,
+		retry: false,
 	});
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -577,6 +592,10 @@ export const UserProfileSection = ({
 								onSearchInputChange={(value) => {
 									setSearchCountry((prev) => ({ ...prev, search: value }));
 								}}
+								isLoading={isLoadingCountry}
+								errorMessage={
+									isErrorCountry ? "Failed to load countries" : undefined
+								}
 								className="[&>input]:border-[#282828]"
 							/>
 							<div className="flex flex-col md:flex-row gap-4">
@@ -607,6 +626,10 @@ export const UserProfileSection = ({
 										setSearchStates((prev) => ({ ...prev, search: value }));
 									}}
 									disabled={!selectedCountry}
+									isLoading={isLoadingStates}
+									errorMessage={
+										isErrorStates ? "Failed to load states" : undefined
+									}
 									className="[&>input]:border-[#282828]"
 								/>
 								<DropdownSearch
@@ -635,6 +658,10 @@ export const UserProfileSection = ({
 										setSearchCities((prev) => ({ ...prev, search: value }));
 									}}
 									disabled={!selectedState || !selectedCountry}
+									isLoading={isLoadingCities}
+									errorMessage={
+										isErrorCities ? "Failed to load cities" : undefined
+									}
 									className="[&>input]:border-[#282828]"
 								/>
 							</div>

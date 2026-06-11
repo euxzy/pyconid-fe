@@ -25,6 +25,7 @@ export const DropdownSearch = ({
 	onChange,
 	disabled = false,
 	errorMessage,
+	isLoading = false,
 	className,
 }: {
 	label: string;
@@ -41,6 +42,7 @@ export const DropdownSearch = ({
 	onChange: (value: { label: string; value: string }) => void;
 	disabled?: boolean;
 	errorMessage?: string;
+	isLoading?: boolean;
 	className?: string;
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -103,19 +105,25 @@ export const DropdownSearch = ({
 					isOpen ? "block" : "hidden",
 				)}
 			>
-				{dropdownItems.map((item) => {
-					return (
-						<li
-							key={item.value}
-							onClick={() => {
-								handleSelectItem(item);
-							}}
-							className="hover:cursor-pointer hover:bg-[#224083] hover:text-white rounded-sm px-2"
-						>
-							{item.label}
-						</li>
-					);
-				})}
+				{isLoading ? (
+					<li className="px-2 py-1 text-gray-500 text-sm">Loading...</li>
+				) : dropdownItems.length === 0 ? (
+					<li className="px-2 py-1 text-gray-500 text-sm">No results found</li>
+				) : (
+					dropdownItems.map((item) => {
+						return (
+							<li
+								key={item.value}
+								onClick={() => {
+									handleSelectItem(item);
+								}}
+								className="hover:cursor-pointer hover:bg-[#224083] hover:text-white rounded-sm px-2"
+							>
+								{item.label}
+							</li>
+						);
+					})
+				)}
 			</ul>
 		</div>
 	);
