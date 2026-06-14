@@ -678,7 +678,7 @@ export const UserProfileSection = ({
 									label="Github Username"
 									id="github_username"
 									name="github_username"
-									placeholder="https://github.com/username"
+									placeholder="Github Username"
 									defaultValue={userProfile.github_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -688,7 +688,7 @@ export const UserProfileSection = ({
 									label="Facebook Username"
 									id="facebook_username"
 									name="facebook_username"
-									placeholder="https://facebook.com/username"
+									placeholder="Facebook Username"
 									defaultValue={userProfile.facebook_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -696,7 +696,7 @@ export const UserProfileSection = ({
 									label="LinkedIn Username"
 									id="linkedin_username"
 									name="linkedin_username"
-									placeholder="https://linkedin.com/in/username"
+									placeholder="Linkedin Username"
 									defaultValue={userProfile.linkedin_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -706,7 +706,7 @@ export const UserProfileSection = ({
 									label="X/Twitter Username"
 									id="twitter_username"
 									name="twitter_username"
-									placeholder="https://x.com/username"
+									placeholder="X/Twitter Username"
 									defaultValue={userProfile.twitter_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -714,7 +714,7 @@ export const UserProfileSection = ({
 									label="Instagram Username"
 									id="instagram_username"
 									name="instagram_username"
-									placeholder="https://instagram.com/username"
+									placeholder="Instagram Username"
 									defaultValue={userProfile.instagram_username || ""}
 									inputClassName="border-[#282828]"
 								/>
