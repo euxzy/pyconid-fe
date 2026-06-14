@@ -65,7 +65,13 @@ export const StreamingSection = ({
     isStartingRef.current = true;
 
     if (!clientSessionIdRef.current) {
-      clientSessionIdRef.current = crypto.randomUUID();
+      const storageKey = `pyconid_client_session_${streamId}`;
+      let sessionId = sessionStorage.getItem(storageKey);
+      if (!sessionId) {
+        sessionId = crypto.randomUUID();
+        sessionStorage.setItem(storageKey, sessionId);
+      }
+      clientSessionIdRef.current = sessionId;
     }
 
     try {
@@ -114,6 +120,7 @@ export const StreamingSection = ({
 
     watchSessionIdRef.current = null;
     clientSessionIdRef.current = null;
+    sessionStorage.removeItem(`pyconid_client_session_${streamId}`);
 
     try {
       await httpClient.post(`/streaming/${streamId}/watch/end`, {
