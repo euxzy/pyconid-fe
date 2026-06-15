@@ -24,7 +24,7 @@ export const HeroSection: FC = () => {
 							LOCATION
 						</p>
 						<p className="text-2xl lg:text-3xl font-bold text-foreground">
-							Binus University @Kemanggisan,
+							BINUS University, Anggrek Campus,
 							<br />
 							Jakarta
 						</p>
