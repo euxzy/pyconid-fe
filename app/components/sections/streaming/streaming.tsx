@@ -1,7 +1,10 @@
 import type { Route } from ".react-router/types/app/routes/+types/streaming";
+import type MuxPlayerElement from "@mux/mux-player";
 import MuxPlayer from "@mux/mux-player-react";
 import { BadgeCheck } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRevalidator } from "react-router";
+import { httpClient } from "~/lib/http/$.client";
 import { cn, parseSpeakerImage } from "~/lib/utils";
 
 export const StreamingSection = ({
@@ -9,6 +12,7 @@ export const StreamingSection = ({
 }: {
 	componentProps: Route.ComponentProps;
 }) => {
+	const { revalidate } = useRevalidator();
 	const [talkExpansion, setTalkExpansion] = useState(true);
 	const [speakerBioExpansion, setSpeakerBioExpansion] = useState(true);
 	const [speakerImageSrc, setSpeakerImageSrc] = useState(
@@ -17,7 +21,152 @@ export const StreamingSection = ({
 
 	const scheduleDetail = componentProps.loaderData.scheduleDetail;
 	const scheduleStream = componentProps.loaderData.scheduleStream;
+	const streamId = scheduleStream.stream_id;
+
+	const playerRef = useRef<MuxPlayerElement>(null);
+	const heartbeatTimerRef = useRef<number | null>(null);
+	const clientSessionIdRef = useRef<string | null>(null);
+	const watchSessionIdRef = useRef<string | null>(null);
+	const isStartingRef = useRef(false);
+
 	const speakerBio = scheduleDetail.speaker?.user.bio ?? "";
+
+	const getCurrentPosition = useCallback(() => {
+		return Number(playerRef.current?.currentTime ?? 0);
+	}, []);
+
+	const stopHeartbeat = useCallback(() => {
+		if (heartbeatTimerRef.current) {
+			window.clearInterval(heartbeatTimerRef.current);
+			heartbeatTimerRef.current = null;
+		}
+	}, []);
+
+	const sendHeartbeat = useCallback(async () => {
+		if (!watchSessionIdRef.current || !clientSessionIdRef.current) return;
+
+		try {
+			await httpClient.post(`/streaming/${streamId}/watch/heartbeat`, {
+				body: {
+					watch_session_id: watchSessionIdRef.current,
+					client_session_id: clientSessionIdRef.current,
+					position_seconds: getCurrentPosition(),
+				},
+			});
+		} catch (error) {
+			console.error("Failed to send heartbeat", error);
+		}
+	}, [getCurrentPosition, streamId]);
+
+	const heartbeatIntervalRef = useRef<number>(15);
+
+	const startWatch = useCallback(async () => {
+		if (isStartingRef.current || watchSessionIdRef.current) return;
+
+		isStartingRef.current = true;
+
+		if (!clientSessionIdRef.current) {
+			const storageKey = `pyconid_client_session_${streamId}`;
+			let sessionId = sessionStorage.getItem(storageKey);
+			if (!sessionId) {
+				sessionId = crypto.randomUUID();
+				sessionStorage.setItem(storageKey, sessionId);
+			}
+			clientSessionIdRef.current = sessionId;
+		}
+
+		try {
+			const response = await httpClient.post(
+				`/streaming/${streamId}/watch/start`,
+				{
+					body: {
+						client_session_id: clientSessionIdRef.current,
+						position_seconds: getCurrentPosition(),
+					},
+				},
+			);
+
+			if (!response.status) return;
+
+			const data = await response.json();
+			watchSessionIdRef.current = data.watch_session_id;
+			if (data.heartbeat_interval) {
+				heartbeatIntervalRef.current = data.heartbeat_interval;
+			}
+
+			stopHeartbeat();
+			heartbeatTimerRef.current = window.setInterval(
+				sendHeartbeat,
+				heartbeatIntervalRef.current * 1000,
+			);
+		} catch (error) {
+			console.error("Failed to start watch session", error);
+		} finally {
+			isStartingRef.current = false;
+		}
+	}, [getCurrentPosition, sendHeartbeat, stopHeartbeat, streamId]);
+
+	const pauseWatch = useCallback(async () => {
+		await sendHeartbeat();
+		stopHeartbeat();
+	}, [sendHeartbeat, stopHeartbeat]);
+
+	const endWatch = useCallback(async () => {
+		stopHeartbeat();
+
+		if (!watchSessionIdRef.current || !clientSessionIdRef.current) return;
+
+		const watchSessionId = watchSessionIdRef.current;
+		const clientSessionId = clientSessionIdRef.current;
+
+		watchSessionIdRef.current = null;
+		clientSessionIdRef.current = null;
+		sessionStorage.removeItem(`pyconid_client_session_${streamId}`);
+
+		try {
+			await httpClient.post(`/streaming/${streamId}/watch/end`, {
+				body: {
+					watch_session_id: watchSessionId,
+					client_session_id: clientSessionId,
+					position_seconds: getCurrentPosition(),
+				},
+			});
+			revalidate();
+		} catch (error) {
+			console.error("Failed to end watch session", error);
+		}
+	}, [getCurrentPosition, stopHeartbeat, streamId, revalidate]);
+
+	const endWatchWithKeepalive = useCallback(() => {
+		if (!watchSessionIdRef.current || !clientSessionIdRef.current) return;
+
+		const watchSessionId = watchSessionIdRef.current;
+		const clientSessionId = clientSessionIdRef.current;
+
+		watchSessionIdRef.current = null;
+		clientSessionIdRef.current = null;
+		stopHeartbeat();
+
+		httpClient
+			.post(`/streaming/${streamId}/watch/end`, {
+				body: {
+					watch_session_id: watchSessionId,
+					client_session_id: clientSessionId,
+					position_seconds: getCurrentPosition(),
+				},
+				// @ts-ignore
+				keepalive: true,
+			})
+			.catch(() => {});
+	}, [getCurrentPosition, stopHeartbeat, streamId]);
+
+	useEffect(() => {
+		window.addEventListener("pagehide", endWatchWithKeepalive);
+		return () => {
+			window.removeEventListener("pagehide", endWatchWithKeepalive);
+			void endWatch();
+		};
+	}, [endWatch, endWatchWithKeepalive]);
 
 	const toggleTalkExpansion = () => setTalkExpansion((prev) => !prev);
 	const toggleSpeakerBioExpansion = () =>
@@ -56,12 +205,33 @@ export const StreamingSection = ({
 					<div className="flex flex-col p-2 gap-y-3">
 						<div className="rounded-2xl overflow-hidden">
 							<MuxPlayer
+								ref={playerRef}
 								className="w-full aspect-video bg-black"
 								playbackId={scheduleStream.playback.id}
+								streamType={
+									scheduleStream.status === "STREAMING" ? "live" : "on-demand"
+								}
+								tokens={
+									scheduleStream.playback.token
+										? {
+												playback: scheduleStream.playback.token,
+												thumbnail: scheduleStream.thumbnail?.token ?? undefined,
+											}
+										: undefined
+								}
 								metadata={{
-									// video_id: scheduleStream.stream_id,
+									video_id: streamId,
 									video_title: scheduleDetail.title,
 									viewer_user_id: scheduleStream.metadata.user_id || undefined,
+								}}
+								onPlay={() => {
+									void startWatch();
+								}}
+								onPause={() => {
+									void pauseWatch();
+								}}
+								onEnded={() => {
+									void endWatch();
 								}}
 							/>
 						</div>
