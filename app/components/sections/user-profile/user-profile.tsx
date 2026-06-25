@@ -870,7 +870,6 @@ export const UserProfileSection = ({
 					</div>
 				</form>
 			</div>
-			<Footer />
 		</div>
 	);
 };

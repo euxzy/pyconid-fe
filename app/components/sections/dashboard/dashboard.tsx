@@ -10,8 +10,8 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import type { GetUserProfileSchema } from "~/api/schema/user_profile";
-import { Footer } from "~/components/layouts/navigation/footer";
 import { Hero } from "~/components/shared/hero/hero";
+import { TicketDashboardSwitch } from "~/components/shared/ticket-dashboard-switch";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
 
@@ -56,105 +56,10 @@ export const DashboardSection = ({
 
 	return (
 		<div className="min-h-[calc(100dvh-120px)]">
-			<div className="relative">
-				<div className="flex items-center gap-4 px-6 lg:px-12 pt-6 absolute top-20 left-0 right-0 z-20">
-					<NavLink
-						to="/auth/dashboard"
-						end
-						className="group relative flex items-center gap-3 pl-[11px] pr-4 w-[168px] h-8 text-sm font-bold transition-colors"
-						style={{
-							clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
-						}}
-					>
-						{({ isActive }) => (
-							<>
-								{isActive ? (
-									<span className="absolute inset-0 bg-[#FAFAFA]" />
-								) : (
-									<>
-										<span
-											className="absolute inset-0 bg-white"
-											style={{
-												clipPath:
-													"polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
-											}}
-										/>
-										<span
-											className="absolute inset-[1px] bg-[#282828]"
-											style={{
-												clipPath:
-													"polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
-											}}
-										/>
-									</>
-								)}
-								<span
-									className={`relative z-10 flex items-center gap-3 ${
-										isActive
-											? "text-[#282828]"
-											: "text-[#F1F2F3] group-hover:text-white"
-									}`}
-								>
-									<User className="w-5 h-5" />
-									<span>My Profile</span>
-								</span>
-							</>
-						)}
-					</NavLink>
-
-					<NavLink
-						to="/auth/payment"
-						className="group relative flex items-center gap-3 pl-[11px] pr-4 w-[168px] h-8 text-sm font-bold transition-colors"
-						style={{
-							clipPath: "polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
-						}}
-					>
-						{({ isActive }) => (
-							<>
-								{isActive ? (
-									<span className="absolute inset-0 bg-[#FAFAFA]" />
-								) : (
-									<>
-										<span
-											className="absolute inset-0 bg-white"
-											style={{
-												clipPath:
-													"polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
-											}}
-										/>
-										<span
-											className="absolute inset-[1px] bg-[#282828]"
-											style={{
-												clipPath:
-													"polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%)",
-											}}
-										/>
-									</>
-								)}
-								<span
-									className={`relative z-10 flex items-center gap-3 ${
-										isActive
-											? "text-[#282828]"
-											: "text-[#F1F2F3] group-hover:text-white"
-									}`}
-								>
-									<img
-										src="/svg/user-profile/ticket-icon.svg"
-										alt=""
-										width="20"
-										height="20"
-									/>
-									<span>My Ticket</span>
-								</span>
-							</>
-						)}
-					</NavLink>
-				</div>
-				<Hero text="My Profile" />
-			</div>
+			<Hero text="My Profile" nav=<TicketDashboardSwitch /> />
 
 			{/* Main Card */}
-			<div className="max-w-[1280px] mx-auto px-6 lg:px-12 py-9">
+			<div className="mx-auto px-6 lg:px-12 py-9">
 				<div className="bg-[#FAFAFA] border-2 border-[#282828] relative overflow-hidden">
 					{/* Decorative Accents */}
 					<div className="absolute -left-25 -bottom-30 w-[280px] h-[300px] pointer-events-none hidden lg:block">
@@ -186,7 +91,7 @@ export const DashboardSection = ({
 									aria-hidden="true"
 								/>
 							</div>
-							<div className="flex flex-col md:flex-row items-start gap-6">
+							<div className="flex flex-col md:flex-row items-center gap-6">
 								{/* Avatar */}
 								<div className="w-[135px] h-[135px] rounded-full overflow-hidden bg-gray-400 flex-shrink-0">
 									{profileImg ? (
@@ -201,27 +106,32 @@ export const DashboardSection = ({
 										</div>
 									)}
 								</div>
-								{/* Info */}
-								<div className="flex flex-col gap-1">
-									<div className="flex flex-row items-center gap-x-4">
+
+								<div className="flex flex-col items-center md:items-start">
+									<div className="flex flex-col md:flex-row items-center justify-around md:gap-x-4">
 										<h2 className="text-[34px] font-bold text-[#282828] leading-tight">
 											{fullName || me.username || "User"}
 										</h2>
-										{/* Change Button */}
 										<NavLink
 											to="/auth/user-profile"
 											onClick={handleNavigateToProfile}
-											className="flex items-center text-[#282828] hover:opacity-70 transition-opacity z-10"
+											className="flex items-center text-[#282828] hover:opacity-70 transition-opacity z-10 gap-x-1"
 										>
-											<Pencil width="20" height="20" />
-											<span className="font-bold text-xl">Change</span>
+											<Pencil
+												width="20"
+												height="20"
+												className="text-blue-500 underline"
+											/>
+											<span className="font-bold text-xl text-blue-500 underline">
+												Change
+											</span>
 										</NavLink>
 									</div>
-									<div>
+									<div className="flex items-center md:items-start">
 										{userProfile.email && (
 											<a
 												href={`mailto:${userProfile.email}`}
-												className="text-xl text-[#282828] underline hover:opacity-80"
+												className="text-xl text-[#282828] underline hover:opacity-80 break-all text-center md:text-start"
 											>
 												{userProfile.email}
 											</a>
@@ -441,7 +351,6 @@ export const DashboardSection = ({
 					</div>
 				</div>
 			)}
-			<Footer />
 		</div>
 	);
 };
