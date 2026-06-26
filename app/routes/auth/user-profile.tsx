@@ -14,6 +14,7 @@ import {
 	participantTypeSchema,
 	updateUserProfileSchema,
 } from "~/api/schema/user_profile";
+import { Footer } from "~/components/layouts/navigation/footer";
 import { UserProfileSection } from "~/components/sections/user-profile/user-profile";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/user-profile";
